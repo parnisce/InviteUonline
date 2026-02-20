@@ -47,24 +47,43 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 {event.banner_url
                     ? <img src={event.banner_url} className="wt-hero-bg" alt="banner" />
                     : <div className="wt-hero-bg wt-hero-fallback" />}
+                {/* Very light veil — let photo breathe */}
                 <div className="wt-hero-veil" />
-                <motion.div className="wt-hero-copy" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-                    <p className="wt-pre">Happily</p>
-                    <h1 className="wt-every">EVERY AFTER</h1>
-                    <p className="wt-begins">Begins Here</p>
-                    <div className="wt-pill">
-                        {eventDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
-                    </div>
+
+                {/* Couple names — centered over photo */}
+                <motion.div
+                    className="wt-hero-names"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1.2 }}
+                >
+                    <h1>
+                        <span className="wt-name-line">{d.partner1 || 'Partner One'}</span>
+                        <span className="wt-name-amp">&amp;</span>
+                        <span className="wt-name-line">{d.partner2 || 'Partner Two'}</span>
+                    </h1>
                 </motion.div>
-                {gallery.length >= 2 && (
-                    <div className="wt-polaroids">
-                        {gallery.slice(0, 3).map((url, i) => (
-                            <div key={i} className="wt-polaroid" style={{ transform: `rotate(${[-4, 2, -2.5][i] ?? 0}deg)` }}>
-                                <img src={url} alt="" />
-                            </div>
-                        ))}
-                    </div>
-                )}
+
+                {/* Bottom info — WE ARE GETTING MARRIED + RSVP + hashtag */}
+                <motion.div
+                    className="wt-hero-bottom"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                >
+                    <p className="wt-hero-tagline">WE ARE GETTING MARRIED</p>
+                    <a href="#wt-rsvp" className="wt-hero-rsvp-btn">RSVP</a>
+                    {d.hashtag && <p className="wt-hero-hashtag">{d.hashtag.startsWith('#') ? d.hashtag : `#${d.hashtag}`}</p>}
+                </motion.div>
+
+                {/* Floating celebrate button */}
+                <button className="wt-celebrate-btn" onClick={() => {
+                    const el = document.createElement('div');
+                    el.innerHTML = '🎉';
+                    el.style.cssText = 'position:fixed;font-size:2rem;pointer-events:none;z-index:9999;animation:wt-confetti 1.5s ease-out forwards;top:50%;left:50%;';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 1600);
+                }}>TAP TO CELEBRATE! 🎉</button>
             </section>
 
             {/* ── MAIN 2-COL BODY ── */}
@@ -264,19 +283,29 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt { font-family: 'Lato', sans-serif; background: #faf5ee; color: #3d1f0e; min-height: 100vh; }
 
         /* ─ HERO ─ */
-        .wt-hero { position: relative; height: 88vh; min-height: 550px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .wt-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-        .wt-hero-fallback { background: linear-gradient(160deg, #6b3a1f 0%, #c8a97e 60%, #f5edd8 100%); }
-        .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(30,10,0,0.18), rgba(50,20,5,0.65)); }
-        .wt-hero-copy { position: relative; z-index: 10; text-align: center; color: #fff; padding: 0 1rem; }
-        .wt-pre { font-family: 'Dancing Script', cursive; font-size: 2.2rem; opacity: 0.88; margin-bottom: -0.5rem; }
-        .wt-every { font-family: 'Lato', sans-serif; font-weight: 700; font-size: clamp(3rem, 7vw, 6rem); letter-spacing: 0.22em; margin: 0; text-shadow: 0 3px 24px rgba(0,0,0,0.35); }
-        .wt-begins { font-family: 'Dancing Script', cursive; font-size: 2rem; opacity: 0.85; margin-top: 0.3rem; }
-        .wt-pill { margin-top: 2rem; display: inline-block; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.35); backdrop-filter: blur(8px); padding: 0.65rem 2.5rem; border-radius: 2rem; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; }
-        .wt-polaroids { position: absolute; bottom: -35px; left: 50%; transform: translateX(-50%); display: flex; gap: 2rem; z-index: 20; }
-        .wt-polaroid { background: white; padding: 10px 10px 32px; box-shadow: 0 10px 30px rgba(0,0,0,0.28); width: 130px; transition: 0.3s; }
-        .wt-polaroid:hover { transform: scale(1.06) !important; box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
-        .wt-polaroid img { width: 100%; height: 100px; object-fit: cover; display: block; }
+        .wt-hero { position: relative; height: 92vh; min-height: 560px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .wt-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+        .wt-hero-fallback { background: linear-gradient(160deg, #d4c5b0 0%, #e8d5b7 50%, #f5edd8 100%); }
+        /* Very subtle veil — photo must remain vivid */
+        .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.48) 100%); }
+
+        /* Couple Names — large, centered, over the photo */
+        .wt-hero-names { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); z-index: 10; text-align: center; pointer-events: none; }
+        .wt-hero-names h1 { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 0; }
+        .wt-name-line { font-family: 'Dancing Script', cursive; font-size: clamp(4rem, 9vw, 7.5rem); font-weight: 600; color: white; line-height: 1.05; text-shadow: 0 2px 20px rgba(0,0,0,0.15); letter-spacing: -1px; }
+        .wt-name-amp { font-family: 'Dancing Script', cursive; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; color: rgba(255,255,255,0.85); line-height: 0.9; }
+
+        /* Bottom strip — WE ARE GETTING MARRIED / RSVP / hashtag */
+        .wt-hero-bottom { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+        .wt-hero-tagline { font-size: 0.78rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.88); margin: 0; }
+        .wt-hero-rsvp-btn { display: inline-block; border: 1.5px solid rgba(255,255,255,0.8); color: white; background: rgba(255,255,255,0.12); backdrop-filter: blur(4px); padding: 0.5rem 2.5rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 4px; text-decoration: none; text-transform: uppercase; transition: 0.25s; cursor: pointer; }
+        .wt-hero-rsvp-btn:hover { background: rgba(255,255,255,0.25); }
+        .wt-hero-hashtag { font-size: 0.82rem; color: rgba(255,255,255,0.72); letter-spacing: 1px; margin: 0; }
+
+        /* Floating celebrate button */
+        .wt-celebrate-btn { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 20; background: rgba(130,80,160,0.85); backdrop-filter: blur(6px); color: white; border: none; padding: 0.65rem 1.25rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: 0.2s; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+        .wt-celebrate-btn:hover { background: rgba(130,80,160,1); transform: translateY(-50%) scale(1.05); }
+        @keyframes wt-confetti { 0% { transform: translate(-50%,-50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%,-300%) scale(2); opacity: 0; } }
 
         /* ─ BODY 2-COL ─ */
         .wt-body { display: grid; grid-template-columns: 1fr 400px; gap: 0; max-width: 1300px; margin: 0 auto; align-items: start; padding: 60px 2rem 0; }

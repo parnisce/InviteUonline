@@ -35,6 +35,7 @@ const CreateRSVP: React.FC = () => {
             // Wedding-specific
             partner1: '',
             partner2: '',
+            hashtag: '',
             welcomeMessage: '',
             story: '',
             colorMotif: ['#c8a97e', '#e8d5b7'],
@@ -231,7 +232,13 @@ const CreateRSVP: React.FC = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Welcome Message */}
+                                            {/* Hashtag */}
+                                            <div className="form-group">
+                                                <label>Wedding Hashtag</label>
+                                                <input type="text" placeholder="e.g. #ChuInfinityAndBeJohn" value={formData.details.hashtag} onChange={e => updateDetail('hashtag', e.target.value)} />
+                                                <p className="field-hint">Shown on your hero banner. Add # or leave it out — we'll add it for you.</p>
+                                            </div>
+
                                             <div className="form-section-divider">
                                                 <span>💌 Welcome To Our Wedding</span>
                                             </div>
