@@ -72,18 +72,10 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                     transition={{ duration: 1, delay: 0.5 }}
                 >
                     <p className="wt-hero-tagline">WE ARE GETTING MARRIED</p>
+                    <div className="wt-hero-ornament">✦ ◈ ✦</div>
                     <a href="#wt-rsvp" className="wt-hero-rsvp-btn">RSVP</a>
                     {d.hashtag && <p className="wt-hero-hashtag">{d.hashtag.startsWith('#') ? d.hashtag : `#${d.hashtag}`}</p>}
                 </motion.div>
-
-                {/* Floating celebrate button */}
-                <button className="wt-celebrate-btn" onClick={() => {
-                    const el = document.createElement('div');
-                    el.innerHTML = '🎉';
-                    el.style.cssText = 'position:fixed;font-size:2rem;pointer-events:none;z-index:9999;animation:wt-confetti 1.5s ease-out forwards;top:50%;left:50%;';
-                    document.body.appendChild(el);
-                    setTimeout(() => el.remove(), 1600);
-                }}>TAP TO CELEBRATE! 🎉</button>
             </section>
 
             {/* ── MAIN 2-COL BODY ── */}
@@ -290,22 +282,20 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.42) 100%); }
 
         /* Couple Names — large, centered, over the photo */
-        .wt-hero-names { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); z-index: 10; text-align: center; pointer-events: none; }
+        .wt-hero-names { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); z-index: 10; text-align: center; pointer-events: none; width: 100%; padding: 0 1rem; }
         .wt-hero-names h1 { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 0; }
-        .wt-name-line { font-family: 'Dancing Script', cursive; font-size: clamp(4rem, 9vw, 7.5rem); font-weight: 600; color: white; line-height: 1.05; text-shadow: 0 2px 20px rgba(0,0,0,0.15); letter-spacing: -1px; }
-        .wt-name-amp { font-family: 'Dancing Script', cursive; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 400; color: rgba(255,255,255,0.85); line-height: 0.9; }
+        .wt-name-line { font-family: 'Dancing Script', cursive; font-size: clamp(5rem, 11vw, 9rem); font-weight: 600; color: white; line-height: 1.02; text-shadow: 0 2px 40px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08); letter-spacing: -1px; }
+        .wt-name-amp { font-family: 'Dancing Script', cursive; font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 400; color: rgba(255,255,255,0.82); line-height: 0.85; }
 
-        /* Bottom strip — WE ARE GETTING MARRIED / RSVP / hashtag */
-        .wt-hero-bottom { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
-        .wt-hero-tagline { font-size: 0.78rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.88); margin: 0; }
-        .wt-hero-rsvp-btn { display: inline-block; border: 1.5px solid rgba(255,255,255,0.8); color: white; background: rgba(255,255,255,0.12); backdrop-filter: blur(4px); padding: 0.5rem 2.5rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 4px; text-decoration: none; text-transform: uppercase; transition: 0.25s; cursor: pointer; }
-        .wt-hero-rsvp-btn:hover { background: rgba(255,255,255,0.25); }
-        .wt-hero-hashtag { font-size: 0.82rem; color: rgba(255,255,255,0.72); letter-spacing: 1px; margin: 0; }
+        /* Bottom strip — WE ARE GETTING MARRIED / ornament / RSVP / hashtag */
+        .wt-hero-bottom { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; width: 100%; }
+        .wt-hero-tagline { font-size: 0.72rem; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: rgba(255,255,255,0.82); margin: 0; }
+        .wt-hero-ornament { font-size: 0.7rem; color: rgba(255,255,255,0.45); letter-spacing: 6px; margin: -0.3rem 0; }
+        .wt-hero-rsvp-btn { display: inline-block; border: 1.5px solid rgba(255,255,255,0.75); color: white; background: rgba(255,255,255,0.1); backdrop-filter: blur(6px); padding: 0.6rem 3rem; border-radius: 2rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 6px; text-decoration: none; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
+        .wt-hero-rsvp-btn:hover { background: rgba(255,255,255,0.22); border-color: white; transform: translateY(-2px); }
+        .wt-hero-hashtag { font-family: 'Dancing Script', cursive; font-size: clamp(1.3rem, 2.5vw, 1.8rem); color: rgba(255,255,255,0.85); letter-spacing: 1px; margin: 0; font-weight: 600; text-shadow: 0 1px 12px rgba(0,0,0,0.18); }
 
-        /* Floating celebrate button */
-        .wt-celebrate-btn { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); z-index: 20; background: rgba(130,80,160,0.85); backdrop-filter: blur(6px); color: white; border: none; padding: 0.65rem 1.25rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 700; cursor: pointer; letter-spacing: 1px; transition: 0.2s; box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
-        .wt-celebrate-btn:hover { background: rgba(130,80,160,1); transform: translateY(-50%) scale(1.05); }
-        @keyframes wt-confetti { 0% { transform: translate(-50%,-50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%,-300%) scale(2); opacity: 0; } }
+        /* Removed celebrate button */
 
         /* ─ BODY 2-COL ─ */
         .wt-body { display: grid; grid-template-columns: 1fr 400px; gap: 0; max-width: 1300px; margin: 0 auto; align-items: start; padding: 60px 2rem 0; }
