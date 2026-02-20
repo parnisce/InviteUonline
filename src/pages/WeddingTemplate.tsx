@@ -413,7 +413,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-cd-dow-row span { color: rgba(200,169,126,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; }
         .wt-cd-tagline { font-family: 'Dancing Script', cursive; color: rgba(240,220,190,0.75); font-size: 1.3rem; margin-bottom: 2rem; }
         /* ─ SAVE THE DATE / COUNTDOWN ─ */
-        .wt-std-section { position: relative; padding: 10rem 2rem 14rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
+        .wt-std-section { position: relative; padding: 5rem 2rem 14rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
         .wt-std-overlay { position: absolute; inset: 0; background: rgba(255,250,245,0.72); }
         .wt-std-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; color: #5a3d2b; }
         
