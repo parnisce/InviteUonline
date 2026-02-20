@@ -427,13 +427,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-std-details { font-family: 'Lato', sans-serif; font-size: 0.82rem; letter-spacing: 5px; font-weight: 700; text-transform: uppercase; margin: 2rem 0 4.5rem; opacity: 0.75; display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
         .wt-std-sep { opacity: 0.4; font-weight: 300; }
         
-        .wt-std-timer { display: flex; justify-content: center; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 3.5rem; border-top: 1px solid rgba(90,61,43,0.12); padding-top: 3.5rem; }
+        .wt-std-timer { display: flex; justify-content: center; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 3.5rem; border-top: 1px solid rgba(90,61,43,0.12); padding-top: 3.5rem; padding-bottom: 6.5em; }
         .wt-std-timer-box { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
         .wt-std-timer-num { font-family: 'Lato', sans-serif; font-size: 1.6rem; font-weight: 400; color: #5a3d2b; margin-bottom: 0.35rem; }
         .wt-std-timer-unit { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; font-weight: 700; }
         
         @media (max-width: 600px) {
-            .wt-std-section { padding: 6rem 1rem; }
+            .wt-std-section { padding: 5rem 2rem 10rem; }
             .wt-std-timer { gap: 1.25rem; }
             .wt-std-timer-box { min-width: 50px; }
             .wt-std-timer-num { font-size: 1.4rem; }
