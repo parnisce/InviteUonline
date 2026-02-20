@@ -33,7 +33,7 @@ const Contact: React.FC = () => {
             <section className="contact-hero section-padding">
                 <div className="container" style={{ textAlign: 'center' }}>
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <span className="badge">Get In Touch 👋</span>
+                        <span className="section-tag">Get In Touch</span>
                         <h1 className="contact-title">
                             We'd Love to <br />
                             <span className="gradient-text">Hear From You</span>
@@ -60,7 +60,7 @@ const Contact: React.FC = () => {
 
                         <div className="info-cards">
                             {contactInfo.map((item) => (
-                                <a key={item.label} href={item.href} className="info-card glass-card">
+                                <a key={item.label} href={item.href} className="info-card">
                                     <div className="info-icon">{item.icon}</div>
                                     <div>
                                         <span className="info-label">{item.label}</span>
@@ -87,7 +87,7 @@ const Contact: React.FC = () => {
                         viewport={{ once: true }}
                     >
                         {submitted ? (
-                            <div className="success-state glass-card">
+                            <div className="success-state">
                                 <CheckCircle size={60} className="success-icon" />
                                 <h2>Message Sent!</h2>
                                 <p>Thank you for reaching out. A member of our team will get back to you within 24 hours.</p>
@@ -96,7 +96,7 @@ const Contact: React.FC = () => {
                                 </button>
                             </div>
                         ) : (
-                            <form className="contact-form glass-card" onSubmit={handleSubmit}>
+                            <form className="contact-form" onSubmit={handleSubmit}>
                                 <h2>Send Us a Message</h2>
                                 <p className="form-sub">Fill in the form below and we'll be in touch shortly.</p>
 
@@ -166,17 +166,27 @@ const Contact: React.FC = () => {
 
         .contact-hero {
           padding-top: 120px;
-          background: radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%);
+          background: #f0fdf4;
         }
 
-        .contact-title { font-size: clamp(2rem, 4vw, 3.5rem); margin: 1.5rem 0; }
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
+        }
+
+        .contact-title { font-size: clamp(2.2rem, 4vw, 3.5rem); margin: 1.5rem 0; color: #0f172a; }
 
         .contact-subtitle { color: var(--text-muted); font-size: 1.1rem; }
 
         .contact-grid {
           display: grid;
           grid-template-columns: 1fr 1.6fr;
-          gap: 4rem;
+          gap: 5rem;
           align-items: start;
         }
 
@@ -184,13 +194,13 @@ const Contact: React.FC = () => {
           .contact-grid { grid-template-columns: 1fr; }
         }
 
-        .contact-info h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+        .contact-info h2 { font-size: 2rem; margin-bottom: 1rem; color: #064e3b; }
 
         .contact-info > p {
           color: var(--text-muted);
-          font-size: 0.95rem;
+          font-size: 1rem;
           line-height: 1.7;
-          margin-bottom: 2rem;
+          margin-bottom: 3rem;
         }
 
         .info-cards { display: flex; flex-direction: column; gap: 1rem; }
@@ -198,63 +208,73 @@ const Contact: React.FC = () => {
         .info-card {
           display: flex;
           align-items: center;
-          gap: 1.25rem;
-          padding: 1.25rem 1.5rem;
+          gap: 1.5rem;
+          padding: 1.5rem;
+          background: #f8fafc;
+          border-radius: 1rem;
+          border: 1px solid #f1f5f9;
           transition: all 0.3s;
         }
 
         .info-card:hover {
           border-color: var(--primary);
-          transform: translateX(6px);
+          transform: translateX(8px);
+          background: #f0fdf4;
         }
 
         .info-icon {
-          width: 46px;
-          height: 46px;
-          background: rgba(99,102,241,0.12);
+          width: 50px;
+          height: 50px;
+          background: white;
           border-radius: 0.75rem;
           display: flex;
           align-items: center;
           justify-content: center;
           color: var(--primary);
           flex-shrink: 0;
+          box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
 
         .info-label {
           display: block;
-          font-size: 0.8rem;
+          font-size: 0.85rem;
           color: var(--text-muted);
           margin-bottom: 0.2rem;
+          font-weight: 500;
         }
 
-        .info-value { font-size: 0.95rem; font-weight: 600; }
+        .info-value { font-size: 1rem; font-weight: 700; color: #0f172a; }
 
-        .contact-social { margin-top: 2.5rem; }
+        .contact-social { margin-top: 3.5rem; }
 
-        .contact-social h4 { margin-bottom: 1rem; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .contact-social h4 { margin-bottom: 1.25rem; color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
 
-        .social-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .social-links { display: flex; gap: 1rem; flex-wrap: wrap; }
 
         .social-chip {
-          padding: 0.4rem 1rem;
-          background: var(--glass);
-          border: 1px solid var(--border);
+          padding: 0.5rem 1.25rem;
+          background: white;
+          border: 1px solid #e2e8f0;
           border-radius: 2rem;
-          font-size: 0.85rem;
+          font-size: 0.9rem;
           font-weight: 600;
-          color: var(--text-muted);
+          color: #475569;
           transition: all 0.3s;
         }
 
-        .social-chip:hover { border-color: var(--primary); color: var(--primary); }
+        .social-chip:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
 
         .contact-form {
-          padding: 3rem;
+          padding: 3.5rem;
+          background: white;
+          border-radius: 1.5rem;
+          border: 1px solid #f1f5f9;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.03);
         }
 
-        .contact-form h2 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .contact-form h2 { font-size: 1.8rem; margin-bottom: 0.5rem; color: #064e3b; }
 
-        .form-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+        .form-sub { color: #64748b; font-size: 0.95rem; margin-bottom: 2.5rem; }
 
         .form-row {
           display: grid;
@@ -267,14 +287,14 @@ const Contact: React.FC = () => {
         .form-group {
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          gap: 0.6rem;
           margin-bottom: 1.5rem;
         }
 
         .form-group label {
           font-size: 0.85rem;
-          font-weight: 600;
-          color: var(--text-muted);
+          font-weight: 700;
+          color: #475569;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
@@ -282,56 +302,60 @@ const Contact: React.FC = () => {
         .form-group input,
         .form-group select,
         .form-group textarea {
-          background: rgba(255,255,255,0.04);
-          border: 1px solid var(--border);
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
           border-radius: 0.6rem;
-          padding: 0.85rem 1.1rem;
-          color: white;
-          font-size: 0.95rem;
+          padding: 1rem 1.25rem;
+          color: #1e293b;
+          font-size: 1rem;
           font-family: inherit;
           outline: none;
-          transition: border-color 0.3s;
+          transition: all 0.3s;
           resize: vertical;
         }
 
         .form-group input::placeholder,
         .form-group textarea::placeholder {
-          color: rgba(148,163,184,0.5);
+          color: #94a3b8;
         }
 
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
           border-color: var(--primary);
-          box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+          background: white;
+          box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
         }
-
-        .form-group select option { background: #1e293b; color: white; }
 
         .submit-btn {
           width: 100%;
           justify-content: center;
-          padding: 1rem;
-          font-size: 1rem;
+          padding: 1.15rem;
+          font-size: 1.05rem;
           border-radius: 0.6rem;
+          margin-top: 1rem;
         }
 
         .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
         .success-state {
-          padding: 4rem 3rem;
+          padding: 5rem 3rem;
           text-align: center;
+          background: white;
+          border-radius: 1.5rem;
+          border: 1px solid #dcfce7;
           display: flex;
           flex-direction: column;
           align-items: center;
           gap: 1.5rem;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .success-icon { color: #10b981; }
 
-        .success-state h2 { font-size: 2rem; }
+        .success-state h2 { font-size: 2.2rem; color: #064e3b; }
 
-        .success-state p { color: var(--text-muted); font-size: 1rem; max-width: 400px; }
+        .success-state p { color: #475569; font-size: 1.1rem; max-width: 400px; line-height: 1.7; }
       `}</style>
         </div>
     );

@@ -1,9 +1,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Shield, Sparkles } from 'lucide-react';
+import { Zap, Shield, Sparkles, PencilLine, Share2, ClipboardCheck, Layout as LayoutIcon, CreditCard, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
+  const steps = [
+    { icon: <PencilLine />, title: 'Pick A Design', desc: 'Choose from our elegant templates or message us for a custom design tailored to your event.' },
+    { icon: <LayoutIcon />, title: 'Match Your Invitation', desc: 'Seamlessly align your digital invitation with your paper invitations for a cohesive look.' },
+    { icon: <ClipboardCheck />, title: 'Customized in 2 Minutes', desc: 'Quick and easy personalization. Add your details, photos, and event information effortlessly.' },
+    { icon: <Share2 />, title: 'Custom Web Address', desc: 'Get a memorable URL like romeo-juliet.inviteu.online for your guests to easily access.' },
+    { icon: <CreditCard />, title: 'Continue to Payment', desc: 'Simple and secure checkout to finalize your beautiful RSVP website.' },
+    { icon: <Send />, title: 'Share Your Invitation', desc: 'Send your unique link to guests via email, text, or social media and start collecting RSVPs.' },
+  ];
+
   return (
     <div className="home-page">
       {/* Hero Section */}
@@ -15,20 +24,17 @@ const Home: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="hero-text"
           >
-            <span className="badge">New: AI-Powered RSVP Designer 🚀</span>
+            <span className="badge">Digital Invitations Made Simple ✨</span>
             <h1 className="hero-title">
-              Create <span className="gradient-text">Beautiful RSVP</span> <br />
-              Pages in Seconds
+              Create an RSVP link, <span className="gradient-text">share once</span>, <br />
+              track guest responses
             </h1>
             <p className="hero-subtitle">
-              The all-in-one platform to manage your event invitations. Simple, elegant, and completely customizable. Join 10,000+ hosts making their events unforgettable.
+              Create stunning RSVP websites for weddings and events. Send online invitations, track guest responses, and manage everything in one place.
             </p>
             <div className="hero-actions">
               <Link to="/contact" className="btn btn-primary btn-lg">
-                Create Your Page <Zap size={20} />
-              </Link>
-              <Link to="/features" className="btn btn-outline btn-lg">
-                View Features
+                Create Your RSVP
               </Link>
             </div>
           </motion.div>
@@ -40,27 +46,53 @@ const Home: React.FC = () => {
             className="hero-image-container"
           >
             <div className="hero-image glass-card">
-              <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" alt="Event Preview" />
-            </div>
-            <div className="hero-stats glass-card animate-float">
-              <div className="stat-item">
-                <span className="stat-val">5k+</span>
-                <span className="stat-label">Events Daily</span>
-              </div>
+              <img src="https://images.unsplash.com/photo-1519222970733-f546218fa6d7?auto=format&fit=crop&q=80&w=800" alt="Happy Event" />
+              <div className="floating-badge badge-create">Create an Event</div>
+              <div className="floating-badge badge-share">Share the RSVP Link</div>
+              <div className="floating-badge badge-track">Track Responses</div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="trust">
+      {/* Proof Section */}
+      <section className="proof-section">
         <div className="container">
-          <p className="trust-title">Trusted by leading event planners worldwide</p>
-          <div className="trust-logos">
-            <span className="logo-placeholder">EVENTFUL</span>
-            <span className="logo-placeholder">GATHER</span>
-            <span className="logo-placeholder">VOWS</span>
-            <span className="logo-placeholder">CELEBRATE</span>
+          <motion.div
+            className="proof-box"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2>Approved By 10,000+ Happy Couples</h2>
+            <p>Get your custom address like: <span className="highlight-text">romeo-juliet.inviteu.online</span></p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="how-it-works section-padding">
+        <div className="container">
+          <div className="section-header">
+            <span className="section-tag">How It Works</span>
+            <h2 className="section-title">Six Simple <span className="gradient-text">Steps</span></h2>
+          </div>
+
+          <div className="steps-grid">
+            {steps.map((step, i) => (
+              <motion.div
+                key={step.title}
+                className="step-card"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <div className="step-icon">{step.icon}</div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -69,8 +101,8 @@ const Home: React.FC = () => {
       <section className="features-preview section-padding">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">Why Choose InviteU?</h2>
-            <p className="section-subtitle">Everything you need to manage your guest list effortlessly.</p>
+            <span className="section-tag">Why Choose Us</span>
+            <h2 className="section-title">Everything you need</h2>
           </div>
 
           <div className="features-grid">
@@ -95,10 +127,11 @@ const Home: React.FC = () => {
 
       <style>{`
         .hero {
-          padding-top: 160px;
-          min-height: 90vh;
+          padding-top: 140px;
+          min-height: 80vh;
           display: flex;
           align-items: center;
+          background: linear-gradient(to bottom, #f0fdf4 0%, #ffffff 100%);
         }
 
         .hero-content {
@@ -110,44 +143,36 @@ const Home: React.FC = () => {
 
         @media (min-width: 1024px) {
           .hero-content {
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1fr;
           }
         }
 
         .badge {
-          background: var(--glass);
-          padding: 0.5rem 1rem;
-          border-radius: 2rem;
-          font-size: 0.85rem;
+          color: #b45309;
           font-weight: 600;
-          color: var(--primary);
-          border: 1px solid var(--border);
-          display: inline-block;
-          margin-bottom: 1.5rem;
+          font-size: 0.9rem;
+          margin-bottom: 1rem;
+          display: block;
         }
 
         .hero-title {
-          font-size: clamp(2.5rem, 5vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 3.5rem);
           margin-bottom: 1.5rem;
-          line-height: 1.1;
+          line-height: 1.2;
+          color: #0f172a;
         }
 
         .hero-subtitle {
-          font-size: 1.25rem;
+          font-size: 1.1rem;
           color: var(--text-muted);
           margin-bottom: 2.5rem;
-          max-width: 600px;
-        }
-
-        .hero-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 1rem;
+          max-width: 550px;
         }
 
         .btn-lg {
-          padding: 1rem 2rem;
+          padding: 1rem 2.5rem;
           font-size: 1.1rem;
+          border-radius: 0.4rem;
         }
 
         .hero-image-container {
@@ -155,63 +180,51 @@ const Home: React.FC = () => {
         }
 
         .hero-image {
-          padding: 1rem;
-          transform: rotate(2deg);
+          padding: 0;
+          overflow: hidden;
+          border-radius: 2rem;
         }
 
         .hero-image img {
           width: 100%;
-          border-radius: 0.5rem;
           display: block;
+          border-radius: 2rem;
         }
 
-        .hero-stats {
+        .floating-badge {
           position: absolute;
-          bottom: -20px;
-          right: -20px;
-          padding: 1.5rem;
-          z-index: 2;
-        }
-
-        .stat-val {
-          display: block;
-          font-size: 1.5rem;
-          font-weight: 800;
-          color: var(--primary);
-        }
-
-        .stat-label {
-          font-size: 0.8rem;
-          color: var(--text-muted);
-        }
-
-        .trust {
-          padding: 3rem 0;
-          border-top: 1px solid var(--border);
-          border-bottom: 1px solid var(--border);
-        }
-
-        .trust-title {
-          text-align: center;
-          color: var(--text-muted);
+          background: #ccfbf1;
+          color: #115e59;
+          padding: 0.6rem 1.2rem;
+          border-radius: 2rem;
+          font-weight: 600;
           font-size: 0.9rem;
-          margin-bottom: 2rem;
-          text-transform: uppercase;
-          letter-spacing: 2px;
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .trust-logos {
-          display: flex;
-          justify-content: center;
-          gap: 4rem;
-          flex-wrap: wrap;
-          opacity: 0.5;
+        .badge-create { top: 10%; left: -5%; }
+        .badge-share { top: 50%; right: -5%; }
+        .badge-track { bottom: 10%; left: 0%; }
+
+        .proof-section {
+          background: #f0fdf4;
+          padding: 4rem 0;
+          text-align: center;
         }
 
-        .logo-placeholder {
-          font-weight: 900;
-          font-size: 1.5rem;
+        .proof-box h2 {
+          font-size: 2rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .proof-box p {
           color: var(--text-muted);
+          font-size: 1.1rem;
+        }
+
+        .highlight-text {
+          color: var(--primary);
+          font-weight: 600;
         }
 
         .section-header {
@@ -219,14 +232,55 @@ const Home: React.FC = () => {
           margin-bottom: 4rem;
         }
 
-        .section-title {
-          font-size: 2.5rem;
-          margin-bottom: 1rem;
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
         }
 
-        .section-subtitle {
+        .section-title {
+          font-size: 2.5rem;
+        }
+
+        .steps-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 4rem 2rem;
+        }
+
+        .step-card {
+          text-align: left;
+        }
+
+        .step-icon {
+          color: var(--primary);
+          margin-bottom: 1.5rem;
+        }
+
+        .step-icon svg {
+          width: 32px;
+          height: 32px;
+          stroke-width: 1.5px;
+        }
+
+        .step-card h3 {
+          font-size: 1.2rem;
+          margin-bottom: 1rem;
+          color: #0d9488;
+        }
+
+        .step-card p {
           color: var(--text-muted);
-          font-size: 1.1rem;
+          font-size: 0.95rem;
+          line-height: 1.6;
+        }
+
+        .features-preview {
+          background: #fdfdfd;
         }
 
         .features-grid {
@@ -237,19 +291,15 @@ const Home: React.FC = () => {
 
         .feature-card {
           padding: 2.5rem;
-          transition: all 0.3s ease;
-        }
-
-        .feature-card:hover {
-          transform: translateY(-10px);
-          border-color: var(--primary);
+          background: white;
+          border: 1px solid #f1f5f9;
         }
 
         .feature-icon {
-          width: 60px;
-          height: 60px;
-          background: rgba(99, 102, 241, 0.1);
-          border-radius: 1rem;
+          width: 50px;
+          height: 50px;
+          background: #f0fdf4;
+          border-radius: 0.75rem;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -259,19 +309,11 @@ const Home: React.FC = () => {
 
         .feature-card h3 {
           margin-bottom: 1rem;
+          font-size: 1.2rem;
         }
 
         .feature-card p {
           color: var(--text-muted);
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-
-        .animate-float {
-          animation: float 4s ease-in-out infinite;
         }
       `}</style>
     </div>

@@ -32,13 +32,13 @@ const FAQ: React.FC = () => {
             <section className="faq-hero section-padding">
                 <div className="container" style={{ textAlign: 'center' }}>
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <span className="badge">Help Center 🙋</span>
+                        <span className="section-tag">Help Center</span>
                         <h1 className="faq-title">
                             Frequently Asked<br />
                             <span className="gradient-text">Questions</span>
                         </h1>
                         <p className="faq-subtitle">
-                            Can't find what you're looking for? <Link to="/contact" style={{ color: 'var(--primary)' }}>Contact our team</Link> and we'll get back to you within 24 hours.
+                            Can't find what you're looking for? <Link to="/contact" style={{ color: 'var(--primary)', fontWeight: '600' }}>Contact our team</Link> and we'll get back to you within 24 hours.
                         </p>
                     </motion.div>
                 </div>
@@ -63,13 +63,13 @@ const FAQ: React.FC = () => {
                         {filtered.map((faq, i) => (
                             <motion.div
                                 key={faq.q}
-                                className="faq-item glass-card"
+                                className="faq-item"
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: i * 0.05 }}
                             >
                                 <button
-                                    className="faq-question"
+                                    className={`faq-question ${openIndex === i ? 'active-q' : ''}`}
                                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
                                 >
                                     <div className="faq-q-left">
@@ -91,7 +91,9 @@ const FAQ: React.FC = () => {
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
                                         >
-                                            <p>{faq.a}</p>
+                                            <div className="answer-content">
+                                                <p>{faq.a}</p>
+                                            </div>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -102,17 +104,17 @@ const FAQ: React.FC = () => {
             </section>
 
             {/* Contact CTA */}
-            <section className="faq-contact section-padding" style={{ paddingTop: 0 }}>
+            <section className="faq-contact section-padding">
                 <div className="container">
                     <motion.div
-                        className="faq-cta glass-card"
+                        className="faq-cta"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                     >
                         <h2>Still Have Questions?</h2>
                         <p>Our friendly support team is available Monday–Friday, 9am–6pm.</p>
-                        <Link to="/contact" className="btn btn-primary" style={{ padding: '0.85rem 2rem', fontSize: '1rem' }}>
+                        <Link to="/contact" className="btn btn-primary" style={{ padding: '0.85rem 2.5rem', fontSize: '1rem', borderRadius: '0.4rem' }}>
                             Contact Support
                         </Link>
                     </motion.div>
@@ -124,29 +126,41 @@ const FAQ: React.FC = () => {
 
         .faq-hero {
           padding-top: 120px;
-          background: radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%);
+          background: #f0fdf4;
         }
 
-        .faq-title { font-size: clamp(2rem, 4vw, 3.5rem); margin: 1.5rem 0; }
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
+        }
 
-        .faq-subtitle { color: var(--text-muted); font-size: 1.05rem; }
+        .faq-title { font-size: clamp(2rem, 4vw, 3.5rem); margin: 1.5rem 0; color: #0f172a; }
+
+        .faq-subtitle { color: var(--text-muted); font-size: 1.1rem; }
 
         .cat-filters {
           display: flex;
           gap: 0.75rem;
           flex-wrap: wrap;
-          margin-bottom: 2.5rem;
+          margin-bottom: 3rem;
+          justify-content: center;
         }
 
         .cat-btn {
-          padding: 0.5rem 1.25rem;
-          border-radius: 2rem;
-          border: 1px solid var(--border);
-          background: transparent;
+          padding: 0.6rem 1.5rem;
+          border-radius: 999px;
+          border: 1px solid #e2e8f0;
+          background: white;
           color: var(--text-muted);
           font-weight: 600;
           font-size: 0.9rem;
           transition: all 0.3s;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .cat-btn:hover, .cat-active {
@@ -155,33 +169,48 @@ const FAQ: React.FC = () => {
           color: white;
         }
 
-        .faq-list { display: flex; flex-direction: column; gap: 1rem; }
+        .faq-list { display: flex; flex-direction: column; gap: 0.75rem; max-width: 800px; margin: 0 auto; }
 
-        .faq-item { overflow: hidden; }
+        .faq-item { 
+          border-radius: 1rem;
+          overflow: hidden;
+          background: white;
+          border: 1px solid #f1f5f9;
+        }
 
         .faq-question {
           width: 100%;
-          background: transparent;
+          background: white;
           display: flex;
           align-items: center;
           justify-content: space-between;
           padding: 1.5rem 2rem;
-          font-size: 1rem;
+          font-size: 1.05rem;
           font-weight: 600;
-          color: white;
+          color: #0f172a;
           text-align: left;
           gap: 1rem;
+          transition: background 0.2s;
+        }
+
+        .faq-question:hover {
+          background: #f8fafc;
+        }
+
+        .active-q {
+          background: #f0fdf4 !important;
+          color: #064e3b;
         }
 
         .faq-q-left {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 1.25rem;
         }
 
         .faq-icon { color: var(--primary); flex-shrink: 0; }
 
-        .faq-chevron { transition: transform 0.3s; flex-shrink: 0; color: var(--text-muted); }
+        .faq-chevron { transition: transform 0.3s; flex-shrink: 0; color: #94a3b8; }
 
         .faq-chevron.rotated { transform: rotate(180deg); color: var(--primary); }
 
@@ -189,23 +218,26 @@ const FAQ: React.FC = () => {
           overflow: hidden;
         }
 
+        .answer-content {
+          padding: 0 2rem 2rem 4.5rem;
+        }
+
         .faq-answer p {
-          padding: 0 2rem 1.5rem 3.5rem;
           color: var(--text-muted);
-          font-size: 0.95rem;
+          font-size: 1rem;
           line-height: 1.8;
         }
 
         .faq-cta {
           text-align: center;
-          padding: 4rem 2rem;
-          background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(236,72,153,0.08));
-          border: 1px solid rgba(99,102,241,0.25);
+          padding: 5rem 2rem;
+          background: #f0fdf4;
+          border-radius: 2rem;
         }
 
-        .faq-cta h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .faq-cta h2 { font-size: 2.2rem; margin-bottom: 1rem; color: #064e3b; }
 
-        .faq-cta p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem; }
+        .faq-cta p { color: var(--text-muted); margin-bottom: 2.5rem; font-size: 1.1rem; }
       `}</style>
         </div>
     );

@@ -9,7 +9,7 @@ const plans = [
         icon: <Zap size={22} />,
         monthlyPrice: 0,
         annualPrice: 0,
-        color: '#6366f1',
+        color: '#14b8a6',
         desc: 'Perfect for personal events and one-off celebrations.',
         features: [
             '3 RSVP pages',
@@ -28,7 +28,7 @@ const plans = [
         icon: <Star size={22} />,
         monthlyPrice: 19,
         annualPrice: 14,
-        color: '#8b5cf6',
+        color: '#10b981',
         desc: 'For frequent hosts who want beautiful, branded experiences.',
         features: [
             'Unlimited RSVP pages',
@@ -49,7 +49,7 @@ const plans = [
         icon: <Star size={22} />,
         monthlyPrice: 49,
         annualPrice: 39,
-        color: '#ec4899',
+        color: '#047857',
         desc: 'For event companies, agencies and professional planners.',
         features: [
             'Everything in Pro',
@@ -75,7 +75,7 @@ const Pricing: React.FC = () => {
             <section className="pricing-hero section-padding">
                 <div className="container" style={{ textAlign: 'center' }}>
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <span className="badge">Transparent Pricing 💰</span>
+                        <span className="section-tag">Pricing Plans</span>
                         <h1 className="pricing-title">
                             Simple Plans,<br />
                             <span className="gradient-text">No Surprises</span>
@@ -97,12 +97,12 @@ const Pricing: React.FC = () => {
             </section>
 
             {/* Plans */}
-            <section className="plans-section">
+            <section className="plans-section section-padding">
                 <div className="container plans-grid">
                     {plans.map((plan, i) => (
                         <motion.div
                             key={plan.name}
-                            className={`plan-card glass-card ${plan.popular ? 'plan-popular' : ''}`}
+                            className={`plan-card ${plan.popular ? 'plan-popular' : ''}`}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -111,7 +111,7 @@ const Pricing: React.FC = () => {
                             {plan.popular && <div className="popular-badge">Most Popular</div>}
 
                             <div className="plan-header">
-                                <div className="plan-icon" style={{ background: `${plan.color}20`, color: plan.color }}>
+                                <div className="plan-icon" style={{ background: `${plan.color}10`, color: plan.color }}>
                                     {plan.icon}
                                 </div>
                                 <h3 className="plan-name">{plan.name}</h3>
@@ -135,7 +135,12 @@ const Pricing: React.FC = () => {
                             <Link
                                 to="/contact"
                                 className="btn plan-cta"
-                                style={{ background: plan.popular ? plan.color : 'transparent', borderColor: plan.color, color: plan.popular ? 'white' : plan.color, border: '1.5px solid' }}
+                                style={{
+                                    background: plan.popular ? plan.color : 'transparent',
+                                    borderColor: plan.color,
+                                    color: plan.popular ? 'white' : plan.color,
+                                    border: '2px solid'
+                                }}
                             >
                                 {plan.cta}
                             </Link>
@@ -143,7 +148,7 @@ const Pricing: React.FC = () => {
                             <ul className="feature-list">
                                 {plan.features.map(f => (
                                     <li key={f} className="feature-item included">
-                                        <Check size={16} style={{ color: '#10b981' }} /> {f}
+                                        <Check size={16} /> {f}
                                     </li>
                                 ))}
                                 {plan.notIncluded.map(f => (
@@ -157,28 +162,28 @@ const Pricing: React.FC = () => {
                 </div>
             </section>
 
-            {/* FAQ note */}
-            <section className="pricing-note section-padding">
-                <div className="container" style={{ textAlign: 'center' }}>
-                    <p style={{ color: 'var(--text-muted)' }}>
-                        Have questions about which plan is right for you?{' '}
-                        <Link to="/faq" style={{ color: 'var(--primary)' }}>Read our FAQ</Link> or{' '}
-                        <Link to="/contact" style={{ color: 'var(--primary)' }}>contact our team</Link>.
-                    </p>
-                </div>
-            </section>
-
             <style>{`
         .pricing-page { padding-top: 80px; }
 
         .pricing-hero {
           padding-top: 120px;
-          background: radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%);
+          background: #f0fdf4;
+        }
+
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
         }
 
         .pricing-title {
           font-size: clamp(2rem, 4vw, 3.5rem);
           margin: 1.5rem 0;
+          color: #0f172a;
         }
 
         .pricing-subtitle {
@@ -191,27 +196,25 @@ const Pricing: React.FC = () => {
         .billing-toggle {
           display: inline-flex;
           align-items: center;
-          gap: 1rem;
+          gap: 1.5rem;
           font-size: 1rem;
           font-weight: 600;
           color: var(--text-muted);
-          background: var(--glass);
-          padding: 0.6rem 1.5rem;
-          border-radius: 2rem;
-          border: 1px solid var(--border);
+          background: white;
+          padding: 0.6rem 2rem;
+          border-radius: 999px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
-        .toggle-active { color: white; }
+        .toggle-active { color: #064e3b; }
 
         .toggle-switch {
-          width: 48px;
+          width: 50px;
           height: 26px;
           background: var(--primary);
           border-radius: 999px;
           position: relative;
           cursor: pointer;
-          border: none;
-          flex-shrink: 0;
         }
 
         .toggle-knob {
@@ -226,50 +229,56 @@ const Pricing: React.FC = () => {
           display: block;
         }
 
-        .toggle-knob.toggled { transform: translateX(22px); }
+        .toggle-knob.toggled { transform: translateX(24px); }
 
         .save-badge {
-          background: rgba(16,185,129,0.15);
-          color: #10b981;
-          padding: 0.2rem 0.5rem;
+          background: #dcfce7;
+          color: #166534;
+          padding: 0.2rem 0.6rem;
           border-radius: 999px;
           font-size: 0.75rem;
           font-weight: 700;
-          margin-left: 0.3rem;
+          margin-left: 0.4rem;
         }
-
-        .plans-section { padding: 3rem 0 6rem; }
 
         .plans-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
+          gap: 2.5rem;
           align-items: start;
         }
 
         .plan-card {
-          padding: 2.5rem;
+          padding: 3rem 2.5rem;
+          background: white;
+          border: 1px solid #f1f5f9;
+          border-radius: 1.5rem;
           position: relative;
-          transition: transform 0.3s;
+          transition: all 0.3s;
         }
 
-        .plan-card:hover { transform: translateY(-8px); }
+        .plan-card:hover { 
+          transform: translateY(-8px); 
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+        }
 
         .plan-popular {
-          border-color: var(--accent);
-          transform: scale(1.03);
-          background: rgba(139, 92, 246, 0.08);
+          border: 2px solid var(--primary);
+          transform: scale(1.05);
         }
+
+        .plan-popular:hover { transform: scale(1.05) translateY(-8px); }
 
         .popular-badge {
           position: absolute;
           top: -14px;
           left: 50%;
           transform: translateX(-50%);
-          background: linear-gradient(135deg, var(--primary), var(--secondary));
-          padding: 0.35rem 1.25rem;
+          background: var(--primary);
+          color: white;
+          padding: 0.4rem 1.5rem;
           border-radius: 999px;
-          font-size: 0.8rem;
+          font-size: 0.85rem;
           font-weight: 700;
           white-space: nowrap;
         }
@@ -277,74 +286,71 @@ const Pricing: React.FC = () => {
         .plan-header { margin-bottom: 2rem; }
 
         .plan-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 0.75rem;
+          width: 50px;
+          height: 50px;
+          border-radius: 1rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 1.2rem;
+          margin-bottom: 1.5rem;
         }
 
-        .plan-name { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .plan-name { font-size: 1.5rem; margin-bottom: 0.5rem; color: #064e3b; }
 
-        .plan-desc { color: var(--text-muted); font-size: 0.9rem; }
+        .plan-desc { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; }
 
         .plan-price {
           margin-bottom: 2rem;
           display: flex;
           align-items: baseline;
           gap: 0.25rem;
-          flex-wrap: wrap;
         }
 
         .price-amount {
-          font-size: 2.8rem;
+          font-size: 3rem;
           font-weight: 800;
-          color: white;
+          color: #0f172a;
         }
 
-        .price-period { color: var(--text-muted); font-size: 1rem; }
+        .price-period { color: var(--text-muted); font-size: 1.1rem; }
 
         .billed-note {
-          width: 100%;
-          font-size: 0.75rem;
+          display: block;
+          font-size: 0.85rem;
           color: var(--text-muted);
-          margin-top: 0.2rem;
+          margin-top: 0.5rem;
         }
 
         .plan-cta {
           width: 100%;
           justify-content: center;
-          padding: 0.85rem;
+          padding: 1rem;
           font-size: 1rem;
-          border-radius: 0.5rem;
-          margin-bottom: 2rem;
-          display: block;
-          text-align: center;
+          margin-bottom: 2.5rem;
+          display: flex;
           font-weight: 700;
-          transition: filter 0.2s, transform 0.2s;
         }
-
-        .plan-cta:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         .feature-list {
           list-style: none;
           display: flex;
           flex-direction: column;
-          gap: 0.85rem;
+          gap: 1rem;
         }
 
         .feature-item {
           display: flex;
           align-items: center;
-          gap: 0.75rem;
-          font-size: 0.95rem;
+          gap: 1rem;
+          font-size: 1rem;
+          color: #334155;
         }
 
-        .feature-item.excluded { color: var(--text-muted); text-decoration: line-through; }
+        .feature-item svg { color: var(--primary); flex-shrink: 0; }
 
-        .x-mark { color: var(--text-muted); font-size: 0.9rem; }
+        .feature-item.excluded { color: #94a3b8; }
+
+        .x-mark { font-size: 1rem; color: #cbd5e1; }
       `}</style>
         </div>
     );

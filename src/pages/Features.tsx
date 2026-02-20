@@ -8,7 +8,7 @@ import {
 const featureGroups = [
     {
         heading: 'Design & Customization',
-        color: '#6366f1',
+        color: '#0d9488',
         features: [
             { icon: <Palette />, title: 'Premium Templates', desc: 'Over 200 designer-crafted templates for weddings, birthdays, corporate events, and more.' },
             { icon: <Sliders />, title: 'Drag & Drop Builder', desc: 'Customize every element — colors, fonts, layouts — without touching a line of code.' },
@@ -17,7 +17,7 @@ const featureGroups = [
     },
     {
         heading: 'Guest Management',
-        color: '#ec4899',
+        color: '#059669',
         features: [
             { icon: <Mail />, title: 'Email Invitations', desc: 'Send beautifully designed email invites directly from your dashboard with one click.' },
             { icon: <Bell />, title: 'Real-time Notifications', desc: 'Get instant alerts when guests RSVP, decline, or update their attendance.' },
@@ -26,7 +26,7 @@ const featureGroups = [
     },
     {
         heading: 'Security & Access',
-        color: '#10b981',
+        color: '#0891b2',
         features: [
             { icon: <Lock />, title: 'Password Protection', desc: 'Add a passcode to your event page to keep details exclusive to invited guests only.' },
             { icon: <CalendarCheck />, title: 'RSVP Deadlines', desc: 'Set automatic cut-off dates so your guest count is finalized well before the event.' },
@@ -35,7 +35,7 @@ const featureGroups = [
     },
     {
         heading: 'Integrations & Export',
-        color: '#f59e0b',
+        color: '#b45309',
         features: [
             { icon: <Smartphone />, title: 'Mobile Responsive', desc: 'Every RSVP page looks perfect on all devices — phones, tablets, and desktops.' },
             { icon: <Link2 />, title: 'Shareable Links', desc: 'Share your RSVP page via a short link, QR code, or embed it on your own website.' },
@@ -55,9 +55,9 @@ const Features: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <span className="badge">Everything You Need ✨</span>
+                        <span className="section-tag">Powerful Features</span>
                         <h1 className="features-title">
-                            Powerful Features,<br />
+                            Everything You Need,<br />
                             <span className="gradient-text">Zero Complexity</span>
                         </h1>
                         <p className="features-subtitle">
@@ -70,7 +70,7 @@ const Features: React.FC = () => {
 
             {/* Feature Groups */}
             {featureGroups.map((group, gi) => (
-                <section key={group.heading} className="feature-group section-padding" style={{ background: gi % 2 !== 0 ? 'rgba(255,255,255,0.02)' : 'transparent' }}>
+                <section key={group.heading} className="feature-group section-padding" style={{ background: gi % 2 !== 0 ? '#f8fafc' : 'white' }}>
                     <div className="container">
                         <motion.div
                             className="group-header"
@@ -78,21 +78,21 @@ const Features: React.FC = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                         >
-                            <span className="group-tag" style={{ color: group.color, borderColor: group.color }}>
+                            <h2 className="group-title" style={{ color: group.color }}>
                                 {group.heading}
-                            </span>
+                            </h2>
                         </motion.div>
                         <div className="group-grid">
                             {group.features.map((f, fi) => (
                                 <motion.div
                                     key={f.title}
-                                    className="feat-card glass-card"
+                                    className="feat-card"
                                     initial={{ opacity: 0, y: 30 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: fi * 0.12 }}
                                 >
-                                    <div className="feat-icon" style={{ background: `${group.color}18`, color: group.color }}>
+                                    <div className="feat-icon" style={{ color: group.color }}>
                                         {f.icon}
                                     </div>
                                     <h3>{f.title}</h3>
@@ -104,11 +104,11 @@ const Features: React.FC = () => {
                 </section>
             ))}
 
-            {/* CTA Banner */}
+            {/* CTA Section */}
             <section className="features-cta section-padding">
                 <div className="container">
                     <motion.div
-                        className="cta-box glass-card"
+                        className="cta-box"
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
@@ -125,70 +125,77 @@ const Features: React.FC = () => {
 
         .features-hero {
           padding-top: 120px;
-          background: radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%);
+          background: #f0fdf4;
+        }
+
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
         }
 
         .features-title {
           font-size: clamp(2rem, 4vw, 3.5rem);
           margin: 1.5rem 0;
+          color: #0f172a;
         }
 
         .features-subtitle {
           color: var(--text-muted);
-          font-size: 1.15rem;
+          font-size: 1.1rem;
           max-width: 620px;
           margin: 0 auto;
           line-height: 1.8;
         }
 
-        .group-header { margin-bottom: 2.5rem; }
+        .group-header { margin-bottom: 3rem; }
 
-        .group-tag {
-          font-weight: 700;
-          font-size: 1rem;
-          padding: 0.4rem 1.2rem;
-          border: 1.5px solid;
-          border-radius: 2rem;
-          display: inline-block;
-          letter-spacing: 1px;
-          text-transform: uppercase;
+        .group-title {
+           font-size: 1.8rem;
+           font-weight: 800;
+           position: relative;
         }
 
         .group-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 2rem;
+          gap: 3rem;
         }
 
         .feat-card {
-          padding: 2.5rem;
-          transition: transform 0.3s, border-color 0.3s;
+          text-align: left;
         }
 
-        .feat-card:hover { transform: translateY(-8px); }
-
         .feat-icon {
-          width: 56px;
-          height: 56px;
-          border-radius: 1rem;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           margin-bottom: 1.5rem;
         }
 
-        .feat-card h3 { font-size: 1.1rem; margin-bottom: 0.75rem; }
+        .feat-icon svg {
+          width: 30px;
+          height: 30px;
+          stroke-width: 1.5px;
+        }
+
+        .feat-card h3 { 
+          font-size: 1.15rem; 
+          margin-bottom: 0.75rem;
+          color: #115e59;
+        }
 
         .feat-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; }
 
         .cta-box {
           text-align: center;
           padding: 5rem 3rem;
-          background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(236,72,153,0.1));
-          border: 1px solid rgba(99,102,241,0.3);
+          background: #f0fdf4;
+          border-radius: 2rem;
         }
 
-        .cta-box h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+        .cta-box h2 { font-size: 2.2rem; margin-bottom: 1rem; color: #064e3b; }
 
         .cta-box p {
           color: var(--text-muted);

@@ -41,14 +41,13 @@ const About: React.FC = () => {
         <div className="about-page">
             {/* Hero */}
             <section className="about-hero section-padding">
-                <div className="container">
+                <div className="container" style={{ textAlign: 'center' }}>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="about-hero-content"
                     >
-                        <span className="badge">Our Story 💜</span>
+                        <span className="section-tag">Our Story</span>
                         <h1 className="about-title">
                             We Believe Every Event <br />
                             <span className="gradient-text">Deserves a Perfect Invite</span>
@@ -57,25 +56,6 @@ const About: React.FC = () => {
                             InviteU was born from a simple frustration — creating beautiful event invitations should not require design skills or a big budget. We set out to build the world's most elegant RSVP platform.
                         </p>
                     </motion.div>
-                </div>
-            </section>
-
-            {/* Stats */}
-            <section className="stats-section">
-                <div className="container stats-grid">
-                    {stats.map((s, i) => (
-                        <motion.div
-                            key={s.label}
-                            className="stat-card glass-card"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: i * 0.15 }}
-                        >
-                            <div className="stat-icon">{s.icon}</div>
-                            <div className="stat-value">{s.value}</div>
-                            <div className="stat-lbl">{s.label}</div>
-                        </motion.div>
-                    ))}
                 </div>
             </section>
 
@@ -89,7 +69,7 @@ const About: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <img
-                            src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&q=80&w=700"
+                            src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800"
                             alt="Team working"
                             className="mission-img"
                         />
@@ -105,11 +85,11 @@ const About: React.FC = () => {
                         <p>
                             We empower individuals and businesses to connect with their guests in the most beautiful, seamless way possible. Our platform strips away complexity, so you can focus on what truly matters — your event.
                         </p>
-                        <div className="values-list">
-                            {['Simplicity above complexity', 'Design that delights', 'Privacy by default', 'Customer-first always'].map(v => (
-                                <div key={v} className="value-item">
-                                    <span className="value-dot" />
-                                    <span>{v}</span>
+                        <div className="stats-mini">
+                            {stats.map(s => (
+                                <div key={s.label} className="mini-stat">
+                                    <span className="mini-val">{s.value}</span>
+                                    <span className="mini-lbl">{s.label}</span>
                                 </div>
                             ))}
                         </div>
@@ -121,14 +101,14 @@ const About: React.FC = () => {
             <section className="team-section section-padding">
                 <div className="container">
                     <div className="section-header">
+                        <span className="section-tag">The People</span>
                         <h2 className="section-title">Meet the Team</h2>
-                        <p className="section-subtitle">The passionate people building the future of event invitations.</p>
                     </div>
                     <div className="team-grid">
                         {team.map((member, i) => (
                             <motion.div
                                 key={member.name}
-                                className="team-card glass-card"
+                                className="team-card"
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
@@ -148,55 +128,33 @@ const About: React.FC = () => {
         .about-page { padding-top: 80px; }
 
         .about-hero {
-          text-align: center;
           padding-top: 120px;
-          background: radial-gradient(ellipse at top, rgba(99,102,241,0.12), transparent 60%);
+          background: #f0fdf4;
         }
 
-        .about-hero-content { max-width: 800px; margin: 0 auto; }
+        .section-tag {
+           color: #f97316;
+           font-weight: 600;
+           text-transform: uppercase;
+           letter-spacing: 1px;
+           font-size: 0.85rem;
+           margin-bottom: 0.5rem;
+           display: block;
+        }
 
         .about-title {
           font-size: clamp(2rem, 4vw, 3.5rem);
           margin: 1.5rem 0;
+          color: #0f172a;
         }
 
         .about-subtitle {
           color: var(--text-muted);
-          font-size: 1.15rem;
+          font-size: 1.1rem;
           line-height: 1.8;
+          max-width: 800px;
+          margin: 0 auto;
         }
-
-        .stats-section { padding: 4rem 0; }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1.5rem;
-        }
-
-        .stat-card {
-          padding: 2.5rem 2rem;
-          text-align: center;
-          transition: transform 0.3s;
-        }
-
-        .stat-card:hover { transform: translateY(-6px); }
-
-        .stat-icon {
-          color: var(--primary);
-          margin-bottom: 1rem;
-        }
-
-        .stat-value {
-          font-size: 2.5rem;
-          font-weight: 800;
-          background: linear-gradient(135deg, var(--primary), var(--secondary));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          margin-bottom: 0.5rem;
-        }
-
-        .stat-lbl { color: var(--text-muted); font-size: 0.9rem; }
 
         .mission-grid {
           display: grid;
@@ -205,80 +163,84 @@ const About: React.FC = () => {
           align-items: center;
         }
 
-        @media (max-width: 768px) { .mission-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .mission-grid { grid-template-columns: 1fr; } }
 
         .mission-img {
           width: 100%;
-          border-radius: 1.5rem;
+          border-radius: 2rem;
           object-fit: cover;
-          height: 400px;
-          border: 1px solid var(--border);
+          height: 500px;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
         }
 
         .mission-text h2 {
-          font-size: 2.2rem;
+          font-size: 2.5rem;
           margin-bottom: 1.5rem;
+          color: #064e3b;
         }
 
         .mission-text p {
           color: var(--text-muted);
-          font-size: 1.05rem;
+          font-size: 1.1rem;
           line-height: 1.8;
-          margin-bottom: 2rem;
+          margin-bottom: 3rem;
         }
 
-        .values-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .stats-mini {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 2rem;
+        }
 
-        .value-item {
+        @media (max-width: 480px) { .stats-mini { grid-template-columns: 1fr; } }
+
+        .mini-stat {
           display: flex;
-          align-items: center;
-          gap: 1rem;
-          font-size: 1rem;
+          flex-direction: column;
         }
 
-        .value-dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          background: var(--primary);
-          flex-shrink: 0;
+        .mini-val {
+          font-size: 2rem;
+          font-weight: 800;
+          color: var(--primary);
+        }
+
+        .mini-lbl {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
 
         .team-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 3rem;
         }
 
         .team-card {
-          padding: 2.5rem 2rem;
-          text-align: center;
-          transition: transform 0.3s;
+          text-align: left;
         }
-
-        .team-card:hover { transform: translateY(-8px); border-color: var(--primary); }
 
         .team-avatar {
-          width: 90px;
-          height: 90px;
-          border-radius: 50%;
+          width: 100%;
+          height: 300px;
+          border-radius: 1.5rem;
           object-fit: cover;
-          border: 3px solid var(--primary);
-          margin: 0 auto 1.5rem;
-          display: block;
+          margin-bottom: 1.5rem;
         }
 
-        .team-card h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+        .team-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #064e3b; }
 
         .team-role {
           color: var(--primary);
-          font-size: 0.85rem;
+          font-size: 0.9rem;
           font-weight: 600;
           margin-bottom: 1rem;
           display: block;
         }
 
-        .team-bio { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+        .team-bio { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
       `}</style>
         </div>
     );

@@ -3,109 +3,109 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Rocket } from 'lucide-react';
 
 interface NavbarProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 const Layout: React.FC<NavbarProps> = ({ children }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    const navLinks = [
-        { name: 'Home', path: '/' },
-        { name: 'Features', path: '/features' },
-        { name: 'Pricing', path: '/pricing' },
-        { name: 'About', path: '/about' },
-        { name: 'FAQ', path: '/faq' },
-        { name: 'Contact', path: '/contact' },
-    ];
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Features', path: '/features' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'About', path: '/about' },
+    { name: 'FAQ', path: '/faq' },
+    { name: 'Contact', path: '/contact' },
+  ];
 
-    return (
-        <div className="layout">
-            <nav className={`navbar ${scrolled ? 'nav-scrolled' : ''}`}>
-                <div className="container nav-content">
-                    <Link to="/" className="logo">
-                        <Rocket className="logo-icon" />
-                        <span>InviteU</span>
-                    </Link>
+  return (
+    <div className="layout">
+      <nav className={`navbar ${scrolled ? 'nav-scrolled' : ''}`}>
+        <div className="container nav-content">
+          <Link to="/" className="logo">
+            <Rocket className="logo-icon" />
+            <span className="logo-text">InviteU<span className="logo-dot">.Online</span></span>
+          </Link>
 
-                    <div className="nav-desktop">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                        <Link to="/contact" className="btn btn-primary">Get Started</Link>
-                    </div>
+          <div className="nav-desktop">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link to="/contact" className="btn btn-primary">Get Started</Link>
+          </div>
 
-                    <button className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
-                        {isOpen ? <X /> : <Menu />}
-                    </button>
-                </div>
+          <button className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
 
-                {/* Mobile Menu */}
-                {isOpen && (
-                    <div className="nav-mobile animate-fade">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                to={link.path}
-                                className="nav-mobile-link"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-                        <Link to="/contact" className="btn btn-primary" onClick={() => setIsOpen(false)}>Get Started</Link>
-                    </div>
-                )}
-            </nav>
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="nav-mobile animate-fade">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className="nav-mobile-link"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link to="/contact" className="btn btn-primary" onClick={() => setIsOpen(false)}>Get Started</Link>
+          </div>
+        )}
+      </nav>
 
-            <main>{children}</main>
+      <main>{children}</main>
 
-            <footer className="footer section-padding">
-                <div className="container footer-grid">
-                    <div className="footer-brand">
-                        <div className="logo">
-                            <Rocket className="logo-icon" />
-                            <span>InviteU</span>
-                        </div>
-                        <p>Create stunning RSVP pages in minutes. Perfect for weddings, parties, and corporate events.</p>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Product</h4>
-                        <Link to="/features">Features</Link>
-                        <Link to="/pricing">Pricing</Link>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Company</h4>
-                        <Link to="/about">About Us</Link>
-                        <Link to="/contact">Contact</Link>
-                    </div>
-                    <div className="footer-links">
-                        <h4>Support</h4>
-                        <Link to="/faq">FAQ</Link>
-                        <Link to="/terms">Terms of Service</Link>
-                    </div>
-                </div>
-                <div className="container footer-bottom">
-                    <p>&copy; {new Date().getFullYear()} InviteU. All rights reserved.</p>
-                </div>
-            </footer>
+      <footer className="footer section-padding">
+        <div className="container footer-grid">
+          <div className="footer-brand">
+            <div className="logo">
+              <Rocket className="logo-icon" />
+              <span className="logo-text">InviteU<span className="logo-dot">.Online</span></span>
+            </div>
+            <p>Create stunning RSVP pages in minutes. Perfect for weddings, parties, and corporate events.</p>
+          </div>
+          <div className="footer-links">
+            <h4>Product</h4>
+            <Link to="/features">Features</Link>
+            <Link to="/pricing">Pricing</Link>
+          </div>
+          <div className="footer-links">
+            <h4>Company</h4>
+            <Link to="/about">About Us</Link>
+            <Link to="/contact">Contact</Link>
+          </div>
+          <div className="footer-links">
+            <h4>Support</h4>
+            <Link to="/faq">FAQ</Link>
+            <Link to="/terms">Terms of Service</Link>
+          </div>
+        </div>
+        <div className="container footer-bottom">
+          <p>&copy; {new Date().getFullYear()} InviteU. All rights reserved.</p>
+        </div>
+      </footer>
 
-            <style>{`
+      <style>{`
         .navbar {
           position: fixed;
           top: 0;
@@ -114,12 +114,14 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           z-index: 1000;
           padding: 1.5rem 0;
           transition: all 0.3s ease;
+          background: transparent;
         }
 
         .nav-scrolled {
-          background: rgba(15, 23, 42, 0.8);
+          background: rgba(255, 255, 255, 0.9);
           backdrop-filter: blur(12px);
           padding: 1rem 0;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
           border-bottom: 1px solid var(--border);
         }
 
@@ -135,7 +137,16 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           gap: 0.75rem;
           font-size: 1.5rem;
           font-weight: 800;
-          color: white;
+          color: #064e3b;
+        }
+
+        .logo-text {
+          font-family: 'Inter', sans-serif;
+          letter-spacing: -1px;
+        }
+
+        .logo-dot {
+          color: var(--primary);
         }
 
         .logo-icon {
@@ -157,16 +168,16 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
         .nav-link {
           font-weight: 500;
           color: var(--text-muted);
+          font-size: 0.95rem;
         }
 
         .nav-link:hover, .nav-link.active {
-          color: white;
+          color: var(--primary);
         }
 
         .nav-mobile-toggle {
           background: transparent;
-          color: white;
-          font-size: 2rem;
+          color: var(--text);
         }
 
         @media (min-width: 768px) {
@@ -180,33 +191,40 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           top: 70px;
           left: 1.5rem;
           right: 1.5rem;
-          background: var(--bg-soft);
+          background: white;
           padding: 2rem;
           border-radius: 1rem;
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
           border: 1px solid var(--border);
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
           z-index: 1001;
         }
 
         .nav-mobile-link {
           font-size: 1.1rem;
           font-weight: 600;
+          color: var(--text);
+        }
+
+        .footer {
+          background-color: #f9fafb;
+          border-top: 1px solid var(--border);
         }
 
         .footer-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 3rem;
-          border-top: 1px solid var(--border);
-          padding-top: 4rem;
+          padding-top: 0;
         }
 
         .footer-brand p {
           color: var(--text-muted);
           margin-top: 1rem;
           max-width: 300px;
+          font-size: 0.95rem;
         }
 
         .footer-links {
@@ -217,10 +235,15 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
 
         .footer-links h4 {
           margin-bottom: 0.5rem;
+          font-size: 1rem;
+          color: #064e3b;
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
 
         .footer-links a {
           color: var(--text-muted);
+          font-size: 0.95rem;
         }
 
         .footer-links a:hover {
@@ -236,8 +259,8 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           font-size: 0.9rem;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Layout;
