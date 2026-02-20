@@ -175,6 +175,51 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </section>
             )}
 
+            {/* ── MESSAGE SECTION ── */}
+            <section className="wt-message-section">
+                <div className="wt-message-inner">
+                    <motion.div
+                        className="wt-message-text"
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                    >
+                        <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem' }}>With hearts full of joy,</h2>
+                        <div className="wt-message-p-container">
+                            <p>We honor the union that brings two souls together as one.</p>
+                            <p>It brings us great joy to celebrate this special day with you.</p>
+                            <p>Your love, friendship, and support are deeply cherished, and we are honored to share this moment together.</p>
+                            <p>To keep this occasion truly meaningful, we have chosen an intimate gathering with our dearest loved ones.</p>
+                            <p>In this way, each guest is welcomed warmly, with a place at the table to share in the laughter, love, and feast.</p>
+                        </div>
+                    </motion.div>
+                    <motion.div
+                        className="wt-message-img"
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
+                    >
+                        <img src={gallery[2] || gallery[0]} alt="Message" />
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ── ENTOURAGE SECTION ── */}
+            <section className="wt-entourage-section">
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1 }}
+                >
+                    <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(3rem, 6vw, 4.5rem)', marginBottom: '2rem' }}>The Wedding Entourage</h2>
+                    <button className="wt-open-btn">OPEN</button>
+                </motion.div>
+            </section>
+
+
 
 
 
@@ -440,7 +485,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         }
 
         /* ─ GALLERY SLIDESHOW ─ */
-        .wt-gallery-slider { position: relative; padding: 0 0 6rem; overflow: visible; background: white; perspective: 1500px; margin-top: -10rem; z-index: 20; }
+        .wt-gallery-slider { position: relative; padding: 0 0 6rem; overflow: visible; background: #fff; perspective: 1500px; margin-top: -18rem; z-index: 20; }
         .wt-slider-container { max-width: 1400px; margin: 0 auto; position: relative; display: flex; flex-direction: column; align-items: center; }
         .wt-slides-track { display: flex; justify-content: center; align-items: center; position: relative; height: clamp(400px, 60vh, 650px); width: 100%; transform-style: preserve-3d; }
         
@@ -460,6 +505,25 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
             .wt-slides-track { height: 500px; }
             .wt-slide-item { width: 70vw; height: 100%; }
             .wt-slide-item.side { display: none; }
+            .wt-gallery-slider { margin-top: -8rem; }
+        }
+
+        /* ─ MESSAGE & ENTOURAGE ─ */
+        .wt-script-fancy { font-family: 'Dancing Script', cursive; color: #8b6b8d; }
+        .wt-message-section { padding: 8rem 2rem; background: #fff; position: relative; z-index: 10; }
+        .wt-message-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
+        .wt-message-text { text-align: left; }
+        .wt-message-p-container { color: #6a4a3a; line-height: 1.9; font-size: 1.1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .wt-message-img { border-radius: 2.5rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .wt-message-img img { width: 100%; display: block; }
+
+        .wt-entourage-section { padding: 8rem 2rem; background: #faf5ee; text-align: center; border-top: 1px solid rgba(0,0,0,0.03); }
+        .wt-open-btn { background: #8b6b8d; color: white; border: none; padding: 1rem 5.5rem; border-radius: 3rem; font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s; letter-spacing: 2px; box-shadow: 0 10px 25px rgba(139,107,141,0.25); }
+        .wt-open-btn:hover { background: #7a5a7c; transform: translateY(-3px); box-shadow: 0 15px 35px rgba(139,107,141,0.35); }
+
+        @media (max-width: 960px) {
+            .wt-message-inner { grid-template-columns: 1fr; gap: 3rem; text-align: center; }
+            .wt-message-text { text-align: center; }
         }
 
 
