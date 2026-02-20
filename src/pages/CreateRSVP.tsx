@@ -42,6 +42,7 @@ const CreateRSVP: React.FC = () => {
             dressCode: '',
             parkingNote: '',
             giftNote: '',
+            saveTheDateBanner: '',
         }
     });
     const [design, setDesign] = useState({ banner: '', themeColor: '#10b981' });
@@ -437,6 +438,35 @@ const CreateRSVP: React.FC = () => {
                                                 <input type="file" className="file-input" onChange={handleBannerUpload} disabled={loading} accept="image/*" />
                                             </div>
                                         </div>
+
+                                        {eventType === 'Wedding' && (
+                                            <div className="form-group">
+                                                <label>Save The Date Background</label>
+                                                <div className="upload-box">
+                                                    {formData.details.saveTheDateBanner ? <img src={formData.details.saveTheDateBanner} alt="STD Banner" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.75rem', position: 'absolute', inset: 0 }} /> : null}
+                                                    <Upload size={30} />
+                                                    <p>{formData.details.saveTheDateBanner ? 'Click to replace STD background' : 'Click to upload STD background'}</p>
+                                                    <input
+                                                        type="file"
+                                                        className="file-input"
+                                                        accept="image/*"
+                                                        onChange={async (e) => {
+                                                            const file = e.target.files?.[0];
+                                                            if (!file) return;
+                                                            try {
+                                                                const path = `std-banners/${user?.id}/${Date.now()}-${file.name}`;
+                                                                const { error: upErr } = await supabase.storage.from('event-assets').upload(path, file);
+                                                                if (upErr) throw upErr;
+                                                                const { data: { publicUrl } } = supabase.storage.from('event-assets').getPublicUrl(path);
+                                                                updateDetail('saveTheDateBanner', publicUrl);
+                                                            } catch (err) {
+                                                                console.error(err);
+                                                            }
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )}
                                         <div className="form-group">
                                             <label>Template Accent Color</label>
                                             <div className="color-picker-grid">

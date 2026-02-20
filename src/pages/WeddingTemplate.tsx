@@ -112,27 +112,43 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         </section>
                     )}
 
-                    {/* COUNTDOWN */}
-                    {timeLeft && (
-                        <section className="wt-countdown">
-                            <div className="wt-cd-year">{eventDate.getFullYear()}</div>
-                            <div className="wt-cd-dow-row">
-                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(l => <span key={l}>{l}</span>)}
-                            </div>
-                            <p className="wt-cd-tagline">Can't wait to see you, lovebirds!</p>
-                            <div className="wt-cd-timer">
-                                {[['days', timeLeft.days], ['hours', timeLeft.hours], ['min', timeLeft.minutes], ['sec', timeLeft.seconds]].map(([l, v], i) => (
-                                    <React.Fragment key={l as string}>
-                                        <div className="wt-cd-box">
-                                            <span className="wt-cd-num">{String(v).padStart(2, '0')}</span>
-                                            <span className="wt-cd-unit">{l as string}</span>
-                                        </div>
-                                        {i < 3 && <span className="wt-cd-sep">:</span>}
-                                    </React.Fragment>
-                                ))}
-                            </div>
-                        </section>
-                    )}
+                    {/* COUNTDOWN / SAVE THE DATE */}
+                    <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
+                        <div className="wt-std-overlay" />
+                        <div className="wt-std-content">
+                            <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2 }}>
+                                <p className="wt-std-title">Save the Date</p>
+
+                                <div className="wt-std-date-hero">
+                                    <div className="wt-std-month-bg">{eventDate.toLocaleDateString('en-US', { month: 'long' })}</div>
+                                    <div className="wt-std-day">{String(eventDate.getDate()).padStart(2, '0')}</div>
+                                    <div className="wt-std-year">{eventDate.getFullYear()}</div>
+                                </div>
+
+                                <div className="wt-std-details">
+                                    <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
+                                    <span className="wt-std-sep">|</span>
+                                    <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
+                                </div>
+
+                                {timeLeft && (
+                                    <div className="wt-std-timer">
+                                        {[
+                                            { label: 'Days', value: timeLeft.days },
+                                            { label: 'Hours', value: timeLeft.hours },
+                                            { label: 'Minutes', value: timeLeft.minutes },
+                                            { label: 'Seconds', value: timeLeft.seconds }
+                                        ].map((item) => (
+                                            <div key={item.label} className="wt-std-timer-box">
+                                                <span className="wt-std-timer-num">{String(item.value).padStart(2, '0')}</span>
+                                                <span className="wt-std-timer-unit">{item.label}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </motion.div>
+                        </div>
+                    </section>
 
                     {/* ORDER OF EVENTS */}
                     {itinerary.length > 0 && (
@@ -282,7 +298,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.42) 100%); }
 
         /* Couple Names — large, centered, over the photo */
-        .wt-hero-names { position: absolute; top: 50%; left: 0; width: 100%; transform: translateY(-54%); z-index: 10; text-align: center; pointer-events: none; padding: 0 1rem; }
+        .wt-hero-names { position: absolute; top: 10%; left: 0; width: 100%; transform: translateY(-54%); z-index: 10; text-align: center; pointer-events: none; padding: 0 1rem; }
         .wt-hero-names h1 { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 0; }
         .wt-name-line { font-family: 'Dancing Script', cursive; font-size: clamp(5rem, 11vw, 9rem); font-weight: 600; color: white; line-height: 1.02; text-shadow: 0 2px 40px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08); letter-spacing: -1px; }
         .wt-name-amp { font-family: 'Dancing Script', cursive; font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 400; color: rgba(255,255,255,0.82); line-height: 0.85; }
@@ -331,11 +347,32 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-cd-dow-row { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.25rem; }
         .wt-cd-dow-row span { color: rgba(200,169,126,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; }
         .wt-cd-tagline { font-family: 'Dancing Script', cursive; color: rgba(240,220,190,0.75); font-size: 1.3rem; margin-bottom: 2rem; }
-        .wt-cd-timer { display: flex; justify-content: center; align-items: center; gap: 0.25rem; }
-        .wt-cd-box { min-width: 80px; text-align: center; }
-        .wt-cd-num { display: block; font-size: 4rem; font-weight: 700; color: ${theme}; font-family: 'Playfair Display', serif; line-height: 1; }
-        .wt-cd-unit { display: block; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(200,169,126,0.55); margin-top: 0.3rem; }
-        .wt-cd-sep { font-size: 3.5rem; color: ${theme}; font-weight: 700; line-height: 1; padding: 0 0.25rem; margin-bottom: 1.2rem; }
+        /* ─ SAVE THE DATE / COUNTDOWN ─ */
+        .wt-std-section { position: relative; padding: 8rem 2rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; margin-top: -2.5rem; border-radius: 3rem 3rem 0 0; text-align: center; }
+        .wt-std-overlay { position: absolute; inset: 0; background: rgba(255,250,245,0.72); }
+        .wt-std-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; color: #5a3d2b; }
+        
+        .wt-std-title { font-family: 'Dancing Script', cursive; font-size: 2.22rem; margin-bottom: 1.5rem; opacity: 0.8; }
+        
+        .wt-std-date-hero { position: relative; height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .wt-std-month-bg { font-family: 'Dancing Script', cursive; font-size: clamp(5rem, 15vw, 12rem); color: rgba(139,94,60,0.12); position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none; line-height: 1; z-index: 1; }
+        .wt-std-day { font-family: 'Playfair Display', serif; font-size: clamp(6.5rem, 20vw, 14rem); font-weight: 500; line-height: 1; margin: 0; color: #5a3d2b; position: relative; z-index: 2; }
+        .wt-std-year { font-family: 'Lato', sans-serif; font-size: 2.6rem; font-weight: 300; letter-spacing: 0.65rem; margin-top: -1.5rem; opacity: 0.95; position: relative; z-index: 3; }
+        
+        .wt-std-details { font-family: 'Lato', sans-serif; font-size: 0.82rem; letter-spacing: 5px; font-weight: 700; text-transform: uppercase; margin: 2rem 0 4.5rem; opacity: 0.75; display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+        .wt-std-sep { opacity: 0.4; font-weight: 300; }
+        
+        .wt-std-timer { display: flex; justify-content: center; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 3.5rem; border-top: 1px solid rgba(90,61,43,0.12); padding-top: 3.5rem; }
+        .wt-std-timer-box { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+        .wt-std-timer-num { font-family: 'Lato', sans-serif; font-size: 1.6rem; font-weight: 400; color: #5a3d2b; margin-bottom: 0.35rem; }
+        .wt-std-timer-unit { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; font-weight: 700; }
+        
+        @media (max-width: 600px) {
+            .wt-std-section { padding: 6rem 1rem; }
+            .wt-std-timer { gap: 1.25rem; }
+            .wt-std-timer-box { min-width: 50px; }
+            .wt-std-timer-num { font-size: 1.4rem; }
+        }
 
         /* ─ ORDER OF EVENTS ─ */
         .wt-events { background: #fdf8f2; border-radius: 1.5rem; padding: 3.5rem 3rem; margin-bottom: 3rem; text-align: center; }

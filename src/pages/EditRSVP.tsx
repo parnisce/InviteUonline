@@ -37,6 +37,7 @@ const EditRSVP: React.FC = () => {
             dressCode: '',
             parkingNote: '',
             giftNote: '',
+            saveTheDateBanner: '',
         }
     });
 
@@ -75,6 +76,7 @@ const EditRSVP: React.FC = () => {
                         dressCode: data.event_details?.dressCode || '',
                         parkingNote: data.event_details?.parkingNote || '',
                         giftNote: data.event_details?.giftNote || '',
+                        saveTheDateBanner: data.event_details?.saveTheDateBanner || '',
                     }
                 });
             } catch (err: any) {
@@ -274,6 +276,36 @@ const EditRSVP: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
+                            {eventType === 'Wedding' && (
+                                <div className="form-group">
+                                    <label>Save The Date Background</label>
+                                    <div className="banner-edit-preview">
+                                        <img src={formData.details.saveTheDateBanner || 'https://via.placeholder.com/300x150'} alt="STD Preview" />
+                                        <div className="replace-overlay">
+                                            <Upload size={18} />
+                                            <input
+                                                type="file"
+                                                onChange={async (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (!file) return;
+                                                    setSaving(true);
+                                                    try {
+                                                        const path = `std-banners/${user?.id}/${Date.now()}-${file.name}`;
+                                                        const { error: upErr } = await supabase.storage.from('event-assets').upload(path, file);
+                                                        if (upErr) throw upErr;
+                                                        const { data: { publicUrl } } = supabase.storage.from('event-assets').getPublicUrl(path);
+                                                        setFormData({ ...formData, details: { ...formData.details, saveTheDateBanner: publicUrl } });
+                                                    } catch (err: any) {
+                                                        setError(err.message);
+                                                    } finally {
+                                                        setSaving(false);
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                             <div className="form-group">
                                 <label>Theme Color</label>
                                 <div className="color-picker-grid">
