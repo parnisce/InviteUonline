@@ -30,7 +30,13 @@ const EditRSVP: React.FC = () => {
             gallery: [],
             partner1: '',
             partner2: '',
-            story: ''
+            hashtag: '',
+            welcomeMessage: '',
+            story: '',
+            colorMotif: [],
+            dressCode: '',
+            parkingNote: '',
+            giftNote: '',
         }
     });
 
@@ -62,7 +68,13 @@ const EditRSVP: React.FC = () => {
                         gallery: data.event_details?.gallery || [],
                         partner1: data.event_details?.partner1 || '',
                         partner2: data.event_details?.partner2 || '',
-                        story: data.event_details?.story || ''
+                        hashtag: data.event_details?.hashtag || '',
+                        welcomeMessage: data.event_details?.welcomeMessage || '',
+                        story: data.event_details?.story || '',
+                        colorMotif: data.event_details?.colorMotif || [],
+                        dressCode: data.event_details?.dressCode || '',
+                        parkingNote: data.event_details?.parkingNote || '',
+                        giftNote: data.event_details?.giftNote || '',
                     }
                 });
             } catch (err: any) {
@@ -209,20 +221,41 @@ const EditRSVP: React.FC = () => {
 
                         {eventType === 'Wedding' && (
                             <section className="edit-section">
-                                <h3>Wedding Specifics</h3>
+                                <h3>💍 Wedding Specifics</h3>
                                 <div className="form-row">
                                     <div className="form-group">
-                                        <label>Partner 1</label>
-                                        <input type="text" value={formData.details.partner1} onChange={e => setFormData({ ...formData, details: { ...formData.details, partner1: e.target.value } })} />
+                                        <label>Partner 1 Name (Bride)</label>
+                                        <input type="text" placeholder="e.g. Chuncie" value={formData.details.partner1} onChange={e => setFormData({ ...formData, details: { ...formData.details, partner1: e.target.value } })} />
                                     </div>
                                     <div className="form-group">
-                                        <label>Partner 2</label>
-                                        <input type="text" value={formData.details.partner2} onChange={e => setFormData({ ...formData, details: { ...formData.details, partner2: e.target.value } })} />
+                                        <label>Partner 2 Name (Groom)</label>
+                                        <input type="text" placeholder="e.g. Ryan" value={formData.details.partner2} onChange={e => setFormData({ ...formData, details: { ...formData.details, partner2: e.target.value } })} />
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Our Story</label>
-                                    <textarea rows={3} value={formData.details.story} onChange={e => setFormData({ ...formData, details: { ...formData.details, story: e.target.value } })} />
+                                    <label>#️⃣ Wedding Hashtag</label>
+                                    <input type="text" placeholder="e.g. #ChuInfinityAndBeJohn" value={formData.details.hashtag} onChange={e => setFormData({ ...formData, details: { ...formData.details, hashtag: e.target.value } })} />
+                                    <p style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.4rem' }}>Shown on the hero banner of your wedding page.</p>
+                                </div>
+                                <div className="form-group">
+                                    <label>Welcome Message</label>
+                                    <textarea rows={3} placeholder="Opening message to your guests..." value={formData.details.welcomeMessage} onChange={e => setFormData({ ...formData, details: { ...formData.details, welcomeMessage: e.target.value } })} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Our Love Story</label>
+                                    <textarea rows={4} placeholder="Tell guests how you met..." value={formData.details.story} onChange={e => setFormData({ ...formData, details: { ...formData.details, story: e.target.value } })} />
+                                </div>
+                                <div className="form-group">
+                                    <label>👗 Dress Code</label>
+                                    <input type="text" placeholder="e.g. Semi-formal, Earth tones preferred" value={formData.details.dressCode} onChange={e => setFormData({ ...formData, details: { ...formData.details, dressCode: e.target.value } })} />
+                                </div>
+                                <div className="form-group">
+                                    <label>🚗 Parking / Travel Notes</label>
+                                    <textarea rows={2} placeholder="e.g. Free parking at the church lot. Valet available at the reception." value={formData.details.parkingNote} onChange={e => setFormData({ ...formData, details: { ...formData.details, parkingNote: e.target.value } })} />
+                                </div>
+                                <div className="form-group">
+                                    <label>🎁 Note on Gifts</label>
+                                    <textarea rows={3} placeholder="e.g. Your presence is our greatest gift. If you wish to give..." value={formData.details.giftNote} onChange={e => setFormData({ ...formData, details: { ...formData.details, giftNote: e.target.value } })} />
                                 </div>
                             </section>
                         )}

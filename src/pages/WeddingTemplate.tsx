@@ -284,10 +284,10 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
 
         /* ─ HERO ─ */
         .wt-hero { position: relative; height: 92vh; min-height: 560px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .wt-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+        .wt-hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; }
         .wt-hero-fallback { background: linear-gradient(160deg, #d4c5b0 0%, #e8d5b7 50%, #f5edd8 100%); }
         /* Very subtle veil — photo must remain vivid */
-        .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.22) 60%, rgba(0,0,0,0.48) 100%); }
+        .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.42) 100%); }
 
         /* Couple Names — large, centered, over the photo */
         .wt-hero-names { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -52%); z-index: 10; text-align: center; pointer-events: none; }
