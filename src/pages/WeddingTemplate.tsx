@@ -458,7 +458,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-cd-dow-row span { color: rgba(200,169,126,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; }
         .wt-cd-tagline { font-family: 'Dancing Script', cursive; color: rgba(240,220,190,0.75); font-size: 1.3rem; margin-bottom: 2rem; }
         /* ─ SAVE THE DATE / COUNTDOWN ─ */
-        .wt-std-section { position: relative; padding: 5rem 2rem 14rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
+        .wt-std-section { position: relative; padding: 8rem 2rem 22rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
         .wt-std-overlay { position: absolute; inset: 0; background: rgba(255,250,245,0.72); }
         .wt-std-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; color: #5a3d2b; }
         
@@ -472,7 +472,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-std-details { font-family: 'Lato', sans-serif; font-size: 0.82rem; letter-spacing: 5px; font-weight: 700; text-transform: uppercase; margin: 2rem 0 4.5rem; opacity: 0.75; display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
         .wt-std-sep { opacity: 0.4; font-weight: 300; }
         
-        .wt-std-timer { display: flex; justify-content: center; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 3.5rem; border-top: 1px solid rgba(90,61,43,0.12); padding-top: 3.5rem; padding-bottom: 6.5em; }
+        .wt-std-timer { display: flex; justify-content: center; gap: clamp(1.5rem, 5vw, 4rem); margin-top: 3.5rem; border-top: 1px solid rgba(90,61,43,0.12); padding-top: 3.5rem; }
         .wt-std-timer-box { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
         .wt-std-timer-num { font-family: 'Lato', sans-serif; font-size: 1.6rem; font-weight: 400; color: #5a3d2b; margin-bottom: 0.35rem; }
         .wt-std-timer-unit { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; font-weight: 700; }
@@ -485,7 +485,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         }
 
         /* ─ GALLERY SLIDESHOW ─ */
-        .wt-gallery-slider { position: relative; padding: 0 0 6rem; overflow: visible; background: #fff; perspective: 1500px; margin-top: -18rem; z-index: 20; }
+        .wt-gallery-slider { position: relative; padding: 0 0 6rem; overflow: visible; background: #fff; perspective: 1500px; margin-top: -16rem; z-index: 20; }
         .wt-slider-container { max-width: 1400px; margin: 0 auto; position: relative; display: flex; flex-direction: column; align-items: center; }
         .wt-slides-track { display: flex; justify-content: center; align-items: center; position: relative; height: clamp(400px, 60vh, 650px); width: 100%; transform-style: preserve-3d; }
         
