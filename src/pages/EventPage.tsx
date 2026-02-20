@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import {
     Calendar, MapPin, Clock, CheckCircle,
     AlertCircle, Loader2, Send, Heart,
-    Music, Bell, Camera, Gift, Globe
+    Camera, Gift
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
     ArrowLeft, Save, Loader2, AlertCircle,
-    MapPin, Calendar, Clock, Plus, Trash2, Camera, Upload
+    MapPin, Calendar, Clock, Plus, Trash2, Upload
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';

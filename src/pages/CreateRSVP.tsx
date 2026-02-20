@@ -4,7 +4,7 @@ import {
     Cake, Heart, ShieldAlert, Baby, GraduationCap, Users,
     ArrowRight, ArrowLeft, Upload, Check, Globe, CreditCard,
     Image as ImageIcon,
-    Loader2, AlertCircle, Plus, Trash2, Clock, Camera
+    Loader2, AlertCircle, Plus, Trash2, Camera
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
