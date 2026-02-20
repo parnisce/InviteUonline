@@ -112,43 +112,6 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         </section>
                     )}
 
-                    {/* COUNTDOWN / SAVE THE DATE */}
-                    <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
-                        <div className="wt-std-overlay" />
-                        <div className="wt-std-content">
-                            <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2 }}>
-                                <p className="wt-std-title">Save the Date</p>
-
-                                <div className="wt-std-date-hero">
-                                    <div className="wt-std-month-bg">{eventDate.toLocaleDateString('en-US', { month: 'long' })}</div>
-                                    <div className="wt-std-day">{String(eventDate.getDate()).padStart(2, '0')}</div>
-                                    <div className="wt-std-year">{eventDate.getFullYear()}</div>
-                                </div>
-
-                                <div className="wt-std-details">
-                                    <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
-                                    <span className="wt-std-sep">|</span>
-                                    <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
-                                </div>
-
-                                {timeLeft && (
-                                    <div className="wt-std-timer">
-                                        {[
-                                            { label: 'Days', value: timeLeft.days },
-                                            { label: 'Hours', value: timeLeft.hours },
-                                            { label: 'Minutes', value: timeLeft.minutes },
-                                            { label: 'Seconds', value: timeLeft.seconds }
-                                        ].map((item) => (
-                                            <div key={item.label} className="wt-std-timer-box">
-                                                <span className="wt-std-timer-num">{String(item.value).padStart(2, '0')}</span>
-                                                <span className="wt-std-timer-unit">{item.label}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-                    </section>
 
                     {/* ORDER OF EVENTS */}
                     {itinerary.length > 0 && (
@@ -275,6 +238,44 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </div>
             </div>
 
+            {/* COUNTDOWN / SAVE THE DATE — FULL WIDTH */}
+            <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
+                <div className="wt-std-overlay" />
+                <div className="wt-std-content">
+                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                        <p className="wt-std-title">Save the Date</p>
+
+                        <div className="wt-std-date-hero">
+                            <div className="wt-std-month-bg">{eventDate.toLocaleDateString('en-US', { month: 'long' })}</div>
+                            <div className="wt-std-day">{String(eventDate.getDate()).padStart(2, '0')}</div>
+                            <div className="wt-std-year">{eventDate.getFullYear()}</div>
+                        </div>
+
+                        <div className="wt-std-details">
+                            <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
+                            <span className="wt-std-sep">|</span>
+                            <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
+                        </div>
+
+                        {timeLeft && (
+                            <div className="wt-std-timer">
+                                {[
+                                    { label: 'Days', value: timeLeft.days },
+                                    { label: 'Hours', value: timeLeft.hours },
+                                    { label: 'Minutes', value: timeLeft.minutes },
+                                    { label: 'Seconds', value: timeLeft.seconds }
+                                ].map((item) => (
+                                    <div key={item.label} className="wt-std-timer-box">
+                                        <span className="wt-std-timer-num">{String(item.value).padStart(2, '0')}</span>
+                                        <span className="wt-std-timer-unit">{item.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </motion.div>
+                </div>
+            </section>
+
             {/* ── FOOTER ── */}
             <footer className="wt-footer">
                 <div className="wt-fh"><Heart size={14} fill="currentColor" /><Heart size={20} fill="currentColor" /><Heart size={14} fill="currentColor" /></div>
@@ -348,7 +349,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-cd-dow-row span { color: rgba(200,169,126,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; }
         .wt-cd-tagline { font-family: 'Dancing Script', cursive; color: rgba(240,220,190,0.75); font-size: 1.3rem; margin-bottom: 2rem; }
         /* ─ SAVE THE DATE / COUNTDOWN ─ */
-        .wt-std-section { position: relative; padding: 8rem 2rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; margin-top: -2.5rem; border-radius: 3rem 3rem 0 0; text-align: center; }
+        .wt-std-section { position: relative; padding: 10rem 2rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
         .wt-std-overlay { position: absolute; inset: 0; background: rgba(255,250,245,0.72); }
         .wt-std-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; color: #5a3d2b; }
         
@@ -471,7 +472,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
           .wt-toggle { grid-template-columns: 1fr; }
         }
       `}</style>
-        </div>
+        </div >
     );
 };
 
