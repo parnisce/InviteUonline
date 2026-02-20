@@ -47,7 +47,7 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/contact" className="btn btn-primary">Get Started</Link>
+            <Link to="/create" className="btn btn-primary">Get Started</Link>
           </div>
 
           <button className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)}>

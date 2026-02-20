@@ -33,7 +33,7 @@ const Home: React.FC = () => {
               Create stunning RSVP websites for weddings and events. Send online invitations, track guest responses, and manage everything in one place.
             </p>
             <div className="hero-actions">
-              <Link to="/contact" className="btn btn-primary btn-lg">
+              <Link to="/create" className="btn btn-primary btn-lg">
                 Create Your RSVP
               </Link>
             </div>

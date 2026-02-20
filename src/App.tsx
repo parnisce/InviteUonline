@@ -6,6 +6,7 @@ import Features from './pages/Features';
 import Pricing from './pages/Pricing';
 import FAQ from './pages/FAQ';
 import Contact from './pages/Contact';
+import CreateRSVP from './pages/CreateRSVP';
 import './index.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/create" element={<CreateRSVP />} />
         </Routes>
       </Layout>
     </Router>
