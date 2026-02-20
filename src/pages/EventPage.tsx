@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-    Calendar, MapPin, Clock, Users, CheckCircle,
-    AlertCircle, Loader2, Send, Heart, Cake,
-    Baby, GraduationCap, PartyPopper
+    Calendar, MapPin, Clock, CheckCircle,
+    AlertCircle, Loader2, Send, Heart
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
