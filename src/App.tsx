@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import CreateRSVP from './pages/CreateRSVP';
 import Dashboard from './pages/Dashboard';
 import GuestList from './pages/GuestList';
+import EditRSVP from './pages/EditRSVP';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import EventPage from './pages/EventPage';
@@ -56,6 +57,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <GuestList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard/:slug/edit"
+              element={
+                <ProtectedRoute>
+                  <EditRSVP />
                 </ProtectedRoute>
               }
             />
