@@ -1,99 +1,99 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle, Zap, Shield, Sparkles } from 'lucide-react';
+import { Zap, Shield, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
-    return (
-        <div className="home-page">
-            {/* Hero Section */}
-            <section className="hero section-padding">
-                <div className="container hero-content">
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="hero-text"
-                    >
-                        <span className="badge">New: AI-Powered RSVP Designer 🚀</span>
-                        <h1 className="hero-title">
-                            Create <span className="gradient-text">Beautiful RSVP</span> <br />
-                            Pages in Seconds
-                        </h1>
-                        <p className="hero-subtitle">
-                            The all-in-one platform to manage your event invitations. Simple, elegant, and completely customizable. Join 10,000+ hosts making their events unforgettable.
-                        </p>
-                        <div className="hero-actions">
-                            <Link to="/contact" className="btn btn-primary btn-lg">
-                                Create Your Page <Zap size={20} />
-                            </Link>
-                            <Link to="/features" className="btn btn-outline btn-lg">
-                                View Features
-                            </Link>
-                        </div>
-                    </motion.div>
+  return (
+    <div className="home-page">
+      {/* Hero Section */}
+      <section className="hero section-padding">
+        <div className="container hero-content">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="hero-text"
+          >
+            <span className="badge">New: AI-Powered RSVP Designer 🚀</span>
+            <h1 className="hero-title">
+              Create <span className="gradient-text">Beautiful RSVP</span> <br />
+              Pages in Seconds
+            </h1>
+            <p className="hero-subtitle">
+              The all-in-one platform to manage your event invitations. Simple, elegant, and completely customizable. Join 10,000+ hosts making their events unforgettable.
+            </p>
+            <div className="hero-actions">
+              <Link to="/contact" className="btn btn-primary btn-lg">
+                Create Your Page <Zap size={20} />
+              </Link>
+              <Link to="/features" className="btn btn-outline btn-lg">
+                View Features
+              </Link>
+            </div>
+          </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="hero-image-container"
-                    >
-                        <div className="hero-image glass-card">
-                            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" alt="Event Preview" />
-                        </div>
-                        <div className="hero-stats glass-card animate-float">
-                            <div className="stat-item">
-                                <span className="stat-val">5k+</span>
-                                <span className="stat-label">Events Daily</span>
-                            </div>
-                        </div>
-                    </motion.div>
-                </div>
-            </section>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="hero-image-container"
+          >
+            <div className="hero-image glass-card">
+              <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=800" alt="Event Preview" />
+            </div>
+            <div className="hero-stats glass-card animate-float">
+              <div className="stat-item">
+                <span className="stat-val">5k+</span>
+                <span className="stat-label">Events Daily</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
 
-            {/* Trust Section */}
-            <section className="trust">
-                <div className="container">
-                    <p className="trust-title">Trusted by leading event planners worldwide</p>
-                    <div className="trust-logos">
-                        <span className="logo-placeholder">EVENTFUL</span>
-                        <span className="logo-placeholder">GATHER</span>
-                        <span className="logo-placeholder">VOWS</span>
-                        <span className="logo-placeholder">CELEBRATE</span>
-                    </div>
-                </div>
-            </section>
+      {/* Trust Section */}
+      <section className="trust">
+        <div className="container">
+          <p className="trust-title">Trusted by leading event planners worldwide</p>
+          <div className="trust-logos">
+            <span className="logo-placeholder">EVENTFUL</span>
+            <span className="logo-placeholder">GATHER</span>
+            <span className="logo-placeholder">VOWS</span>
+            <span className="logo-placeholder">CELEBRATE</span>
+          </div>
+        </div>
+      </section>
 
-            {/* Features Preview */}
-            <section className="features-preview section-padding">
-                <div className="container">
-                    <div className="section-header">
-                        <h2 className="section-title">Why Choose InviteU?</h2>
-                        <p className="section-subtitle">Everything you need to manage your guest list effortlessly.</p>
-                    </div>
+      {/* Features Preview */}
+      <section className="features-preview section-padding">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="section-title">Why Choose InviteU?</h2>
+            <p className="section-subtitle">Everything you need to manage your guest list effortlessly.</p>
+          </div>
 
-                    <div className="features-grid">
-                        <div className="feature-card glass-card">
-                            <div className="feature-icon"><Sparkles /></div>
-                            <h3>Stunning Designs</h3>
-                            <p>Choose from hundreds of premium templates designed by professionals.</p>
-                        </div>
-                        <div className="feature-card glass-card">
-                            <div className="feature-icon"><Zap /></div>
-                            <h3>Instant Updates</h3>
-                            <p>Get real-time notifications when guests RSVP or change their details.</p>
-                        </div>
-                        <div className="feature-card glass-card">
-                            <div className="feature-icon"><Shield /></div>
-                            <h3>Secure & Private</h3>
-                            <p>Your guest list and event details are encrypted and password protected.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+          <div className="features-grid">
+            <div className="feature-card glass-card">
+              <div className="feature-icon"><Sparkles /></div>
+              <h3>Stunning Designs</h3>
+              <p>Choose from hundreds of premium templates designed by professionals.</p>
+            </div>
+            <div className="feature-card glass-card">
+              <div className="feature-icon"><Zap /></div>
+              <h3>Instant Updates</h3>
+              <p>Get real-time notifications when guests RSVP or change their details.</p>
+            </div>
+            <div className="feature-card glass-card">
+              <div className="feature-icon"><Shield /></div>
+              <h3>Secure & Private</h3>
+              <p>Your guest list and event details are encrypted and password protected.</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <style>{`
+      <style>{`
         .hero {
           padding-top: 160px;
           min-height: 90vh;
@@ -274,8 +274,8 @@ const Home: React.FC = () => {
           animation: float 4s ease-in-out infinite;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Home;
