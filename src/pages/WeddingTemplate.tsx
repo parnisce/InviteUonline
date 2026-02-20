@@ -78,6 +78,47 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </motion.div>
             </section>
 
+
+            {/* COUNTDOWN / SAVE THE DATE — FULL WIDTH */}
+            <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
+                <div className="wt-std-overlay" />
+                <div className="wt-std-content">
+                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                        <p className="wt-std-title">Save the Date</p>
+
+                        <div className="wt-std-date-hero">
+                            <div className="wt-std-month-bg">{eventDate.toLocaleDateString('en-US', { month: 'long' })}</div>
+                            <div className="wt-std-day">{String(eventDate.getDate()).padStart(2, '0')}</div>
+                            <div className="wt-std-year">{eventDate.getFullYear()}</div>
+                        </div>
+
+                        <div className="wt-std-details">
+                            <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
+                            <span className="wt-std-sep">|</span>
+                            <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
+                        </div>
+
+                        {timeLeft && (
+                            <div className="wt-std-timer">
+                                {[
+                                    { label: 'Days', value: timeLeft.days },
+                                    { label: 'Hours', value: timeLeft.hours },
+                                    { label: 'Minutes', value: timeLeft.minutes },
+                                    { label: 'Seconds', value: timeLeft.seconds }
+                                ].map((item) => (
+                                    <div key={item.label} className="wt-std-timer-box">
+                                        <span className="wt-std-timer-num">{String(item.value).padStart(2, '0')}</span>
+                                        <span className="wt-std-timer-unit">{item.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </motion.div>
+                </div>
+            </section>
+
+
+
             {/* ── MAIN 2-COL BODY ── */}
             <div className="wt-body">
 
@@ -238,43 +279,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </div>
             </div>
 
-            {/* COUNTDOWN / SAVE THE DATE — FULL WIDTH */}
-            <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
-                <div className="wt-std-overlay" />
-                <div className="wt-std-content">
-                    <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }}>
-                        <p className="wt-std-title">Save the Date</p>
 
-                        <div className="wt-std-date-hero">
-                            <div className="wt-std-month-bg">{eventDate.toLocaleDateString('en-US', { month: 'long' })}</div>
-                            <div className="wt-std-day">{String(eventDate.getDate()).padStart(2, '0')}</div>
-                            <div className="wt-std-year">{eventDate.getFullYear()}</div>
-                        </div>
-
-                        <div className="wt-std-details">
-                            <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
-                            <span className="wt-std-sep">|</span>
-                            <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
-                        </div>
-
-                        {timeLeft && (
-                            <div className="wt-std-timer">
-                                {[
-                                    { label: 'Days', value: timeLeft.days },
-                                    { label: 'Hours', value: timeLeft.hours },
-                                    { label: 'Minutes', value: timeLeft.minutes },
-                                    { label: 'Seconds', value: timeLeft.seconds }
-                                ].map((item) => (
-                                    <div key={item.label} className="wt-std-timer-box">
-                                        <span className="wt-std-timer-num">{String(item.value).padStart(2, '0')}</span>
-                                        <span className="wt-std-timer-unit">{item.label}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </motion.div>
-                </div>
-            </section>
 
             {/* ── FOOTER ── */}
             <footer className="wt-footer">
