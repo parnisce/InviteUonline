@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Send, CheckCircle, Loader2, Heart, Car, Gift } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Send, CheckCircle, Loader2, Heart, Car, Gift, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 const ICONS: Record<string, string> = {
@@ -26,6 +26,10 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
     const [rsvp, setRsvp] = useState({ name: '', email: '', status: 'attending', guests: 1, notes: '' });
     const [submitting, setSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [activeSlide, setActiveSlide] = useState(0);
+
+    const nextSlide = () => { if (gallery.length > 0) setActiveSlide((prev: number) => (prev + 1) % gallery.length); };
+    const prevSlide = () => { if (gallery.length > 0) setActiveSlide((prev: number) => (prev - 1 + gallery.length) % gallery.length); };
 
     const handleRSVP = async (e: React.FormEvent) => {
         e.preventDefault(); setSubmitting(true);
@@ -116,6 +120,62 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                     </motion.div>
                 </div>
             </section>
+
+            {/* ── GALLERY SLIDESHOW ── */}
+            {gallery.length > 0 && (
+                <section className="wt-gallery-slider">
+                    <div className="wt-slider-container">
+                        <div className="wt-slides-track">
+                            <AnimatePresence mode="popLayout">
+                                {[-1, 0, 1].map((offset) => {
+                                    const index = (activeSlide + offset + gallery.length) % gallery.length;
+                                    const isCenter = offset === 0;
+                                    return (
+                                        <motion.div
+                                            key={`${index}-${offset}`}
+                                            className={`wt-slide-item ${isCenter ? 'center' : 'side'}`}
+                                            initial={{ opacity: 0, scale: 0.8, x: offset * 300, rotateY: offset * 45 }}
+                                            animate={{
+                                                opacity: 1,
+                                                scale: isCenter ? 1 : 0.8,
+                                                x: offset * 260,
+                                                rotateY: offset * -25,
+                                                zIndex: isCenter ? 10 : 5,
+                                                filter: isCenter ? 'brightness(1)' : 'brightness(0.7) blur(1px)'
+                                            }}
+                                            exit={{ opacity: 0, scale: 0.5, x: offset * 400 }}
+                                            transition={{ duration: 0.6, ease: "easeOut" }}
+                                            onClick={() => {
+                                                if (offset === -1) prevSlide();
+                                                if (offset === 1) nextSlide();
+                                            }}
+                                        >
+                                            <img src={gallery[index]} alt={`Gallery ${index}`} />
+                                            {!isCenter && (
+                                                <div className="wt-slide-nav-overlay">
+                                                    {offset === -1 ? <ChevronLeft size={30} /> : <ChevronRight size={30} />}
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    );
+                                })}
+                            </AnimatePresence>
+                        </div>
+
+                        {/* Pagination Dots */}
+                        <div className="wt-slider-dots">
+                            {gallery.map((_, i) => (
+                                <button
+                                    key={i}
+                                    className={`wt-dot ${i === activeSlide ? 'active' : ''}`}
+                                    onClick={() => setActiveSlide(i)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+
 
 
 
@@ -379,6 +439,30 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
             .wt-std-timer-box { min-width: 50px; }
             .wt-std-timer-num { font-size: 1.4rem; }
         }
+
+        /* ─ GALLERY SLIDESHOW ─ */
+        .wt-gallery-slider { position: relative; padding: 6rem 0; overflow: hidden; background: #faf5ee; perspective: 1500px; }
+        .wt-slider-container { max-width: 1400px; margin: 0 auto; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .wt-slides-track { display: flex; justify-content: center; align-items: center; position: relative; height: clamp(400px, 60vh, 700px); width: 100%; transform-style: preserve-3d; }
+        
+        .wt-slide-item { position: absolute; width: clamp(280px, 35vw, 480px); height: 100%; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 30px 60px -12px rgba(90,61,43,0.3); cursor: pointer; transform-style: preserve-3d; transition: filter 0.5s; background: #eee; }
+        .wt-slide-item.side { filter: brightness(0.7) grayscale(0.2); }
+        .wt-slide-item.center { filter: brightness(1) grayscale(0); }
+        .wt-slide-item img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .wt-slide-nav-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); color: white; transition: 0.3s; opacity: 0; pointer-events: none; }
+        .wt-slide-item.side:hover .wt-slide-nav-overlay { opacity: 1; }
+        
+        .wt-slider-dots { display: flex; justify-content: center; gap: 0.8rem; margin-top: 4rem; flex-wrap: wrap; max-width: 90%; }
+        .wt-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(90,61,43,0.15); border: none; padding: 0; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .wt-dot.active { background: #5a3d2b; transform: scale(1.4); }
+
+        @media (max-width: 850px) {
+            .wt-slides-track { height: 500px; }
+            .wt-slide-item { width: 70vw; height: 100%; }
+            .wt-slide-item.side { display: none; }
+        }
+
 
         /* ─ ORDER OF EVENTS ─ */
         .wt-events { background: #fdf8f2; border-radius: 1.5rem; padding: 3.5rem 3rem; margin-bottom: 3rem; text-align: center; }
