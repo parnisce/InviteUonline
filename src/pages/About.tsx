@@ -12,8 +12,8 @@ const team = [
     {
         name: 'Marcus Lee',
         role: 'CTO & Co-Founder',
-        bio: 'Full-stack engineer passionate about building tools that make people's lives easier.',
-    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
+        bio: "Full-stack engineer passionate about building tools that make people's lives easier.",
+        img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200',
     },
     {
         name: 'Sofia Reyes',
