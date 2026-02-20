@@ -134,14 +134,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                                         <motion.div
                                             key={`${index}-${offset}`}
                                             className={`wt-slide-item ${isCenter ? 'center' : 'side'}`}
-                                            initial={{ opacity: 0, scale: 0.8, x: offset * 300, rotateY: offset * 45 }}
+                                            initial={{ opacity: 0, scale: 0.8, x: offset * 320 }}
                                             animate={{
                                                 opacity: 1,
-                                                scale: isCenter ? 1 : 0.8,
-                                                x: offset * 260,
-                                                rotateY: offset * -25,
+                                                scale: isCenter ? 1.05 : 0.85,
+                                                x: offset * 280,
                                                 zIndex: isCenter ? 10 : 5,
-                                                filter: isCenter ? 'brightness(1)' : 'brightness(0.7) blur(1px)'
+                                                rotateY: offset * -15,
                                             }}
                                             exit={{ opacity: 0, scale: 0.5, x: offset * 400 }}
                                             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -414,7 +413,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-cd-dow-row span { color: rgba(200,169,126,0.45); font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; }
         .wt-cd-tagline { font-family: 'Dancing Script', cursive; color: rgba(240,220,190,0.75); font-size: 1.3rem; margin-bottom: 2rem; }
         /* ─ SAVE THE DATE / COUNTDOWN ─ */
-        .wt-std-section { position: relative; padding: 10rem 2rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
+        .wt-std-section { position: relative; padding: 10rem 2rem 14rem; background-size: cover; background-position: center; background-attachment: fixed; background-color: #fffaf5; overflow: hidden; text-align: center; }
         .wt-std-overlay { position: absolute; inset: 0; background: rgba(255,250,245,0.72); }
         .wt-std-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; color: #5a3d2b; }
         
@@ -441,13 +440,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         }
 
         /* ─ GALLERY SLIDESHOW ─ */
-        .wt-gallery-slider { position: relative; padding: 6rem 0; overflow: hidden; background: #faf5ee; perspective: 1500px; }
+        .wt-gallery-slider { position: relative; padding: 0 0 6rem; overflow: visible; background: white; perspective: 1500px; margin-top: -10rem; z-index: 20; }
         .wt-slider-container { max-width: 1400px; margin: 0 auto; position: relative; display: flex; flex-direction: column; align-items: center; }
-        .wt-slides-track { display: flex; justify-content: center; align-items: center; position: relative; height: clamp(400px, 60vh, 700px); width: 100%; transform-style: preserve-3d; }
+        .wt-slides-track { display: flex; justify-content: center; align-items: center; position: relative; height: clamp(400px, 60vh, 650px); width: 100%; transform-style: preserve-3d; }
         
-        .wt-slide-item { position: absolute; width: clamp(280px, 35vw, 480px); height: 100%; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 30px 60px -12px rgba(90,61,43,0.3); cursor: pointer; transform-style: preserve-3d; transition: filter 0.5s; background: #eee; }
-        .wt-slide-item.side { filter: brightness(0.7) grayscale(0.2); }
-        .wt-slide-item.center { filter: brightness(1) grayscale(0); }
+        .wt-slide-item { position: absolute; width: clamp(280px, 32vw, 420px); height: 100%; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); cursor: pointer; transform-style: preserve-3d; transition: filter 0.5s; background: #eee; }
+        .wt-slide-item.side { filter: brightness(0.8); }
+        .wt-slide-item.center { filter: brightness(1); box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
         .wt-slide-item img { width: 100%; height: 100%; object-fit: cover; }
         
         .wt-slide-nav-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.15); color: white; transition: 0.3s; opacity: 0; pointer-events: none; }
