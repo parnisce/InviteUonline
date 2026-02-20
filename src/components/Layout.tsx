@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Rocket } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Rocket, LayoutDashboard, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -9,7 +10,9 @@ interface NavbarProps {
 const Layout: React.FC<NavbarProps> = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { user, signOut } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +22,12 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+    setIsOpen(false);
+  };
+
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Features', path: '/features' },
@@ -27,6 +36,15 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
     { name: 'FAQ', path: '/faq' },
     { name: 'Contact', path: '/contact' },
   ];
+
+  // Don't show standard navbar on public event pages (cleaner experience)
+  const isPublicEventPage = location.pathname !== '/' &&
+    !navLinks.some(l => l.path === location.pathname) &&
+    !['/create', '/dashboard', '/login', '/register', '/terms'].includes(location.pathname);
+
+  if (isPublicEventPage) {
+    return <main>{children}</main>;
+  }
 
   return (
     <div className="layout">
@@ -47,7 +65,22 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/create" className="btn btn-primary">Get Started</Link>
+
+            {user ? (
+              <div className="nav-auth-group">
+                <Link to="/dashboard" className="nav-link dashboard-link">
+                  <LayoutDashboard size={18} /> Dashboard
+                </Link>
+                <button onClick={handleSignOut} className="btn btn-outline-sm logout-btn">
+                  <LogOut size={16} /> Logout
+                </button>
+              </div>
+            ) : (
+              <div className="nav-auth-group">
+                <Link to="/login" className="nav-link login-text">Login</Link>
+                <Link to="/create" className="btn btn-primary">Get Started</Link>
+              </div>
+            )}
           </div>
 
           <button className="nav-mobile-toggle" onClick={() => setIsOpen(!isOpen)}>
@@ -68,7 +101,17 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
                 {link.name}
               </Link>
             ))}
-            <Link to="/contact" className="btn btn-primary" onClick={() => setIsOpen(false)}>Get Started</Link>
+            {user ? (
+              <>
+                <Link to="/dashboard" className="nav-mobile-link" onClick={() => setIsOpen(false)}>Dashboard</Link>
+                <button onClick={handleSignOut} className="btn btn-primary">Logout</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="nav-mobile-link" onClick={() => setIsOpen(false)}>Login</Link>
+                <Link to="/register" className="btn btn-primary" onClick={() => setIsOpen(false)}>Sign Up</Link>
+              </>
+            )}
           </div>
         )}
       </nav>
@@ -88,6 +131,7 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
             <h4>Product</h4>
             <Link to="/features">Features</Link>
             <Link to="/pricing">Pricing</Link>
+            <Link to="/create">RSVP Builder</Link>
           </div>
           <div className="footer-links">
             <h4>Company</h4>
@@ -138,6 +182,7 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           font-size: 1.5rem;
           font-weight: 800;
           color: #064e3b;
+          text-decoration: none;
         }
 
         .logo-text {
@@ -145,119 +190,54 @@ const Layout: React.FC<NavbarProps> = ({ children }) => {
           letter-spacing: -1px;
         }
 
-        .logo-dot {
-          color: var(--primary);
-        }
+        .logo-dot { color: var(--primary); }
+        .logo-icon { color: var(--primary); }
 
-        .logo-icon {
-          color: var(--primary);
-        }
-
-        .nav-desktop {
-          display: none;
-          align-items: center;
-          gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-          .nav-desktop {
-            display: flex;
-          }
-        }
+        .nav-desktop { display: none; align-items: center; gap: 2rem; }
+        @media (min-width: 1024px) { .nav-desktop { display: flex; } }
 
         .nav-link {
-          font-weight: 500;
-          color: var(--text-muted);
-          font-size: 0.95rem;
+          font-weight: 600; color: var(--text-muted); font-size: 0.95rem; text-decoration: none; transition: 0.3s;
         }
 
-        .nav-link:hover, .nav-link.active {
-          color: var(--primary);
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+
+        .nav-auth-group {
+          display: flex; align-items: center; gap: 1.5rem; padding-left: 1.5rem; border-left: 1px solid var(--border);
         }
 
-        .nav-mobile-toggle {
-          background: transparent;
-          color: var(--text);
+        .dashboard-link {
+          display: flex; align-items: center; gap: 0.5rem; color: #064e3b !important;
         }
 
-        @media (min-width: 768px) {
-          .nav-mobile-toggle {
-            display: none;
-          }
+        .btn-outline-sm {
+          padding: 0.5rem 1rem; background: transparent; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; cursor: pointer;
         }
+        
+        .logout-btn { color: #ef4444; }
+        .logout-btn:hover { background: #fef2f2; border-color: #fecaca; }
+
+        .nav-mobile-toggle { background: transparent; color: var(--text); border: none; cursor: pointer; }
+        @media (min-width: 1024px) { .nav-mobile-toggle { display: none; } }
 
         .nav-mobile {
-          position: fixed;
-          top: 70px;
-          left: 1.5rem;
-          right: 1.5rem;
-          background: white;
-          padding: 2rem;
-          border-radius: 1rem;
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          border: 1px solid var(--border);
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-          z-index: 1001;
+          position: fixed; top: 70px; left: 1.5rem; right: 1.5rem; background: white; padding: 2rem; border-radius: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); z-index: 1001;
         }
 
-        .nav-mobile-link {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: var(--text);
-        }
+        .nav-mobile-link { font-size: 1.1rem; font-weight: 600; color: var(--text); text-decoration: none; }
 
-        .footer {
-          background-color: #f9fafb;
-          border-top: 1px solid var(--border);
-        }
+        .footer { background-color: #f9fafb; border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; padding-top: 0; }
 
-        .footer-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 3rem;
-          padding-top: 0;
-        }
+        .footer-brand p { color: var(--text-muted); margin-top: 1rem; max-width: 300px; font-size: 0.95rem; }
+        .footer-links { display: flex; flex-direction: column; gap: 1rem; }
 
-        .footer-brand p {
-          color: var(--text-muted);
-          margin-top: 1rem;
-          max-width: 300px;
-          font-size: 0.95rem;
-        }
+        .footer-links h4 { margin-bottom: 0.5rem; font-size: 1rem; color: #064e3b; text-transform: uppercase; letter-spacing: 1px; }
 
-        .footer-links {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
+        .footer-links a { color: var(--text-muted); font-size: 0.95rem; text-decoration: none; }
+        .footer-links a:hover { color: var(--primary); }
 
-        .footer-links h4 {
-          margin-bottom: 0.5rem;
-          font-size: 1rem;
-          color: #064e3b;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-        }
-
-        .footer-links a {
-          color: var(--text-muted);
-          font-size: 0.95rem;
-        }
-
-        .footer-links a:hover {
-          color: var(--primary);
-        }
-
-        .footer-bottom {
-          margin-top: 4rem;
-          padding-top: 2rem;
-          border-top: 1px solid var(--border);
-          text-align: center;
-          color: var(--text-muted);
-          font-size: 0.9rem;
-        }
+        .footer-bottom { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.9rem; }
       `}</style>
     </div>
   );
