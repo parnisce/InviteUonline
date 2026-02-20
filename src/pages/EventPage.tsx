@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
     Calendar, MapPin, Clock, CheckCircle,
-    AlertCircle, Loader2, Send, Heart
+    AlertCircle, Loader2, Send, Heart,
+    Music, Bell, Camera, Gift, Globe
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
@@ -12,6 +13,7 @@ const EventPage: React.FC = () => {
     const [event, setEvent] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [timeLeft, setTimeLeft] = useState<any>(null);
 
     // RSVP Form State
     const [rsvpData, setRsvpData] = useState({ name: '', email: '', status: 'attending', guests: 1, notes: '' });
@@ -29,6 +31,12 @@ const EventPage: React.FC = () => {
 
                 if (error) throw error;
                 setEvent(data);
+
+                if (data.event_type === 'Wedding') {
+                    calculateTimeLeft(data.event_date);
+                    const timer = setInterval(() => calculateTimeLeft(data.event_date), 1000);
+                    return () => clearInterval(timer);
+                }
             } catch (err: any) {
                 setError(err.message === 'JSON object requested, multiple (or no) rows returned' ? 'Event not found' : err.message);
             } finally {
@@ -38,6 +46,18 @@ const EventPage: React.FC = () => {
 
         if (slug) fetchEvent();
     }, [slug]);
+
+    const calculateTimeLeft = (dateStr: string) => {
+        const difference = +new Date(dateStr) - +new Date();
+        if (difference > 0) {
+            setTimeLeft({
+                days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((difference / 1000 / 60) % 60),
+                seconds: Math.floor((difference / 1000) % 60)
+            });
+        }
+    };
 
     const handleRSVP = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -78,14 +98,25 @@ const EventPage: React.FC = () => {
     );
 
     const eventDate = new Date(event.event_date);
+    const details = event.event_details || {};
 
     return (
-        <div className="public-event-page" style={{ '--theme': event.theme_color } as any}>
+        <div className={`public-event-page template-${event.event_type?.toLowerCase().replace(' ', '-')}`} style={{ '--theme': event.theme_color } as any}>
+            {/* Elegant Background Pattern for Birthday */}
+            {event.event_type === 'Birthday' && <div className="birthday-pattern" />}
+
             {/* Hero / Banner */}
             <header className="event-hero">
                 <div className="event-banner-container">
                     {event.banner_url ? (
-                        <img src={event.banner_url} alt={event.title} className="event-banner-img" />
+                        <motion.img
+                            initial={{ scale: 1.1 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 1.5 }}
+                            src={event.banner_url}
+                            alt={event.title}
+                            className="event-banner-img"
+                        />
                     ) : (
                         <div className="event-banner-placeholder" style={{ background: `linear-gradient(135deg, ${event.theme_color}, #fff)` }} />
                     )}
@@ -111,32 +142,103 @@ const EventPage: React.FC = () => {
                 <div className="event-grid">
                     {/* Main Content */}
                     <div className="event-details">
-                        <div className="detail-section card">
-                            <h2>About the Celebration</h2>
-                            <p>{event.description || 'Join us for this special occasion! We look forward to celebrating with all our family and friends.'}</p>
-                        </div>
-
-                        {event.event_type === 'Wedding' && event.event_details?.partner1 && (
-                            <div className="detail-section wedding-couple card">
-                                <Heart className="couple-icon" size={32} />
-                                <div className="couple-names">
-                                    <span>{event.event_details.partner1}</span>
-                                    <span className="ampersand">&</span>
-                                    <span>{event.event_details.partner2}</span>
+                        {/* WEDDING TEMPLATE: Gallery Section */}
+                        {event.event_type === 'Wedding' && details.gallery?.length > 0 && (
+                            <div className="template-section card photo-gallery-section">
+                                <div className="section-header">
+                                    <Camera size={24} />
+                                    <h2>Our Gallery</h2>
                                 </div>
-                                <p>Are getting married!</p>
+                                <div className="wedding-photo-grid">
+                                    {details.gallery.map((url: string, i: number) => (
+                                        <motion.div
+                                            key={i}
+                                            whileHover={{ scale: 1.02 }}
+                                            className={`gallery-img-wrapper ${i === 0 ? 'large' : ''}`}
+                                        >
+                                            <img src={url} alt={`Wedding ${i}`} />
+                                        </motion.div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* WEDDING TEMPLATE: Story & Couple */}
+                        {event.event_type === 'Wedding' && (
+                            <div className="template-section wedding-couple-intro card">
+                                <div className="couple-names-large">
+                                    <span>{details.partner1}</span>
+                                    <span className="ampersand">&</span>
+                                    <span>{details.partner2}</span>
+                                </div>
+                                <div className="divider-line" />
+                                <p className="story-text">{details.story || "We're so excited to share our special day with you!"}</p>
+
+                                {timeLeft && (
+                                    <div className="wedding-countdown">
+                                        <div className="count-item"><span>{timeLeft.days}</span><label>Days</label></div>
+                                        <div className="count-item"><span>{timeLeft.hours}</span><label>Hrs</label></div>
+                                        <div className="count-item"><span>{timeLeft.minutes}</span><label>Min</label></div>
+                                        <div className="count-item"><span>{timeLeft.seconds}</span><label>Sec</label></div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* BIRTHDAY TEMPLATE: Minimalist "About" */}
+                        {event.event_type === 'Birthday' && (
+                            <div className="template-section birthday-welcome card">
+                                <h2>Celebrating {event.title}</h2>
+                                <p>{event.description || 'Join us for a day of joy, celebration, and creating wonderful memories together.'}</p>
+                            </div>
+                        )}
+
+                        {/* UNIVERSAL TEMPLATE: Program / Itinerary (Timeline) */}
+                        {details.itinerary?.length > 0 && details.itinerary[0].activity !== '' && (
+                            <div className="template-section itinerary-section card">
+                                <div className="section-header">
+                                    <Clock size={24} />
+                                    <h2>Program of Events</h2>
+                                </div>
+                                <div className="timeline">
+                                    {details.itinerary.map((item: any, i: number) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: -20 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true }}
+                                            className="timeline-item"
+                                        >
+                                            <div className="time-col">{item.time}</div>
+                                            <div className="dot-col"><div className="timeline-dot" /></div>
+                                            <div className="activity-col">{item.activity}</div>
+                                        </motion.div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 
                         <div className="location-card card">
                             <div className="location-info">
-                                <h3>Location</h3>
+                                <h3>Venue Location</h3>
                                 <p>{event.location}</p>
                                 <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.location)}`} target="_blank" rel="noreferrer" className="map-link">
                                     View on Google Maps →
                                 </a>
                             </div>
                         </div>
+
+                        {/* WEDDING TEMPLATE: Gift Registry Notice */}
+                        {event.event_type === 'Wedding' && (
+                            <div className="gift-registry card">
+                                <Gift size={32} />
+                                <h3>Gift Suggestions</h3>
+                                <p>Your presence is our greatest gift! If you wish to contribute, we appreciate your thoughtfulness through our registry or a monetary gift.</p>
+                                <div className="registry-btns">
+                                    <button className="btn btn-outline small">View Registry</button>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* RSVP Sidebar */}
@@ -151,15 +253,15 @@ const EventPage: React.FC = () => {
                                 </div>
                             ) : (
                                 <form onSubmit={handleRSVP} className="rsvp-form">
-                                    <h3>Will you be joining?</h3>
+                                    <h3>Confirm Attendance</h3>
                                     <p className="rsvp-sub">Please respond by {new Date(eventDate.getTime() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString()}</p>
 
                                     <div className="form-group">
-                                        <label>Your Name</label>
+                                        <label>Full Name</label>
                                         <input
                                             type="text"
                                             required
-                                            placeholder="Enter your full name"
+                                            placeholder="Enter your name"
                                             value={rsvpData.name}
                                             onChange={e => setRsvpData({ ...rsvpData, name: e.target.value })}
                                         />
@@ -181,38 +283,38 @@ const EventPage: React.FC = () => {
                                             className={`status-btn ${rsvpData.status === 'attending' ? 'active' : ''}`}
                                             onClick={() => setRsvpData({ ...rsvpData, status: 'attending' })}
                                         >
-                                            I'm Coming
+                                            Attending
                                         </button>
                                         <button
                                             type="button"
                                             className={`status-btn ${rsvpData.status === 'declined' ? 'active' : ''}`}
                                             onClick={() => setRsvpData({ ...rsvpData, status: 'declined' })}
                                         >
-                                            Can't Make It
+                                            Declined
                                         </button>
                                     </div>
 
                                     {rsvpData.status === 'attending' && (
                                         <div className="form-group animate-fade">
-                                            <label>Number of Guests</label>
+                                            <label>Number of People</label>
                                             <select value={rsvpData.guests} onChange={e => setRsvpData({ ...rsvpData, guests: parseInt(e.target.value) })}>
-                                                {[1, 2, 3, 4, 5].map(n => <option key={n} value={n}>{n} {n === 1 ? 'Guest' : 'Guests'}</option>)}
+                                                {[1, 2, 3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n} {n === 1 ? 'Person' : 'People'}</option>)}
                                             </select>
                                         </div>
                                     )}
 
                                     <div className="form-group">
-                                        <label>Dietary Notes / Message</label>
+                                        <label>Special Notes</label>
                                         <textarea
-                                            placeholder="Any allergies or special requests?"
-                                            rows={3}
+                                            placeholder="Allergies or messages?"
+                                            rows={2}
                                             value={rsvpData.notes}
                                             onChange={e => setRsvpData({ ...rsvpData, notes: e.target.value })}
                                         />
                                     </div>
 
                                     <button className="btn btn-primary rsvp-submit" style={{ background: event.theme_color }} disabled={submitting}>
-                                        {submitting ? 'Saving...' : <>Submit RSVP <Send size={18} /></>}
+                                        {submitting ? 'Saving...' : <>Confirm RSVP <Send size={18} /></>}
                                     </button>
                                 </form>
                             )}
@@ -222,7 +324,10 @@ const EventPage: React.FC = () => {
             </section>
 
             <footer className="event-footer">
-                <p>Created with <Heart size={14} fill="currentColor" /> by <Link to="/">InviteU.Online</Link></p>
+                <p>Created by <Link to="/">InviteU.Online</Link></p>
+                <div className="footer-links">
+                    <Heart size={14} /> Made with Love
+                </div>
             </footer>
 
             <style>{`
@@ -230,6 +335,15 @@ const EventPage: React.FC = () => {
           min-height: 100vh;
           background: #f8fafc;
           padding-bottom: 5rem;
+          color: #1e293b;
+        }
+
+        /* Birthday Specific Theme (Green Canva-like) */
+        .template-birthday { background: #f0fdf4; }
+        .birthday-pattern { 
+          position: fixed; inset: 0; opacity: 0.05; pointer-events: none; z-index: 0;
+          background-image: radial-gradient(#064e3b 0.5px, transparent 0.5px);
+          background-size: 20px 20px;
         }
 
         .event-loading, .event-error {
@@ -245,11 +359,12 @@ const EventPage: React.FC = () => {
 
         .event-hero {
           position: relative;
-          height: 60vh;
-          min-height: 400px;
+          height: 65vh;
+          min-height: 450px;
           display: flex;
           align-items: center;
           justify-content: center;
+          overflow: hidden;
         }
 
         .event-banner-container {
@@ -262,7 +377,7 @@ const EventPage: React.FC = () => {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          filter: brightness(0.6);
+          filter: brightness(0.5);
         }
 
         .event-banner-placeholder { width: 100%; height: 100%; opacity: 0.1; }
@@ -271,95 +386,151 @@ const EventPage: React.FC = () => {
           position: relative;
           z-index: 10;
           width: 100%;
-          max-width: 800px;
+          max-width: 900px;
           padding: 2rem;
         }
 
         .event-header-card {
-          padding: 3rem;
+          padding: 4rem 2rem;
           text-align: center;
-          background: rgba(255, 255, 255, 0.9);
-          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+          border-radius: 2rem;
         }
 
         .event-type-badge {
           display: inline-block;
-          padding: 0.5rem 1.25rem;
+          padding: 0.6rem 2rem;
           background: var(--theme);
           color: white;
           border-radius: 2rem;
           font-weight: 800;
           font-size: 0.8rem;
           text-transform: uppercase;
-          margin-bottom: 1.5rem;
-          box-shadow: 0 4px 10px -2px var(--theme);
+          margin-bottom: 2rem;
+          box-shadow: 0 10px 20px -5px var(--theme);
+          letter-spacing: 2px;
         }
 
-        .event-title { font-size: clamp(2rem, 5vw, 3.5rem); color: #0f172a; margin-bottom: 2rem; line-height: 1.1; font-weight: 800; }
+        .event-title { 
+            font-size: clamp(2.5rem, 6vw, 4.5rem); 
+            color: #0f172a; 
+            margin-bottom: 2.5rem; 
+            line-height: 1; 
+            font-weight: 900; 
+            font-family: 'Playfair Display', serif; /* Would need font import, using system fallbacks */
+        }
 
         .event-quick-info {
           display: flex;
           justify-content: center;
-          gap: 2rem;
+          gap: 3rem;
           flex-wrap: wrap;
-          color: #475569;
-          font-weight: 600;
+          color: #334155;
+          font-weight: 700;
+          font-size: 1.1rem;
         }
 
-        .info-item { display: flex; align-items: center; gap: 0.6rem; }
+        .info-item { display: flex; align-items: center; gap: 0.75rem; }
         .info-item svg { color: var(--theme); }
 
-        .event-body { margin-top: -80px; position: relative; z-index: 20; }
+        .event-body { margin-top: -100px; position: relative; z-index: 20; padding-bottom: 5rem; }
 
         .event-grid {
           display: grid;
-          grid-template-columns: 1.8fr 1.2fr;
-          gap: 3rem;
+          grid-template-columns: 2fr 1.2fr;
+          gap: 4rem;
           align-items: start;
         }
 
-        @media (max-width: 900px) {
+        @media (max-width: 1000px) {
           .event-grid { grid-template-columns: 1fr; }
           .event-body { margin-top: 2rem; }
+          .event-hero { height: auto; padding: 2rem 0; }
+          .event-header-card { padding: 3rem 1.5rem; }
         }
 
-        .card { background: white; padding: 2.5rem; border-radius: 1.5rem; border: 1px solid #e2e8f0; margin-bottom: 2rem; }
+        .card { 
+            background: white; 
+            padding: 3.5rem; 
+            border-radius: 2rem; 
+            border: 1px solid rgba(226, 232, 240, 0.8); 
+            margin-bottom: 3rem; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
 
-        .detail-section h2 { font-size: 1.8rem; color: #0f172a; margin-bottom: 1.25rem; }
-        .detail-section p { color: #475569; line-height: 1.8; font-size: 1.1rem; }
+        .section-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; color: var(--theme); }
+        .section-header h2 { font-size: 1.8rem; font-weight: 900; color: #0f172a; margin: 0; }
 
-        .wedding-couple { text-align: center; }
-        .couple-icon { color: #ef4444; margin-bottom: 1rem; }
-        .couple-names { font-size: 2.2rem; font-weight: 900; color: #0f172a; display: flex; flex-direction: column; line-height: 1.2; }
-        .ampersand { font-size: 1.5rem; color: #94a3b8; font-weight: 400; margin: 0.5rem 0; }
+        /* Wedding Photo Grid */
+        .photo-gallery-section { padding: 2rem; }
+        .wedding-photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 150px; gap: 1rem; }
+        .gallery-img-wrapper { border-radius: 1rem; overflow: hidden; }
+        .gallery-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .gallery-img-wrapper.large { grid-column: span 2; grid-row: span 2; }
 
-        .location-info h3 { margin-bottom: 0.5rem; font-size: 1.25rem; }
-        .map-link { color: var(--theme); font-weight: 700; text-decoration: none; display: block; margin-top: 1rem; }
+        /* Story & Couple */
+        .wedding-couple-intro { text-align: center; }
+        .couple-names-large { font-size: 3rem; font-weight: 900; color: #0f172a; margin-bottom: 1.5rem; }
+        .ampersand { color: var(--theme); font-weight: 300; margin: 0 1rem; }
+        .divider-line { width: 60px; height: 4px; background: var(--theme); margin: 0 auto 2rem; border-radius: 2px; }
+        .story-text { font-size: 1.25rem; line-height: 1.8; color: #475569; font-style: italic; }
 
-        .rsvp-card { padding: 2.5rem; background: white; border: 1px solid #e2e8f0; position: sticky; top: 120px; }
-        .rsvp-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .rsvp-sub { color: #64748b; font-size: 0.9rem; margin-bottom: 2rem; }
+        /* Countdown */
+        .wedding-countdown { display: flex; justify-content: center; gap: 1.5rem; margin-top: 3rem; }
+        .count-item { background: #f8fafc; padding: 1rem 1.5rem; border-radius: 1rem; min-width: 80px; }
+        .count-item span { display: block; font-size: 1.8rem; font-weight: 900; color: var(--theme); }
+        .count-item label { font-size: 0.75rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; }
 
-        .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; text-transform: uppercase; }
+        /* Birthday Specific Title */
+        .birthday-welcome h2 { font-size: 2.22rem; margin-bottom: 1.5rem; }
+        .birthday-welcome p { font-size: 1.2rem; line-height: 1.8; color: #475569; }
+
+        /* Timeline / Itinerary */
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before { content: ''; position: absolute; left: 106px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+        .timeline-item { display: grid; grid-template-columns: 80px 50px 1fr; align-items: center; margin-bottom: 2.5rem; }
+        .time-col { font-weight: 800; color: var(--theme); text-align: right; }
+        .dot-col { display: flex; justify-content: center; position: relative; z-index: 5; }
+        .timeline-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--theme); border: 3px solid white; box-shadow: 0 0 0 4px var(--theme); }
+        .activity-col { font-size: 1.15rem; font-weight: 700; color: #1e293b; background: #f8fafc; padding: 1rem 1.5rem; border-radius: 1rem; border: 1px solid #f1f5f9; }
+
+        .location-info h3 { margin-bottom: 1rem; font-size: 1.5rem; font-weight: 900; }
+        .map-link { color: var(--theme); font-weight: 800; text-decoration: none; border-bottom: 2px solid var(--theme); padding-bottom: 2px; }
+
+        .gift-registry { text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1; }
+        .gift-registry svg { color: var(--theme); margin-bottom: 1rem; }
+        .gift-registry p { color: #64748b; margin-bottom: 2rem; }
+
+        .rsvp-card { padding: 3rem; background: white; border: 1px solid #e2e8f0; position: sticky; top: 120px; border-radius: 2rem; }
+        .rsvp-card h3 { font-size: 1.8rem; margin-bottom: 0.5rem; font-weight: 900; }
+        .rsvp-sub { color: #64748b; font-size: 0.95rem; margin-bottom: 2.5rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 800; color: #475569; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea {
-          width: 100%; border: 1px solid #e2e8f0; padding: 0.85rem 1rem; border-radius: 0.75rem; background: #f8fafc; font-size: 1rem;
+          width: 100%; border: 1px solid #e2e8f0; padding: 1rem 1.25rem; border-radius: 1rem; background: #f8fafc; font-size: 1rem; transition: 0.2s;
         }
+        .form-group input:focus { border-color: var(--theme); background: white; box-shadow: 0 0 0 4px rgba(var(--theme), 0.1); }
 
         .status-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
         .status-btn {
-          padding: 1rem 0.5rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; background: white; font-weight: 700; color: #64748b; transition: 0.3s; cursor: pointer;
+          padding: 1.25rem 0.5rem; border-radius: 1rem; border: 1px solid #e2e8f0; background: white; font-weight: 800; color: #64748b; transition: 0.3s; cursor: pointer;
         }
-        .status-btn.active { background: var(--theme); color: white; border-color: var(--theme); }
+        .status-btn.active { background: var(--theme); color: white; border-color: var(--theme); box-shadow: 0 10px 15px -5px var(--theme); }
 
-        .rsvp-submit { width: 100%; justify-content: center; padding: 1.15rem; font-size: 1.1rem; font-weight: 800; box-shadow: 0 10px 15px -10px var(--theme); }
+        .rsvp-submit { width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.2rem; font-weight: 900; box-shadow: 0 15px 30px -10px var(--theme); }
 
         .rsvp-success-state { text-align: center; padding: 3rem 0; }
-        .success-icon { color: #10b981; margin-bottom: 1.5rem; }
-        .rsvp-success-state h2 { margin-bottom: 0.5rem; }
+        .success-icon { color: #10b981; margin-bottom: 2rem; }
+        .rsvp-success-state h2 { font-size: 2rem; margin-bottom: 1rem; }
 
-        .event-footer { text-align: center; padding: 4rem 0; color: #94a3b8; font-weight: 500; }
-        .event-footer a { color: #475569; text-decoration: none; font-weight: 700; }
+        .event-footer { text-align: center; padding: 8rem 0; color: #94a3b8; font-weight: 600; }
+        .event-footer a { color: #1e293b; text-decoration: none; font-weight: 900; margin-left: 0.5rem; }
+        .footer-links { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.9rem; }
       `}</style>
         </div>
     );
