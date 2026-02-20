@@ -8,7 +8,7 @@ const Home: React.FC = () => {
     { icon: <PencilLine />, title: 'Pick A Design', desc: 'Choose from our elegant templates or message us for a custom design tailored to your event.' },
     { icon: <LayoutIcon />, title: 'Match Your Invitation', desc: 'Seamlessly align your digital invitation with your paper invitations for a cohesive look.' },
     { icon: <ClipboardCheck />, title: 'Customized in 2 Minutes', desc: 'Quick and easy personalization. Add your details, photos, and event information effortlessly.' },
-    { icon: <Share2 />, title: 'Custom Web Address', desc: 'Get a memorable URL like romeo-juliet.inviteu.online for your guests to easily access.' },
+    { icon: <Share2 />, title: 'Custom Web Address', desc: 'Get a memorable URL like inviteuonline.vercel.app/yourname for your guests to easily access.' },
     { icon: <CreditCard />, title: 'Continue to Payment', desc: 'Simple and secure checkout to finalize your beautiful RSVP website.' },
     { icon: <Send />, title: 'Share Your Invitation', desc: 'Send your unique link to guests via email, text, or social media and start collecting RSVPs.' },
   ];
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
             viewport={{ once: true }}
           >
             <h2>Approved By 10,000+ Happy Couples</h2>
-            <p>Get your custom address like: <span className="highlight-text">romeo-juliet.inviteu.online</span></p>
+            <p>Get your custom address like: <span className="highlight-text">inviteuonline.vercel.app/wedding</span></p>
           </motion.div>
         </div>
       </section>

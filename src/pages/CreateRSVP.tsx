@@ -356,7 +356,7 @@ const CreateRSVP: React.FC = () => {
                                 </div>
                                 <div className="url-builder">
                                     <div className="url-input-group">
-                                        <span className="url-prefix">inviteu.online/</span>
+                                        <span className="url-prefix">inviteuonline.vercel.app/</span>
                                         <input type="text" placeholder="your-event-name" value={slug} onChange={e => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))} />
                                     </div>
                                     <p className="url-hint">Keep it simple and memorable!</p>
@@ -400,8 +400,8 @@ const CreateRSVP: React.FC = () => {
                                 <h2 className="builder-title">{isPaid ? "It's LIVE! 🎉" : 'RSVP Saved as Draft'}</h2>
                                 <div className="live-link-box">
                                     <Globe size={20} />
-                                    <span>inviteu.online/{slug}</span>
-                                    <button className="copy-link" onClick={() => navigator.clipboard.writeText(`inviteu.online/${slug}`)}>Copy</button>
+                                    <span>inviteuonline.vercel.app/{slug}</span>
+                                    <button className="copy-link" onClick={() => navigator.clipboard.writeText(`inviteuonline.vercel.app/${slug}`)}>Copy</button>
                                 </div>
                                 <div className="share-actions">
                                     <button className="btn btn-primary share-btn" onClick={() => navigate('/dashboard')}>Go to Dashboard</button>

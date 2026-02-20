@@ -324,7 +324,7 @@ const EventPage: React.FC = () => {
             </section>
 
             <footer className="event-footer">
-                <p>Created by <Link to="/">InviteU.Online</Link></p>
+                <p>Created by <a href="https://inviteuonline.vercel.app/" target="_blank" rel="noreferrer">inviteuonline.vercel.app</a></p>
                 <div className="footer-links">
                     <Heart size={14} /> Made with Love
                 </div>

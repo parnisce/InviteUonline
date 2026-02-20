@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Mail, MessageSquare, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 
 const contactInfo = [
-    { icon: <Mail size={22} />, label: 'Email Us', value: 'hello@inviteu.online', href: 'mailto:hello@inviteu.online' },
+    { icon: <Mail size={22} />, label: 'Email Us', value: 'hello@inviteuonline.vercel.app', href: 'mailto:hello@inviteuonline.vercel.app' },
     { icon: <Phone size={22} />, label: 'Call Us', value: '+1 (800) 123-4567', href: 'tel:+18001234567' },
     { icon: <MapPin size={22} />, label: 'Office', value: 'San Francisco, CA, USA', href: '#' },
     { icon: <MessageSquare size={22} />, label: 'Live Chat', value: 'Available Mon–Fri 9am–6pm', href: '#' },

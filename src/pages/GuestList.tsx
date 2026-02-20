@@ -118,7 +118,7 @@ const GuestList: React.FC = () => {
                     <div className="header-main">
                         <div>
                             <h1>{event?.title}</h1>
-                            <p className="event-slug">inviteu.online/{slug}</p>
+                            <p className="event-slug">inviteuonline.vercel.app/{slug}</p>
                         </div>
                         <button className="btn btn-outline" onClick={exportToCSV}>
                             <Download size={18} /> Export CSV
