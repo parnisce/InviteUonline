@@ -282,13 +282,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-hero-veil { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.15) 55%, rgba(0,0,0,0.42) 100%); }
 
         /* Couple Names — large, centered, over the photo */
-        .wt-hero-names { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%); z-index: 10; text-align: center; pointer-events: none; width: 100%; padding: 0 1rem; }
+        .wt-hero-names { position: absolute; top: 50%; left: 0; width: 100%; transform: translateY(-54%); z-index: 10; text-align: center; pointer-events: none; padding: 0 1rem; }
         .wt-hero-names h1 { display: flex; flex-direction: column; align-items: center; gap: 0; margin: 0; }
         .wt-name-line { font-family: 'Dancing Script', cursive; font-size: clamp(5rem, 11vw, 9rem); font-weight: 600; color: white; line-height: 1.02; text-shadow: 0 2px 40px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08); letter-spacing: -1px; }
         .wt-name-amp { font-family: 'Dancing Script', cursive; font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 400; color: rgba(255,255,255,0.82); line-height: 0.85; }
 
         /* Bottom strip — WE ARE GETTING MARRIED / ornament / RSVP / hashtag */
-        .wt-hero-bottom { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; width: 100%; }
+        .wt-hero-bottom { position: absolute; bottom: 3rem; left: 0; width: 100%; z-index: 10; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
         .wt-hero-tagline { font-size: 0.72rem; font-weight: 700; letter-spacing: 7px; text-transform: uppercase; color: rgba(255,255,255,0.82); margin: 0; }
         .wt-hero-ornament { font-size: 0.7rem; color: rgba(255,255,255,0.45); letter-spacing: 6px; margin: -0.3rem 0; }
         .wt-hero-rsvp-btn { display: inline-block; border: 1.5px solid rgba(255,255,255,0.75); color: white; background: rgba(255,255,255,0.1); backdrop-filter: blur(6px); padding: 0.6rem 3rem; border-radius: 2rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 6px; text-decoration: none; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
