@@ -20,14 +20,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         <div className="wt">
 
             {/* ── HERO ── */}
-            <section className="wt-hero">
-                {event.banner_url
-                    ? <img src={event.banner_url} className="wt-hero-bg" alt="banner" />
-                    : <div className="wt-hero-bg wt-hero-fallback" />}
-                {/* Very light veil — let photo breathe */}
+            <section className="wt-hero" style={d.heroBgType === 'color' ? { background: d.heroBgValue } : {}}>
+                {d.heroBgType === 'image' && (d.heroBgValue || event.banner_url) && (
+                    <img src={d.heroBgValue || event.banner_url} className="wt-hero-bg" alt="banner" />
+                )}
+                {!d.heroBgValue && !event.banner_url && d.heroBgType === 'image' && <div className="wt-hero-bg wt-hero-fallback" />}
                 <div className="wt-hero-veil" />
 
-                {/* Couple names — centered over photo */}
                 <motion.div
                     className="wt-hero-names"
                     initial={{ opacity: 0, y: -20 }}
@@ -41,7 +40,6 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                     </h1>
                 </motion.div>
 
-                {/* Bottom info — WE ARE GETTING MARRIED + RSVP + hashtag */}
                 <motion.div
                     className="wt-hero-bottom"
                     initial={{ opacity: 0, y: 20 }}
@@ -56,7 +54,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
             </section>
 
 
-            {/* COUNTDOWN / SAVE THE DATE — FULL WIDTH */}
+            {/* COUNTDOWN / SAVE THE DATE */}
             <section className="wt-std-section" style={d.saveTheDateBanner ? { backgroundImage: `url(${d.saveTheDateBanner})` } : {}}>
                 <div className="wt-std-overlay" />
                 <div className="wt-std-content">
@@ -72,7 +70,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         <div className="wt-std-details">
                             <span>{eventDate.toLocaleDateString('en-US', { weekday: 'long' }).toUpperCase()}</span>
                             <span className="wt-std-sep">|</span>
-                            <span>{event.event_date.split('T')[1]?.substring(0, 5) || '3:00PM'}</span>
+                            <span>{event.event_date.split('T')[1]?.substring(0, 5) || '12:00'}</span>
                         </div>
 
                         {timeLeft && (
@@ -94,7 +92,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </div>
             </section>
 
-            {/* ── GALLERY SLIDESHOW ── */}
+            {/* ── GALLERY ── */}
             {gallery.length > 0 && (
                 <section className="wt-gallery-slider">
                     <div className="wt-slider-container">
@@ -112,7 +110,6 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                                 </motion.div>
                             </AnimatePresence>
 
-                            {/* Prev / Next arrows */}
                             <button className="wt-arrow wt-arrow-l" onClick={prevSlide} aria-label="Previous">
                                 <ChevronLeft size={28} />
                             </button>
@@ -121,7 +118,6 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                             </button>
                         </div>
 
-                        {/* Pagination Dots */}
                         <div className="wt-slider-dots">
                             {gallery.map((_, i) => (
                                 <button
@@ -135,7 +131,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </section>
             )}
 
-            {/* ── MESSAGE SECTION ── */}
+            {/* ── MESSAGE ── */}
             <section className="wt-message-section">
                 <div className="wt-message-inner">
                     <motion.div
@@ -145,13 +141,17 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         viewport={{ once: true }}
                         transition={{ duration: 1 }}
                     >
-                        <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem' }}>With hearts full of joy,</h2>
+                        <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginBottom: '1.5rem' }}>{d.welcomeMessage ? "With hearts full of joy," : "With hearts full of joy,"}</h2>
                         <div className="wt-message-p-container">
-                            <p>We honor the union that brings two souls together as one.</p>
-                            <p>It brings us great joy to celebrate this special day with you.</p>
-                            <p>Your love, friendship, and support are deeply cherished, and we are honored to share this moment together.</p>
-                            <p>To keep this occasion truly meaningful, we have chosen an intimate gathering with our dearest loved ones.</p>
-                            <p>In this way, each guest is welcomed warmly, with a place at the table to share in the laughter, love, and feast.</p>
+                            {d.welcomeMessage ? (
+                                <p style={{ whiteSpace: 'pre-line' }}>{d.welcomeMessage}</p>
+                            ) : (
+                                <>
+                                    <p>We honor the union that brings two souls together as one.</p>
+                                    <p>It brings us great joy to celebrate this special day with you.</p>
+                                    <p>Your love, friendship, and support are deeply cherished, and we are honored to share this moment together.</p>
+                                </>
+                            )}
                         </div>
                     </motion.div>
                     <motion.div
@@ -161,13 +161,13 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         viewport={{ once: true }}
                         transition={{ duration: 1 }}
                     >
-                        <img src={gallery[2] || gallery[0]} alt="Message" />
+                        <img src={gallery[1] || gallery[0] || event.banner_url} alt="Message" />
                     </motion.div>
                 </div>
             </section>
 
-            {/* ── ENTOURAGE SECTION ── */}
-            <section className="wt-entourage-section">
+            {/* ── ENTOURAGE ── */}
+            <section className="wt-entourage-section" style={d.entourageBgType === 'image' ? { backgroundImage: `url(${d.entourageBgValue})`, backgroundSize: 'cover' } : { background: d.entourageBgValue || '#faf5ee' }}>
                 <motion.div
                     className="wt-ent-panel"
                     initial={{ opacity: 0, y: 40 }}
@@ -175,170 +175,93 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
                 >
-                    {/* Title */}
                     <h2 className="wt-ent-title">The Entourage</h2>
                     <div className="wt-ent-bouquet">💐</div>
 
-                    {/* Parents Row */}
-                    <div className="wt-ent-parents-row">
-                        <div className="wt-ent-col">
-                            <h3 className="wt-ent-group-title">Parents of the Groom</h3>
-                            {(d.entourage?.parentsOfGroom || ['Mr. Juan Dela Cruz', 'Mrs. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
-                        </div>
-                        <div className="wt-ent-col">
-                            <h3 className="wt-ent-group-title">Parents of the Bride</h3>
-                            {(d.entourage?.parentsOfBride || ['Mr. Juan Dela Cruz', 'Mrs. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
-                        </div>
+                    <div className="wt-ent-block" style={{ borderTop: 'none' }}>
+                        <h3 className="wt-ent-group-title">Beloved Parents</h3>
+                        <p className="wt-ent-name" style={{ whiteSpace: 'pre-line', maxWidth: 600, margin: '0 auto' }}>{d.entourage?.parents || 'Mr. & Mrs. Juan Dela Cruz\nMr. & Mrs. Pedro Santos'}</p>
                     </div>
 
-                    {/* Principal & Secondary Sponsors — side by side */}
                     <div className="wt-ent-sponsors-side">
-
-                        {/* Principal Sponsors */}
                         <div className="wt-ent-block">
                             <h3 className="wt-ent-group-title wt-ent-center">Principal Sponsors</h3>
                             <div className="wt-ent-sponsors-grid">
-                                {(d.entourage?.principalSponsorsMale || ['Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
+                                {(d.entourage?.principalSponsorsMale || []).map((name: string, i: number) => (
+                                    <p key={`m-${i}`} className="wt-ent-name">{name}</p>
                                 ))}
-                                {(d.entourage?.principalSponsorsFemale || ['Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
+                                {(d.entourage?.principalSponsorsFemale || []).map((name: string, i: number) => (
+                                    <p key={`f-${i}`} className="wt-ent-name">{name}</p>
                                 ))}
                             </div>
-                            {d.entourage?.principalSponsorsSolo && (
-                                <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>{d.entourage.principalSponsorsSolo}</p>
-                            )}
-                            {!d.entourage?.principalSponsorsSolo && (
-                                <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>Ms. Carla Magpayo</p>
-                            )}
                         </div>
 
-                        {/* Secondary Sponsors */}
                         <div className="wt-ent-block">
                             <h3 className="wt-ent-group-title wt-ent-center">Secondary Sponsors</h3>
                             <div className="wt-ent-parents-row">
                                 <div className="wt-ent-col">
                                     <h4 className="wt-ent-sub-title">Candle</h4>
-                                    {(d.entourage?.candleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                        <p key={i} className="wt-ent-name">{name}</p>
-                                    ))}
+                                    {(d.entourage?.candleSponsors || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                                     <h4 className="wt-ent-sub-title" style={{ marginTop: '1.25rem' }}>Cord</h4>
-                                    {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                        <p key={i} className="wt-ent-name">{name}</p>
-                                    ))}
+                                    {(d.entourage?.cordSponsors || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                                 </div>
                                 <div className="wt-ent-col">
                                     <h4 className="wt-ent-sub-title">Veil</h4>
-                                    {(d.entourage?.veilSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                        <p key={i} className="wt-ent-name">{name}</p>
-                                    ))}
+                                    {(d.entourage?.veilSponsors || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                                     <h4 className="wt-ent-sub-title" style={{ marginTop: '1.25rem' }}>Bible</h4>
-                                    {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                        <p key={i} className="wt-ent-name">{name}</p>
-                                    ))}
+                                    {(d.entourage?.bibleSponsors || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
-                    {/* Best Men & Matrons */}
                     <div className="wt-ent-parents-row">
                         <div className="wt-ent-col">
                             <h3 className="wt-ent-group-title">Best Men</h3>
-                            {(d.entourage?.bestMen || ['Mr. Juan Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
+                            {(d.entourage?.bestMen || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                         </div>
                         <div className="wt-ent-col">
                             <h3 className="wt-ent-group-title">Matrons of Honor</h3>
-                            {(d.entourage?.matronsOfHonor || ['Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
+                            {(d.entourage?.matronsOfHonor || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                         </div>
                     </div>
 
-
-
-                    {/* Groomsmen & Bridesmaids */}
                     <div className="wt-ent-block">
                         <div className="wt-ent-parents-row">
                             <div className="wt-ent-col">
                                 <h3 className="wt-ent-group-title">Groomsmen</h3>
-                                {(d.entourage?.groomsmen || ['Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
+                                {(d.entourage?.groomsmen || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                             </div>
                             <div className="wt-ent-col">
                                 <h3 className="wt-ent-group-title">Bridesmaids</h3>
-                                {(d.entourage?.bridesmaids || ['Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
+                                {(d.entourage?.bridesmaids || []).map((name: string, i: number) => <p key={i} className="wt-ent-name">{name}</p>)}
                             </div>
                         </div>
                     </div>
-
-                    {/* Flower Girls — centered */}
-                    <div className="wt-ent-block" style={{ textAlign: 'center' }}>
-                        <h3 className="wt-ent-group-title">Flower Girls</h3>
-                        {(d.entourage?.flowerGirls || ['Juana', 'Juana', 'Juana']).map((name: string, i: number) => (
-                            <p key={i} className="wt-ent-name">{name}</p>
-                        ))}
-                    </div>
-
-                    {/* Ring Bearer & Coin Bearer */}
-                    <div className="wt-ent-block">
-                        <div className="wt-ent-parents-row">
-                            <div className="wt-ent-col">
-                                <h3 className="wt-ent-group-title">Ring Bearer</h3>
-                                {(d.entourage?.ringBearers || ['Mr. Juan Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
-                            </div>
-                            <div className="wt-ent-col">
-                                <h3 className="wt-ent-group-title">Coin Bearer</h3>
-                                {(d.entourage?.coinBearers || ['Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
                 </motion.div>
             </section>
 
-            {/* ── WEDDING DETAILS ── */}
-            <section className="wt-details-section">
+            {/* ── DETAILS ── */}
+            <section className="wt-details-section" style={d.detailsBgType === 'image' ? { backgroundImage: `url(${d.detailsBgValue})`, backgroundSize: 'cover' } : { background: d.detailsBgValue || '#fffaf5' }}>
                 <motion.div className="wt-details-inner" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
                     <p className="wt-section-eyebrow">We invite you to</p>
                     <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Wedding Details</h2>
 
                     <div className="wt-details-cards">
-                        {/* Ceremony */}
                         <div className="wt-detail-card">
                             <div className="wt-detail-icon">⛪</div>
                             <h3 className="wt-detail-label">Ceremony</h3>
-                            <p className="wt-detail-venue">{d.ceremonyVenue || 'Antipolo Cathedral'}</p>
-                            <p className="wt-detail-addr">{d.ceremonyAddress || 'Antipolo City, Rizal'}</p>
+                            <p className="wt-detail-venue">{d.ceremonyVenue || 'Church Venue'}</p>
+                            <p className="wt-detail-addr">{d.ceremonyAddress || 'Venue Address'}</p>
                             <p className="wt-detail-time">{d.ceremonyTime || '3:00 PM'}</p>
                             {d.ceremonyMapUrl && <a href={d.ceremonyMapUrl} target="_blank" rel="noreferrer" className="wt-detail-map-btn">View Map</a>}
                         </div>
-
-                        {/* Divider ornament */}
-                        <div className="wt-details-divider">
-                            <span className="wt-script-fancy" style={{ fontSize: '2.5rem', color: '#c9a98a' }}>✦</span>
-                        </div>
-
-                        {/* Reception */}
+                        <div className="wt-details-divider"><span className="wt-script-fancy" style={{ fontSize: '2.5rem', color: '#c9a98a' }}>✦</span></div>
                         <div className="wt-detail-card">
                             <div className="wt-detail-icon">🥂</div>
                             <h3 className="wt-detail-label">Reception</h3>
-                            <p className="wt-detail-venue">{d.receptionVenue || 'The Chandelier Events Place'}</p>
-                            <p className="wt-detail-addr">{d.receptionAddress || 'Antipolo City, Rizal'}</p>
+                            <p className="wt-detail-venue">{d.receptionVenue || 'Reception Venue'}</p>
+                            <p className="wt-detail-addr">{d.receptionAddress || 'Reception Address'}</p>
                             <p className="wt-detail-time">{d.receptionTime || '6:00 PM'}</p>
                             {d.receptionMapUrl && <a href={d.receptionMapUrl} target="_blank" rel="noreferrer" className="wt-detail-map-btn">View Map</a>}
                         </div>
@@ -346,18 +269,16 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </motion.div>
             </section>
 
-            {/* ── ORDER OF EVENTS ── */}
-            <section className="wt-events-section">
+            {/* ── EVENTS ── */}
+            <section className="wt-events-section" style={d.eventsBgType === 'image' ? { backgroundImage: `url(${d.eventsBgValue})`, backgroundSize: 'cover' } : { background: d.eventsBgValue || '#faf5ee' }}>
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
                     <p className="wt-section-eyebrow">What to Expect</p>
                     <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Order of Events</h2>
 
                     <div className="wt-timeline">
-                        {(d.orderOfEvents || [
+                        {(d.itinerary || [
                             { time: '3:00 PM', label: 'We Do', desc: 'Ceremony' },
-                            { time: '5:00 PM', label: 'We Drink', desc: 'Cocktail Hour' },
                             { time: '6:00 PM', label: 'We Eat', desc: 'Reception Dinner' },
-                            { time: '8:30 PM', label: 'We Party', desc: 'Dancing & Celebration' },
                         ]).map((ev: any, i: number) => (
                             <motion.div
                                 key={i}
@@ -379,59 +300,38 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </motion.div>
             </section>
 
-            {/* ── FINER DETAILS ── */}
-            <section className="wt-finer-section">
+            {/* ── FINER ── */}
+            <section className="wt-finer-section" style={d.finerBgType === 'image' ? { backgroundImage: `url(${d.finerBgValue})`, backgroundSize: 'cover' } : { background: d.finerBgValue || '#fffaf5' }}>
                 <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
                     <p className="wt-section-eyebrow">A Few Things to Know</p>
                     <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Finer Details</h2>
 
                     <div className="wt-finer-cards">
-
-                        {/* Attire Guide */}
                         <div className="wt-finer-card">
                             <div className="wt-finer-icon">👗</div>
                             <h3 className="wt-finer-title">Attire Guide</h3>
-                            <p className="wt-finer-sub">We encourage you to dress according to our wedding motif</p>
-                            <div className="wt-finer-body">
-                                {d.attireGuide ? (
-                                    <p>{d.attireGuide}</p>
-                                ) : (
-                                    <>
-                                        <p><strong>Principal Sponsors</strong><br />Gentlemen: Black Suit with Old Rose Necktie<br />Ladies: Old Rose Long Gown</p>
-                                        <p style={{ marginTop: '0.75rem' }}><strong>Guests</strong><br />Gentlemen: Polo or Longsleeves<br />Ladies: Cocktail Dress or Long Gown</p>
-                                    </>
-                                )}
-                            </div>
+                            <div className="wt-finer-body"><p>{d.attireGuide || 'Semi-formal attire. Earth tones and pastel colors are encouraged.'}</p></div>
                         </div>
-
-                        {/* Gift Guide */}
                         <div className="wt-finer-card">
                             <div className="wt-finer-icon">🎁</div>
                             <h3 className="wt-finer-title">Gift Guide</h3>
-                            <div className="wt-finer-body">
-                                <p>{d.giftGuide || 'Your presence at our wedding is the greatest gift. If you wish to give something more, a contribution to our honeymoon or future together would be greatly appreciated.'}</p>
-                            </div>
+                            <div className="wt-finer-body"><p>{d.giftGuide || d.giftNote || 'Your presence is our greatest gift. If you wish to give something more, a contribution would be appreciated.'}</p></div>
                         </div>
-
-                        {/* Snap & Share */}
                         <div className="wt-finer-card">
                             <div className="wt-finer-icon">📸</div>
                             <h3 className="wt-finer-title">Snap &amp; Share!</h3>
-                            <div className="wt-finer-body">
-                                <p>{d.snapShare || 'Welcome, family and friends! While our photographer will capture every detail, we\'d love for you to take photos too — the smiles, laughter, and all the little moments in between. QR codes will be provided at the venue to share your memories with us!'}</p>
-                            </div>
+                            <div className="wt-finer-body"><p>{d.snapShare || 'Please capture the moments and share them with us using our hashtag!'}</p></div>
                         </div>
-
                     </div>
                 </motion.div>
             </section>
 
-            {/* ── RSVP FORM ── */}
-            <section className="wt-rsvp-section" id="wt-rsvp">
+            {/* ── RSVP ── */}
+            <section className="wt-rsvp-section" id="wt-rsvp" style={d.rsvpBgType === 'image' ? { backgroundImage: `url(${d.rsvpBgValue})`, backgroundSize: 'cover' } : { background: d.rsvpBgValue || '#fdf6ee' }}>
                 <motion.div className="wt-rsvp-inner" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
-                    <p className="wt-section-eyebrow">Kindly Reply by {d.rsvpDeadline || 'March 1, 2025'}</p>
+                    <p className="wt-section-eyebrow">Reply by {eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
                     <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '0.5rem' }}>RSVP</h2>
-                    <p className="wt-rsvp-sub">{d.rsvpNote || 'Please let us know if you can make it to our special day.'}</p>
+                    <p className="wt-rsvp-sub">Please let us know if you can make it to our special day.</p>
 
                     <form className="wt-rsvp-form" onSubmit={(e) => e.preventDefault()}>
                         <div className="wt-rsvp-row">

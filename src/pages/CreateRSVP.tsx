@@ -3,8 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Cake, Heart, ShieldAlert, Baby, GraduationCap, Users,
     ArrowRight, ArrowLeft, Upload, Check, Globe, CreditCard,
-    Image as ImageIcon,
-    Loader2, AlertCircle, Plus, Trash2, Camera, Palette
+    Loader2, AlertCircle, Plus, Trash2, Camera
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
@@ -30,7 +29,7 @@ const CreateRSVP: React.FC = () => {
         location: '',
         details: {
             // Common
-            itinerary: [{ time: '', activity: '', location: '' }],
+            itinerary: [{ time: '', label: '', desc: '' }],
             gallery: [],
             // Wedding-specific
             partner1: '',
@@ -43,6 +42,48 @@ const CreateRSVP: React.FC = () => {
             parkingNote: '',
             giftNote: '',
             saveTheDateBanner: '',
+
+            // Entourage
+            entourage: {
+                parents: '',
+                principalSponsorsMale: [],
+                principalSponsorsFemale: [],
+                principalSponsorsSolo: '',
+                bestMen: [],
+                matronsOfHonor: [],
+                candleSponsors: [],
+                veilSponsors: [],
+                cordSponsors: [],
+                bibleSponsors: [],
+                groomsmen: [],
+                bridesmaids: [],
+                flowerGirls: [],
+                ringBearers: [],
+                coinBearers: []
+            },
+
+            // Venues
+            ceremonyVenue: '',
+            ceremonyAddress: '',
+            ceremonyTime: '',
+            ceremonyMapUrl: '',
+            receptionVenue: '',
+            receptionAddress: '',
+            receptionTime: '',
+            receptionMapUrl: '',
+
+            // Finer Details
+            attireGuide: '',
+            giftGuide: '',
+            snapShare: '',
+
+            // Backgrounds (color or url)
+            heroBgType: 'image', heroBgValue: '',
+            entourageBgType: 'color', entourageBgValue: '#faf5ee',
+            detailsBgType: 'color', detailsBgValue: '#fffaf5',
+            eventsBgType: 'color', eventsBgValue: '#faf5ee',
+            finerBgType: 'color', finerBgValue: '#fffaf5',
+            rsvpBgType: 'color', rsvpBgValue: '#fdf6ee',
         }
     });
     const [design, setDesign] = useState({ banner: '', themeColor: '#10b981' });
@@ -72,6 +113,27 @@ const CreateRSVP: React.FC = () => {
 
     const updateDetail = (key: string, value: any) => {
         setFormData((prev: any) => ({ ...prev, details: { ...prev.details, [key]: value } }));
+    };
+
+    const updateEntourage = (key: string, value: any) => {
+        setFormData((prev: any) => ({
+            ...prev,
+            details: {
+                ...prev.details,
+                entourage: { ...prev.details.entourage, [key]: value }
+            }
+        }));
+    };
+
+    const updateBackground = (section: string, type: 'image' | 'color', value: string) => {
+        setFormData((prev: any) => ({
+            ...prev,
+            details: {
+                ...prev.details,
+                [`${section}BgType`]: type,
+                [`${section}BgValue`]: value
+            }
+        }));
     };
 
     const handleBannerUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +169,7 @@ const CreateRSVP: React.FC = () => {
         finally { setLoading(false); }
     };
 
-    const addItineraryItem = () => updateDetail('itinerary', [...formData.details.itinerary, { time: '', activity: '', location: '' }]);
+    const addItineraryItem = () => updateDetail('itinerary', [...formData.details.itinerary, { time: '', label: '', desc: '' }]);
     const updateItineraryItem = (index: number, field: string, value: string) => {
         const items = [...formData.details.itinerary];
         items[index][field] = value;
@@ -156,7 +218,7 @@ const CreateRSVP: React.FC = () => {
         <div className="create-rsvp-page section-padding">
             <div className="container">
                 <div className="step-progress">
-                    {[1, 2, 3, 4, 5, 6].map(s => (
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(s => (
                         <div key={s} className={`progress-segment ${step >= s ? 'active' : ''}`}>
                             <span className="segment-dot"></span>
                             <span className="segment-label">Step {s}</span>
@@ -187,15 +249,14 @@ const CreateRSVP: React.FC = () => {
                             </motion.div>
                         )}
 
-                        {/* STEP 2: Event Details (dynamic by type) */}
+                        {/* STEP 2: Basic Info */}
                         {step === 2 && (
                             <motion.div key="step2" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                                 <div className="step-header">
                                     <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
-                                    <h2 className="builder-title">{eventType} Details</h2>
+                                    <h2 className="builder-title">Basic Information</h2>
                                 </div>
                                 <div className="form-content">
-                                    {/* Basic fields for all types */}
                                     <div className="form-group">
                                         <label>Event Name / Title</label>
                                         <input type="text" placeholder={eventType === 'Wedding' ? 'e.g. Carlo & Janine Wedding' : `e.g. ${eventType} of Aria`} value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} />
@@ -214,349 +275,283 @@ const CreateRSVP: React.FC = () => {
                                         <label>Main Venue / Location</label>
                                         <input type="text" placeholder="Enter full address" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} />
                                     </div>
-
-                                    {/* WEDDING-SPECIFIC FORM */}
-                                    {eventType === 'Wedding' && (
-                                        <>
-                                            {/* Couple Names */}
-                                            <div className="form-section-divider">
-                                                <span>👫 Couple Details</span>
-                                            </div>
-                                            <div className="form-row">
-                                                <div className="form-group">
-                                                    <label>Partner 1 Name</label>
-                                                    <input type="text" placeholder="e.g. Carlo" value={formData.details.partner1} onChange={e => updateDetail('partner1', e.target.value)} />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label>Partner 2 Name</label>
-                                                    <input type="text" placeholder="e.g. Janine" value={formData.details.partner2} onChange={e => updateDetail('partner2', e.target.value)} />
-                                                </div>
-                                            </div>
-
-                                            {/* Hashtag */}
-                                            <div className="form-group">
-                                                <label>Wedding Hashtag</label>
-                                                <input type="text" placeholder="e.g. #ChuInfinityAndBeJohn" value={formData.details.hashtag} onChange={e => updateDetail('hashtag', e.target.value)} />
-                                                <p className="field-hint">Shown on your hero banner. Add # or leave it out — we'll add it for you.</p>
-                                            </div>
-
-                                            <div className="form-section-divider">
-                                                <span>💌 Welcome To Our Wedding</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Welcome Message</label>
-                                                <textarea
-                                                    className="form-textarea"
-                                                    rows={3}
-                                                    placeholder="e.g. We're so excited to share this day with you. Thank you for being part of our love story..."
-                                                    value={formData.details.welcomeMessage}
-                                                    onChange={e => updateDetail('welcomeMessage', e.target.value)}
-                                                />
-                                            </div>
-
-                                            {/* Our Story */}
-                                            <div className="form-section-divider">
-                                                <span>📖 Our Love Story</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Our Story</label>
-                                                <textarea
-                                                    className="form-textarea"
-                                                    rows={4}
-                                                    placeholder="Tell guests how you met, your journey, and what this day means to you..."
-                                                    value={formData.details.story}
-                                                    onChange={e => updateDetail('story', e.target.value)}
-                                                />
-                                            </div>
-
-                                            {/* Order of Events / Itinerary */}
-                                            <div className="form-section-divider">
-                                                <span>🕊️ Order of Events</span>
-                                            </div>
-                                            <div className="dynamic-section">
-                                                <div className="section-title-row">
-                                                    <p className="hint-text">Add each part of your wedding day program</p>
-                                                    <button className="add-btn-small" onClick={addItineraryItem}><Plus size={14} /> Add</button>
-                                                </div>
-                                                {formData.details.itinerary.map((item: any, idx: number) => (
-                                                    <div key={idx} className="itinerary-row-wedding">
-                                                        <input type="text" placeholder="Time (e.g. 3:00 PM)" value={item.time} onChange={e => updateItineraryItem(idx, 'time', e.target.value)} />
-                                                        <input type="text" placeholder="Event (e.g. Ceremony)" value={item.activity} onChange={e => updateItineraryItem(idx, 'activity', e.target.value)} />
-                                                        <input type="text" placeholder="Venue (optional)" value={item.location} onChange={e => updateItineraryItem(idx, 'location', e.target.value)} />
-                                                        {formData.details.itinerary.length > 1 && (
-                                                            <button className="remove-itinerary-btn" onClick={() => removeItineraryItem(idx)}><Trash2 size={14} /></button>
-                                                        )}
-                                                    </div>
-                                                ))}
-                                            </div>
-
-                                            {/* Color Motif */}
-                                            <div className="form-section-divider">
-                                                <span><Palette size={16} /> Color Motif</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Select up to 5 wedding colors</label>
-                                                <div className="motif-color-grid">
-                                                    {WEDDING_MOTIF_COLORS.map(color => (
-                                                        <button
-                                                            key={color}
-                                                            className={`motif-swatch ${formData.details.colorMotif.includes(color) ? 'selected' : ''}`}
-                                                            style={{ background: color }}
-                                                            onClick={() => toggleMotifColor(color)}
-                                                            title={color}
-                                                        >
-                                                            {formData.details.colorMotif.includes(color) && <Check size={14} color="white" />}
-                                                        </button>
-                                                    ))}
-                                                </div>
-                                                <div className="selected-motifs">
-                                                    <p className="hint-text">Selected:&nbsp;
-                                                        {formData.details.colorMotif.map((c: string) => (
-                                                            <span key={c} style={{ display: 'inline-block', width: 16, height: 16, background: c, borderRadius: '50%', marginRight: 4 }} />
-                                                        ))}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            {/* Dress Code */}
-                                            <div className="form-section-divider">
-                                                <span>👗 Dress Code</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Dress Code Instructions</label>
-                                                <textarea
-                                                    className="form-textarea"
-                                                    rows={2}
-                                                    placeholder="e.g. We kindly request Formal Attire. Ladies, please avoid wearing white..."
-                                                    value={formData.details.dressCode}
-                                                    onChange={e => updateDetail('dressCode', e.target.value)}
-                                                />
-                                            </div>
-
-                                            {/* Parking Note */}
-                                            <div className="form-section-divider">
-                                                <span>🚗 Parking Note</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Travel & Parking Information</label>
-                                                <textarea
-                                                    className="form-textarea"
-                                                    rows={3}
-                                                    placeholder="e.g. Free parking is available at the venue. Valet service available for ₱150..."
-                                                    value={formData.details.parkingNote}
-                                                    onChange={e => updateDetail('parkingNote', e.target.value)}
-                                                />
-                                            </div>
-
-                                            {/* Note on Gifts */}
-                                            <div className="form-section-divider">
-                                                <span>🎁 A Note on Gifts</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Gift Message to Guests</label>
-                                                <textarea
-                                                    className="form-textarea"
-                                                    rows={3}
-                                                    placeholder="e.g. Your presence is the greatest gift! If you'd like to give something, a monetary gift or contribution to our honeymoon fund is deeply appreciated..."
-                                                    value={formData.details.giftNote}
-                                                    onChange={e => updateDetail('giftNote', e.target.value)}
-                                                />
-                                            </div>
-
-                                            {/* Photo Gallery */}
-                                            <div className="form-section-divider">
-                                                <span>📸 Photo Gallery</span>
-                                            </div>
-                                            <div className="form-group">
-                                                <label>Upload Wedding Photos (up to 6)</label>
-                                                <div className="gallery-upload-container">
-                                                    <div className="gallery-preview-grid">
-                                                        {formData.details.gallery.map((url: string, i: number) => (
-                                                            <div key={i} className="gallery-preview-item">
-                                                                <img src={url} alt={`Gallery ${i}`} />
-                                                                <button className="del-photo" onClick={() => updateDetail('gallery', formData.details.gallery.filter((_: any, idx: number) => idx !== i))}><Trash2 size={12} /></button>
-                                                            </div>
-                                                        ))}
-                                                        {formData.details.gallery.length < 6 && (
-                                                            <div className="gallery-add-box">
-                                                                <Camera size={20} />
-                                                                <input type="file" multiple accept="image/*" onChange={handleGalleryUpload} />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                    {loading && <p className="upload-hint">Uploading photos...</p>}
-                                                </div>
-                                            </div>
-                                        </>
-                                    )}
-
-                                    {/* BIRTHDAY-SPECIFIC: Itinerary only */}
-                                    {eventType === 'Birthday' && (
-                                        <div className="dynamic-section">
-                                            <div className="section-title-row">
-                                                <label>Event Program / Itinerary</label>
-                                                <button className="add-btn-small" onClick={addItineraryItem}><Plus size={14} /> Add Item</button>
-                                            </div>
-                                            {formData.details.itinerary.map((item: any, idx: number) => (
-                                                <div key={idx} className="itinerary-row form-row">
-                                                    <div className="form-group">
-                                                        <input type="text" placeholder="Time (e.g. 5:00 PM)" value={item.time} onChange={e => updateItineraryItem(idx, 'time', e.target.value)} />
-                                                    </div>
-                                                    <div className="form-group relative">
-                                                        <input type="text" placeholder="Activity (e.g. Dinner)" value={item.activity} onChange={e => updateItineraryItem(idx, 'activity', e.target.value)} />
-                                                        {formData.details.itinerary.length > 1 && (
-                                                            <button className="remove-btn-small" onClick={() => removeItineraryItem(idx)}><Trash2 size={14} /></button>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            ))}
+                                    <div className="form-group">
+                                        <label>Main Banner Image</label>
+                                        <div className="mini-upload" style={{ width: '100%', height: '120px' }}>
+                                            {design.banner ? (
+                                                <img src={design.banner} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.6rem' }} alt="banner" />
+                                            ) : (
+                                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}><Upload size={20} /> <span>Upload Banner</span></div>
+                                            )}
+                                            <input type="file" onChange={handleBannerUpload} />
                                         </div>
-                                    )}
-
-                                    <button className="btn btn-primary submit-btn" onClick={nextStep} disabled={!formData.title || !formData.date}>
-                                        Next: Style & Design <ArrowRight size={18} />
+                                    </div>
+                                    <button className="btn btn-primary submit-btn" onClick={() => {
+                                        if (eventType === 'Wedding') nextStep();
+                                        else setStep(5); // Jump to Venues/Itinerary for others
+                                    }} disabled={!formData.title || !formData.date}>
+                                        Next Step <ArrowRight size={18} />
                                     </button>
                                 </div>
                             </motion.div>
                         )}
 
-                        {/* STEP 3: Design */}
-                        {step === 3 && (
+                        {/* STEP 3: Couple & Story (Wedding Only) */}
+                        {step === 3 && eventType === 'Wedding' && (
                             <motion.div key="step3" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                                 <div className="step-header">
                                     <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
-                                    <h2 className="builder-title">Customize Design</h2>
+                                    <h2 className="builder-title">Couple & Love Story</h2>
                                 </div>
-                                <div className="design-grid">
-                                    <div className="design-controls">
+                                <div className="form-content">
+                                    <div className="form-row">
                                         <div className="form-group">
-                                            <label>Hero Banner / Header Photo</label>
-                                            <div className="upload-box">
-                                                {design.banner ? <img src={design.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.75rem', position: 'absolute', inset: 0 }} /> : null}
-                                                {loading ? <Loader2 className="animate-spin" /> : <Upload size={30} />}
-                                                <p>{loading ? 'Uploading...' : design.banner ? 'Click to replace' : 'Click to upload banner'}</p>
-                                                <input type="file" className="file-input" onChange={handleBannerUpload} disabled={loading} accept="image/*" />
-                                            </div>
+                                            <label>Partner 1 Name</label>
+                                            <input type="text" placeholder="e.g. Carlo" value={formData.details.partner1} onChange={e => updateDetail('partner1', e.target.value)} />
                                         </div>
-
-                                        {eventType === 'Wedding' && (
-                                            <div className="form-group">
-                                                <label>Save The Date Background</label>
-                                                <div className="upload-box">
-                                                    {formData.details.saveTheDateBanner ? <img src={formData.details.saveTheDateBanner} alt="STD Banner" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '0.75rem', position: 'absolute', inset: 0 }} /> : null}
-                                                    <Upload size={30} />
-                                                    <p>{formData.details.saveTheDateBanner ? 'Click to replace STD background' : 'Click to upload STD background'}</p>
-                                                    <input
-                                                        type="file"
-                                                        className="file-input"
-                                                        accept="image/*"
-                                                        onChange={async (e) => {
-                                                            const file = e.target.files?.[0];
-                                                            if (!file) return;
-                                                            try {
-                                                                const path = `std-banners/${user?.id}/${Date.now()}-${file.name}`;
-                                                                const { error: upErr } = await supabase.storage.from('event-assets').upload(path, file);
-                                                                if (upErr) throw upErr;
-                                                                const { data: { publicUrl } } = supabase.storage.from('event-assets').getPublicUrl(path);
-                                                                updateDetail('saveTheDateBanner', publicUrl);
-                                                            } catch (err) {
-                                                                console.error(err);
-                                                            }
-                                                        }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        )}
                                         <div className="form-group">
-                                            <label>Template Accent Color</label>
-                                            <div className="color-picker-grid">
-                                                {(eventType === 'Wedding'
-                                                    ? ['#c8a97e', '#b5887a', '#a8c5a0', '#9db4c0', '#c4b7d7', '#8b7355']
-                                                    : ['#064e3b', '#10b981', '#f59e0b', '#ef4444', '#6366f1', '#ec4899', '#8b5cf6']
-                                                ).map(c => (
-                                                    <button key={c} className={`color-dot ${design.themeColor === c ? 'active' : ''}`} style={{ background: c }} onClick={() => setDesign({ ...design, themeColor: c })} />
-                                                ))}
-                                            </div>
-                                            {eventType === 'Wedding' && <p className="hint-text mt-2">Wedding: Recommended warm gold tone</p>}
-                                        </div>
-                                        <button className="btn btn-primary submit-btn" onClick={nextStep}>
-                                            Next: Choose URL <ArrowRight size={18} />
-                                        </button>
-                                    </div>
-                                    <div className="design-preview">
-                                        <div className="mock-rsvp glass-card">
-                                            <div className="mock-banner" style={{ background: design.themeColor + '30', position: 'relative', overflow: 'hidden' }}>
-                                                {design.banner ? <img src={design.banner} alt="Banner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={40} />}
-                                            </div>
-                                            <div className="mock-content">
-                                                <h3>{formData.title || 'Event Title'}</h3>
-                                                <p>{formData.date || 'Date'} • {formData.location || 'Location'}</p>
-                                                <div className="mock-btn" style={{ background: design.themeColor }}>RSVP</div>
-                                            </div>
+                                            <label>Partner 2 Name</label>
+                                            <input type="text" placeholder="e.g. Janine" value={formData.details.partner2} onChange={e => updateDetail('partner2', e.target.value)} />
                                         </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        )}
-
-                        {/* STEP 4: URL */}
-                        {step === 4 && (
-                            <motion.div key="step4" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
-                                <div className="step-header">
-                                    <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
-                                    <h2 className="builder-title">Secure Your URL</h2>
-                                </div>
-                                <div className="url-builder">
-                                    <div className="url-input-group">
-                                        <span className="url-prefix">inviteuonline.vercel.app/</span>
-                                        <input type="text" placeholder="your-event-name" value={slug} onChange={e => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))} />
+                                    <div className="form-group">
+                                        <label>Wedding Hashtag</label>
+                                        <input type="text" placeholder="e.g. #CarloAndJanine" value={formData.details.hashtag} onChange={e => updateDetail('hashtag', e.target.value)} />
                                     </div>
-                                    <p className="url-hint">Keep it simple and memorable!</p>
-                                    <button className="btn btn-primary submit-btn" onClick={nextStep} disabled={!slug}>
-                                        Review & Publish <ArrowRight size={18} />
+                                    <div className="form-group">
+                                        <label>Welcome Message</label>
+                                        <textarea rows={3} placeholder="Introduction to your guests..." value={formData.details.welcomeMessage} onChange={e => updateDetail('welcomeMessage', e.target.value)} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Our Story</label>
+                                        <textarea rows={5} placeholder="How you met, your journey, etc..." value={formData.details.story} onChange={e => updateDetail('story', e.target.value)} />
+                                    </div>
+                                    <button className="btn btn-primary submit-btn" onClick={nextStep}>
+                                        Next: Wedding Entourage <ArrowRight size={18} />
                                     </button>
                                 </div>
                             </motion.div>
                         )}
 
-                        {/* STEP 5: Review & Payment */}
+                        {/* STEP 4: Entourage (Wedding Only) */}
+                        {step === 4 && eventType === 'Wedding' && (
+                            <motion.div key="step4" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                                <div className="step-header">
+                                    <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
+                                    <h2 className="builder-title">Wedding Entourage</h2>
+                                </div>
+                                <div className="form-content entourage-form">
+                                    <div className="form-group">
+                                        <label>Parents</label>
+                                        <textarea rows={2} placeholder="Sovereign of the Ceremony..." value={formData.details.entourage.parents} onChange={e => updateEntourage('parents', e.target.value)} />
+                                    </div>
+
+                                    <div className="entourage-grid">
+                                        <div className="ent-column">
+                                            <label className="section-label">Principal Sponsors</label>
+                                            <p className="hint-text">Separate names with commas</p>
+                                            <textarea rows={3} placeholder="Mr. Juan, Mr. Jose..." value={formData.details.entourage.principalSponsorsMale.join(', ')} onChange={e => updateEntourage('principalSponsorsMale', e.target.value.split(',').map(n => n.trim()))} />
+                                            <textarea rows={3} placeholder="Mrs. Juana, Ms. Maria..." value={formData.details.entourage.principalSponsorsFemale.join(', ')} onChange={e => updateEntourage('principalSponsorsFemale', e.target.value.split(',').map(n => n.trim()))} />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-row">
+                                        <div className="form-group">
+                                            <label>Best Men</label>
+                                            <input type="text" placeholder="Names comma separated" value={formData.details.entourage.bestMen.join(', ')} onChange={e => updateEntourage('bestMen', e.target.value.split(',').map(n => n.trim()))} />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Matrons of Honor</label>
+                                            <input type="text" placeholder="Names comma separated" value={formData.details.entourage.matronsOfHonor.join(', ')} onChange={e => updateEntourage('matronsOfHonor', e.target.value.split(',').map(n => n.trim()))} />
+                                        </div>
+                                    </div>
+
+                                    <div className="form-section-divider"><span>Secondary Sponsors</span></div>
+                                    <div className="form-row">
+                                        <div className="form-group"><label>Candle</label><input type="text" value={formData.details.entourage.candleSponsors.join(', ')} onChange={e => updateEntourage('candleSponsors', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                        <div className="form-group"><label>Veil</label><input type="text" value={formData.details.entourage.veilSponsors.join(', ')} onChange={e => updateEntourage('veilSponsors', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                    </div>
+                                    <div className="form-row">
+                                        <div className="form-group"><label>Cord</label><input type="text" value={formData.details.entourage.cordSponsors.join(', ')} onChange={e => updateEntourage('cordSponsors', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                        <div className="form-group"><label>Bible</label><input type="text" value={formData.details.entourage.bibleSponsors.join(', ')} onChange={e => updateEntourage('bibleSponsors', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                    </div>
+
+                                    <div className="form-section-divider"><span>Party</span></div>
+                                    <div className="form-row">
+                                        <div className="form-group"><label>Groomsmen</label><textarea value={formData.details.entourage.groomsmen.join(', ')} onChange={e => updateEntourage('groomsmen', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                        <div className="form-group"><label>Bridesmaids</label><textarea value={formData.details.entourage.bridesmaids.join(', ')} onChange={e => updateEntourage('bridesmaids', e.target.value.split(',').map(n => n.trim()))} /></div>
+                                    </div>
+
+                                    <button className="btn btn-primary submit-btn" onClick={nextStep}>Next step <ArrowRight size={18} /></button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* STEP 5: Venues & Program */}
                         {step === 5 && (
                             <motion.div key="step5" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
                                 <div className="step-header">
                                     <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
-                                    <h2 className="builder-title">Final Review</h2>
+                                    <h2 className="builder-title">Venues & Program</h2>
+                                </div>
+                                <div className="form-content">
+                                    <div className="form-section-divider"><span>Ceremony</span></div>
+                                    <div className="form-group"><label>Venue Name</label><input type="text" value={formData.details.ceremonyVenue} onChange={e => updateDetail('ceremonyVenue', e.target.value)} /></div>
+                                    <div className="form-group"><label>Address</label><input type="text" value={formData.details.ceremonyAddress} onChange={e => updateDetail('ceremonyAddress', e.target.value)} /></div>
+                                    <div className="form-row">
+                                        <div className="form-group"><label>Time</label><input type="text" placeholder="e.g. 3:00 PM" value={formData.details.ceremonyTime} onChange={e => updateDetail('ceremonyTime', e.target.value)} /></div>
+                                        <div className="form-group"><label>Map Link</label><input type="text" placeholder="Google Maps URL" value={formData.details.ceremonyMapUrl} onChange={e => updateDetail('ceremonyMapUrl', e.target.value)} /></div>
+                                    </div>
+
+                                    <div className="form-section-divider"><span>Reception</span></div>
+                                    <div className="form-group"><label>Venue Name</label><input type="text" value={formData.details.receptionVenue} onChange={e => updateDetail('receptionVenue', e.target.value)} /></div>
+                                    <div className="form-group"><label>Address</label><input type="text" value={formData.details.receptionAddress} onChange={e => updateDetail('receptionAddress', e.target.value)} /></div>
+                                    <div className="form-row">
+                                        <div className="form-group"><label>Time</label><input type="text" placeholder="e.g. 6:00 PM" value={formData.details.receptionTime} onChange={e => updateDetail('receptionTime', e.target.value)} /></div>
+                                        <div className="form-group"><label>Map Link</label><input type="text" placeholder="Google Maps URL" value={formData.details.receptionMapUrl} onChange={e => updateDetail('receptionMapUrl', e.target.value)} /></div>
+                                    </div>
+
+                                    <div className="form-section-divider"><span>Order of Events</span></div>
+                                    <div className="dynamic-section">
+                                        <div className="section-title-row">
+                                            <label>Timeline</label>
+                                            <button className="add-btn-small" onClick={addItineraryItem}><Plus size={14} /> Add Event</button>
+                                        </div>
+                                        {formData.details.itinerary.map((item: any, idx: number) => (
+                                            <div key={idx} className="itinerary-row-wedding">
+                                                <input type="text" placeholder="T" value={item.time} onChange={e => updateItineraryItem(idx, 'time', e.target.value)} style={{ width: 80 }} />
+                                                <input type="text" placeholder="Label (e.g. We Do)" value={item.label} onChange={e => updateItineraryItem(idx, 'label', e.target.value)} />
+                                                <input type="text" placeholder="Desc (e.g. Ceremony)" value={item.desc} onChange={e => updateItineraryItem(idx, 'desc', e.target.value)} />
+                                                {formData.details.itinerary.length > 1 && <button className="remove-itinerary-btn" onClick={() => removeItineraryItem(idx)}><Trash2 size={14} /></button>}
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button className="btn btn-primary submit-btn" onClick={nextStep}>Next step <ArrowRight size={18} /></button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* STEP 6: Finer Details & Background Customization */}
+                        {step === 6 && (
+                            <motion.div key="step6" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                                <div className="step-header">
+                                    <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
+                                    <h2 className="builder-title">Finer Details & Section Backgrounds</h2>
+                                </div>
+                                <div className="form-content">
+                                    <div className="form-group"><label>👗 Attire Guide</label><textarea rows={3} value={formData.details.attireGuide} onChange={e => updateDetail('attireGuide', e.target.value)} /></div>
+                                    <div className="form-group"><label>🎁 Gift Guide</label><textarea rows={3} value={formData.details.giftNote} onChange={e => updateDetail('giftNote', e.target.value)} /></div>
+                                    <div className="form-group"><label>📸 Snap & Share Note</label><textarea rows={3} value={formData.details.snapShare} onChange={e => updateDetail('snapShare', e.target.value)} /></div>
+
+                                    <div className="form-section-divider"><span>Section Backgrounds</span></div>
+                                    <p className="hint-text mb-4">Users can select color or upload image background for each section.</p>
+
+                                    {['Hero', 'Entourage', 'Details', 'Events', 'Finer', 'RSVP'].map((section) => (
+                                        <div key={section} className="bg-setter-row">
+                                            <label className="section-label">{section} Section</label>
+                                            <div className="bg-options">
+                                                <button className={`bg-opt ${formData.details[`${section.toLowerCase()}BgType`] === 'color' ? 'active' : ''}`} onClick={() => updateBackground(section.toLowerCase(), 'color', formData.details[`${section.toLowerCase()}BgValue`] || '#ffffff')}>Color</button>
+                                                <button className={`bg-opt ${formData.details[`${section.toLowerCase()}BgType`] === 'image' ? 'active' : ''}`} onClick={() => updateBackground(section.toLowerCase(), 'image', '')}>Image</button>
+                                            </div>
+                                            {formData.details[`${section.toLowerCase()}BgType`] === 'color' ? (
+                                                <input type="color" value={formData.details[`${section.toLowerCase()}BgValue`] || '#ffffff'} onChange={(e) => updateBackground(section.toLowerCase(), 'color', e.target.value)} className="color-input-mini" />
+                                            ) : (
+                                                <div className="mini-upload">
+                                                    <Upload size={14} />
+                                                    <input type="file" onChange={async (e) => {
+                                                        const file = e.target.files?.[0];
+                                                        if (!file) return;
+                                                        const path = `bg-${section.toLowerCase()}/${Date.now()}-${file.name}`;
+                                                        const { error: upErr } = await supabase.storage.from('event-assets').upload(path, file);
+                                                        if (!upErr) {
+                                                            const { data } = supabase.storage.from('event-assets').getPublicUrl(path);
+                                                            updateBackground(section.toLowerCase(), 'image', data.publicUrl);
+                                                        }
+                                                    }} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <button className="btn btn-primary submit-btn" onClick={nextStep}>Next step <ArrowRight size={18} /></button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* STEP 7: Style & Gallery (Original Step 3 mapping) */}
+                        {step === 7 && (
+                            <motion.div key="step7" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                                <div className="step-header">
+                                    <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
+                                    <h2 className="builder-title">Style & Gallery</h2>
+                                </div>
+                                <div className="form-content">
+                                    <div className="form-group">
+                                        <label>Main Photo Gallery</label>
+                                        <div className="gallery-upload-container">
+                                            <div className="gallery-preview-grid">
+                                                {formData.details.gallery.map((url: string, i: number) => (
+                                                    <div key={i} className="gallery-preview-item">
+                                                        <img src={url} alt={`Gallery ${i}`} />
+                                                        <button className="del-photo" onClick={() => updateDetail('gallery', formData.details.gallery.filter((_: any, idx: number) => idx !== i))}><Trash2 size={12} /></button>
+                                                    </div>
+                                                ))}
+                                                {formData.details.gallery.length < 12 && (
+                                                    <div className="gallery-add-box"><Camera size={20} /><input type="file" multiple accept="image/*" onChange={handleGalleryUpload} /></div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Color Motif Selection</label>
+                                        <div className="motif-color-grid">
+                                            {WEDDING_MOTIF_COLORS.map(color => (
+                                                <button key={color} className={`motif-swatch ${formData.details.colorMotif.includes(color) ? 'selected' : ''}`} style={{ background: color }} onClick={() => toggleMotifColor(color)} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Accent Color</label>
+                                        <div className="color-picker-grid">
+                                            {['#c8a97e', '#b5887a', '#a8c5a0', '#9db4c0', '#c4b7d7', '#8b7355'].map(c => (
+                                                <button key={c} className={`color-dot ${design.themeColor === c ? 'active' : ''}`} style={{ background: c }} onClick={() => setDesign({ ...design, themeColor: c })} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <button className="btn btn-primary submit-btn" onClick={nextStep}>Next: URL & Publish <ArrowRight size={18} /></button>
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* STEP 8: URL & Review (Original Step 4/5 mapping) */}
+                        {step === 8 && (
+                            <motion.div key="step8" className="builder-step" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
+                                <div className="step-header">
+                                    <button className="back-btn" onClick={prevStep}><ArrowLeft size={20} /></button>
+                                    <h2 className="builder-title">Final Review & URL</h2>
+                                </div>
+                                <div className="url-builder" style={{ marginBottom: '2rem' }}>
+                                    <div className="url-input-group">
+                                        <span className="url-prefix">inviteuonline.vercel.app/</span>
+                                        <input type="text" placeholder="your-event-url" value={slug} onChange={e => setSlug(e.target.value.toLowerCase().replace(/\s+/g, '-'))} />
+                                    </div>
                                 </div>
                                 <div className="checkout-grid">
                                     <div className="order-summary glass-card">
                                         <h3>{formData.title}</h3>
                                         <p className="summary-date">{formData.date} at {formData.time}</p>
                                         <p className="summary-loc">{formData.location}</p>
-                                        <div className="summary-badge" style={{ background: design.themeColor + '20', color: design.themeColor }}>
-                                            {eventType} Dedicated Template
-                                        </div>
-                                        {eventType === 'Wedding' && formData.details.colorMotif.length > 0 && (
-                                            <div className="review-motif">
-                                                <span>Color Motif:</span>
-                                                {formData.details.colorMotif.map((c: string) => (
-                                                    <span key={c} style={{ display: 'inline-block', width: 18, height: 18, background: c, borderRadius: '50%', marginLeft: 4 }} />
-                                                ))}
-                                            </div>
-                                        )}
+                                        <div className="summary-badge" style={{ background: design.themeColor + '20', color: design.themeColor }}>{eventType} Template</div>
                                     </div>
                                     <div className="payment-section">
-                                        <div className="price-row"><span>Publication Fee</span><span>$19.00</span></div>
-                                        <div className="price-row total"><span>Total</span><span>$19.00</span></div>
-                                        <button className="btn btn-primary submit-btn" onClick={handleFinalPublish} disabled={loading}>
-                                            {loading ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> Finalize & Publish</>}
-                                        </button>
-                                        <p className="secure-text">🔒 Secure payment with Stripe</p>
+                                        <div className="price-row total"><span>Total Publication Fee</span><span>$19.00</span></div>
+                                        <button className="btn btn-primary submit-btn" onClick={handleFinalPublish} disabled={loading}>{loading ? <Loader2 className="animate-spin" /> : <><CreditCard size={18} /> Publish Now</>}</button>
                                     </div>
                                 </div>
                             </motion.div>
                         )}
 
-                        {/* STEP 6: Success */}
-                        {step === 6 && (
+                        {/* STEP 9: Success */}
+                        {step === 9 && (
                             <motion.div key="step6" className="builder-step success-step" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}>
                                 <div className="success-icon-bg"><Check size={40} /></div>
                                 <h2 className="builder-title">{isPaid ? "It's LIVE! 🎉" : 'RSVP Saved as Draft'}</h2>
@@ -601,71 +596,60 @@ const CreateRSVP: React.FC = () => {
         .form-group input:focus, .form-textarea:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1); }
         .form-textarea { resize: vertical; font-family: inherit; }
 
-        .form-section-divider { display: flex; align-items: center; gap: 1rem; color: #64748b; font-weight: 800; font-size: 0.95rem; padding: 0.5rem 0; border-bottom: 2px solid #f1f5f9; margin-top: 0.5rem; }
-
-        .dynamic-section { background: #f8fafc; padding: 1.5rem; border-radius: 1rem; border: 1px solid #e2e8f0; }
-        .section-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .add-btn-small { background: #10b981; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; }
-        .relative { position: relative; }
-        .remove-btn-small { position: absolute; right: 0.75rem; top: 1rem; background: #fee2e2; color: #ef4444; border: none; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-
-        .itinerary-row-wedding { display: grid; grid-template-columns: 120px 1fr 1fr 36px; gap: 0.75rem; margin-bottom: 0.75rem; align-items: center; }
-        .itinerary-row-wedding input { padding: 0.75rem 1rem; border-radius: 0.6rem; border: 1px solid #e2e8f0; background: white; font-size: 0.9rem; }
-        .remove-itinerary-btn { background: #fee2e2; color: #ef4444; border: none; width: 36px; height: 36px; border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-
-        .motif-color-grid { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }
-        .motif-swatch { width: 40px; height: 40px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 0 0 1px #e2e8f0; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        .motif-swatch.selected { box-shadow: 0 0 0 3px #0f172a; transform: scale(1.15); }
-        .selected-motifs { margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        .form-section-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1rem; color: #94a3b8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .form-section-divider::after { content: ''; flex: 1; height: 1px; background: #eaeff5; }
         
-        .gallery-upload-container { background: #f1f5f9; padding: 1.5rem; border-radius: 1rem; }
-        .gallery-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-        .gallery-preview-item { height: 80px; border-radius: 0.5rem; overflow: hidden; position: relative; }
+        .entourage-form textarea { width: 100%; border-radius: 0.75rem; border: 1px solid #e2e8f0; padding: 1rem; font-size: 0.95rem; margin-top: 0.5rem; }
+        .itinerary-row-wedding { display: grid; grid-template-columns: 100px 1fr 1fr 36px; gap: 0.75rem; margin-bottom: 0.75rem; align-items: center; }
+        .itinerary-row-wedding input { padding: 0.75rem 1rem !important; font-size: 0.9rem !important; }
+        .remove-itinerary-btn { background: #fee2e2; color: #ef4444; border: none; width: 36px; height: 36px; border-radius: 0.6rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        .bg-setter-row { display: flex; align-items: center; gap: 1rem; padding: 1.25rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; margin-bottom: 0.75rem; }
+        .bg-options { display: flex; gap: 0.4rem; }
+        .bg-opt { padding: 0.5rem 0.75rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; background: white; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .bg-opt.active { background: #10b981; color: white; border-color: #10b981; }
+        .color-input-mini { width: 36px; height: 36px; border: 3px solid white; border-radius: 50%; padding: 0; cursor: pointer; box-shadow: 0 0 0 1px #e2e8f0; }
+        .mini-upload { position: relative; width: 36px; height: 36px; background: white; border: 1px solid #e2e8f0; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #64748b; }
+        .mini-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+        .section-label { min-width: 110px; font-weight: 800; color: #334155; font-size: 0.85rem; text-transform: uppercase; }
+        .hint-text { font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem; font-style: italic; }
+
+        .motif-color-grid { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+        .motif-swatch { width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 0 0 1px #e2e8f0; }
+        .motif-swatch.selected { box-shadow: 0 0 0 2px #0f172a; transform: scale(1.1); }
+
+        .gallery-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .gallery-preview-item { aspect-ratio: 1; border-radius: 0.75rem; overflow: hidden; position: relative; }
         .gallery-preview-item img { width: 100%; height: 100%; object-fit: cover; }
-        .del-photo { position: absolute; inset: 0; background: rgba(239, 68, 68, 0.8); color: white; border: none; opacity: 0; transition: 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .del-photo { position: absolute; inset: 0; background: rgba(239, 68, 68, 0.85); color: white; border: none; opacity: 0; transition: 0.2s; cursor: pointer; display: flex; align-items: center; justify-content: center; }
         .gallery-preview-item:hover .del-photo { opacity: 1; }
-        .gallery-add-box { height: 80px; border: 2px dashed #cbd5e1; border-radius: 0.5rem; position: relative; display: flex; align-items: center; justify-content: center; color: #94a3b8; }
+        .gallery-add-box { aspect-ratio: 1; border: 2px dashed #cbd5e1; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; color: #94a3b8; position: relative; transition: 0.2s; }
+        .gallery-add-box:hover { border-color: var(--primary); color: var(--primary); }
         .gallery-add-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .upload-hint { font-size: 0.75rem; color: #64748b; text-align: center; }
 
-        .design-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
-        .upload-box { border: 2px dashed #e2e8f0; border-radius: 1rem; padding: 2.5rem; text-align: center; color: var(--text-muted); position: relative; min-height: 140px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; overflow: hidden; }
-        .file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-        .color-picker-grid { display: flex; gap: 1rem; margin-top: 0.5rem; flex-wrap: wrap; }
-        .color-dot { width: 36px; height: 36px; border-radius: 50%; border: 3px solid white; cursor: pointer; box-shadow: 0 0 0 1px #e2e8f0; }
-        .color-dot.active { box-shadow: 0 0 0 2px #000; transform: scale(1.1); }
-        .hint-text { font-size: 0.8rem; color: #64748b; font-style: italic; }
-        .mt-2 { margin-top: 0.5rem; }
-
-        .design-preview { background: #f8fafc; padding: 2rem; border-radius: 1.5rem; }
-        .mock-rsvp { background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
-        .mock-banner { height: 160px; display: flex; align-items: center; justify-content: center; color: #cbd5e1; }
-        .mock-content { padding: 1.5rem; text-align: center; }
-        .mock-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: #0f172a; }
-        .mock-content p { font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem; }
-        .mock-btn { color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem; }
-        
         .url-builder { max-width: 500px; margin: 0 auto; text-align: center; }
         .url-input-group { display: flex; align-items: center; background: #f1f5f9; border-radius: 0.75rem; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 1rem; }
-        .url-prefix { padding: 0 1.25rem; color: #64748b; font-weight: 700; border-right: 1px solid #e2e8f0; height: 100%; display: flex; align-items: center; white-space: nowrap; font-size: 0.85rem; }
-        .url-builder input { border: none !important; background: transparent !important; flex: 1; }
+        .url-prefix { padding: 0 1.25rem; color: #64748b; font-weight: 700; border-right: 1px solid #eaeff5; height: 48px; display: flex; align-items: center; white-space: nowrap; font-size: 0.85rem; }
+        .url-input-group input { border: none !important; background: transparent !important; flex: 1; height: 48px; padding: 0 1rem !important; }
         
-        .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        .order-summary { padding: 2rem; background: #f0fdf4; border: 1px solid #dcfce7; }
-        .order-summary h3 { font-size: 1.5rem; color: #064e3b; margin-bottom: 0.5rem; }
-        .summary-date { font-weight: 600; color: #166534; }
-        .summary-loc { margin-bottom: 1.5rem; color: #166534; opacity: 0.8; }
-        .summary-badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.8rem; font-weight: 700; }
-        .review-motif { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; font-size: 0.85rem; color: #475569; font-weight: 600; }
-        .price-row { display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #e2e8f0; font-weight: 600; }
-        .price-row.total { font-size: 1.25rem; font-weight: 800; color: #0f172a; border-bottom: none; }
-        .secure-text { text-align: center; font-size: 0.85rem; color: #64748b; margin-top: 1rem; }
+        .checkout-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 900px; margin: 0 auto; }
+        @media (max-width: 800px) { .checkout-grid { grid-template-columns: 1fr; } .itinerary-row-wedding { grid-template-columns: 1fr; gap: 0.5rem; } .bg-setter-row { flex-direction: column; align-items: flex-start; } }
+
+        .order-summary { padding: 2rem; background: #fff; border: 1px solid #e2e8f0; }
+        .order-summary h3 { font-size: 1.5rem; color: #0f172a; margin-bottom: 0.5rem; }
+        .summary-date { font-weight: 600; color: #64748b; }
+        .summary-loc { margin-bottom: 1.5rem; color: #94a3b8; }
+        .summary-badge { display: inline-block; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+        .price-row { display: flex; justify-content: space-between; padding: 1rem 0; font-weight: 700; color: #475569; }
+        .price-row.total { font-size: 1.4rem; font-weight: 900; color: #0f172a; }
         
         .success-step { text-align: center; padding: 4rem 0; }
         .success-icon-bg { width: 90px; height: 90px; background: #dcfce7; color: #10b981; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2.5rem; }
         .live-link-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 1.25rem 2rem; border-radius: 1rem; display: inline-flex; align-items: center; gap: 1.5rem; margin-bottom: 3rem; font-weight: 700; font-size: 0.9rem; }
         .copy-link { color: var(--primary); background: transparent; border: none; font-weight: 800; cursor: pointer; }
-        .submit-btn { margin-top: 1rem; }
+        
+        .submit-btn { width: 100%; height: 56px; margin-top: 1rem; font-size: 1rem; font-weight: 800; border-radius: 1rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
         .animate-spin { animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
       `}</style>
