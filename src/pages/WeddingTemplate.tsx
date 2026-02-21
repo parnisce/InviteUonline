@@ -247,16 +247,60 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                                 ))}
                             </div>
                         </div>
-                        <div className="wt-ent-parents-row" style={{ marginTop: '1.5rem' }}>
+                        {/* Cord — centered */}
+                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                            <h4 className="wt-ent-sub-title">Cord</h4>
+                            {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                <p key={i} className="wt-ent-name">{name}</p>
+                            ))}
+                        </div>
+                        {/* Bible — centered */}
+                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                            <h4 className="wt-ent-sub-title">Bible</h4>
+                            {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                <p key={i} className="wt-ent-name">{name}</p>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Groomsmen & Bridesmaids */}
+                    <div className="wt-ent-block">
+                        <div className="wt-ent-parents-row">
                             <div className="wt-ent-col">
-                                <h4 className="wt-ent-sub-title">Cord</h4>
-                                {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                <h3 className="wt-ent-group-title">Groomsmen</h3>
+                                {(d.entourage?.groomsmen || ['Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz']).map((name: string, i: number) => (
                                     <p key={i} className="wt-ent-name">{name}</p>
                                 ))}
                             </div>
                             <div className="wt-ent-col">
-                                <h4 className="wt-ent-sub-title">Bible</h4>
-                                {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                <h3 className="wt-ent-group-title">Bridesmaids</h3>
+                                {(d.entourage?.bridesmaids || ['Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Flower Girls — centered */}
+                    <div className="wt-ent-block" style={{ textAlign: 'center' }}>
+                        <h3 className="wt-ent-group-title">Flower Girls</h3>
+                        {(d.entourage?.flowerGirls || ['Juana', 'Juana', 'Juana']).map((name: string, i: number) => (
+                            <p key={i} className="wt-ent-name">{name}</p>
+                        ))}
+                    </div>
+
+                    {/* Ring Bearer & Coin Bearer */}
+                    <div className="wt-ent-block">
+                        <div className="wt-ent-parents-row">
+                            <div className="wt-ent-col">
+                                <h3 className="wt-ent-group-title">Ring Bearer</h3>
+                                {(d.entourage?.ringBearers || ['Mr. Juan Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                            </div>
+                            <div className="wt-ent-col">
+                                <h3 className="wt-ent-group-title">Coin Bearer</h3>
+                                {(d.entourage?.coinBearers || ['Ms. Juana Dela Cruz']).map((name: string, i: number) => (
                                     <p key={i} className="wt-ent-name">{name}</p>
                                 ))}
                             </div>
