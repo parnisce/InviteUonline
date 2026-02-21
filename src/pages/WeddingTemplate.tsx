@@ -195,23 +195,59 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         </div>
                     </div>
 
-                    {/* Principal Sponsors */}
-                    <div className="wt-ent-block">
-                        <h3 className="wt-ent-group-title wt-ent-center">Principal Sponsors</h3>
-                        <div className="wt-ent-sponsors-grid">
-                            {(d.entourage?.principalSponsorsMale || ['Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
-                            {(d.entourage?.principalSponsorsFemale || ['Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
+                    {/* Principal & Secondary Sponsors — side by side */}
+                    <div className="wt-ent-sponsors-side">
+
+                        {/* Principal Sponsors */}
+                        <div className="wt-ent-block">
+                            <h3 className="wt-ent-group-title wt-ent-center">Principal Sponsors</h3>
+                            <div className="wt-ent-sponsors-grid">
+                                {(d.entourage?.principalSponsorsMale || ['Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz', 'Mr. Juan Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                                {(d.entourage?.principalSponsorsFemale || ['Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz', 'Mrs. Juana Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                            </div>
+                            {d.entourage?.principalSponsorsSolo && (
+                                <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>{d.entourage.principalSponsorsSolo}</p>
+                            )}
+                            {!d.entourage?.principalSponsorsSolo && (
+                                <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>Ms. Carla Magpayo</p>
+                            )}
                         </div>
-                        {d.entourage?.principalSponsorsSolo && (
-                            <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>{d.entourage.principalSponsorsSolo}</p>
-                        )}
-                        {!d.entourage?.principalSponsorsSolo && (
-                            <p className="wt-ent-name wt-ent-center" style={{ marginTop: '0.5rem' }}>Ms. Carla Magpayo</p>
-                        )}
+
+                        {/* Secondary Sponsors */}
+                        <div className="wt-ent-block">
+                            <h3 className="wt-ent-group-title wt-ent-center">Secondary Sponsors</h3>
+                            <div className="wt-ent-parents-row">
+                                <div className="wt-ent-col">
+                                    <h4 className="wt-ent-sub-title">Candle</h4>
+                                    {(d.entourage?.candleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                        <p key={i} className="wt-ent-name">{name}</p>
+                                    ))}
+                                </div>
+                                <div className="wt-ent-col">
+                                    <h4 className="wt-ent-sub-title">Veil</h4>
+                                    {(d.entourage?.veilSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                        <p key={i} className="wt-ent-name">{name}</p>
+                                    ))}
+                                </div>
+                            </div>
+                            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                                <h4 className="wt-ent-sub-title">Cord</h4>
+                                {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                            </div>
+                            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                                <h4 className="wt-ent-sub-title">Bible</h4>
+                                {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                    <p key={i} className="wt-ent-name">{name}</p>
+                                ))}
+                            </div>
+                        </div>
+
                     </div>
 
                     {/* Best Men & Matrons */}
@@ -230,38 +266,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         </div>
                     </div>
 
-                    {/* Secondary Sponsors */}
-                    <div className="wt-ent-block">
-                        <h3 className="wt-ent-group-title wt-ent-center">Secondary Sponsors</h3>
-                        <div className="wt-ent-parents-row">
-                            <div className="wt-ent-col">
-                                <h4 className="wt-ent-sub-title">Candle</h4>
-                                {(d.entourage?.candleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
-                            </div>
-                            <div className="wt-ent-col">
-                                <h4 className="wt-ent-sub-title">Veil</h4>
-                                {(d.entourage?.veilSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
-                            </div>
-                        </div>
-                        {/* Cord — centered */}
-                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                            <h4 className="wt-ent-sub-title">Cord</h4>
-                            {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
-                        </div>
-                        {/* Bible — centered */}
-                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                            <h4 className="wt-ent-sub-title">Bible</h4>
-                            {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                <p key={i} className="wt-ent-name">{name}</p>
-                            ))}
-                        </div>
-                    </div>
+
 
                     {/* Groomsmen & Bridesmaids */}
                     <div className="wt-ent-block">
@@ -397,32 +402,36 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
 
         .wt-entourage-section { padding: 5rem 2rem 6rem; background: #faf5ee; text-align: center; border-top: 1px solid rgba(0,0,0,0.04); }
 
-        /* Purple panel */
-        .wt-ent-panel { background: linear-gradient(160deg, #a07ab0 0%, #8b6b9e 50%, #7a5a8c 100%); border-radius: 2rem; max-width: 820px; margin: 0 auto; padding: 4rem 3rem 4.5rem; box-shadow: 0 30px 80px rgba(100,60,120,0.28); color: white; }
+        /* Entourage panel — clean, no background */
+        .wt-ent-panel { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
 
-        .wt-ent-title { font-family: 'Dancing Script', cursive; font-size: clamp(3rem, 7vw, 5rem); font-weight: 600; color: white; margin: 0 0 0.5rem; line-height: 1.1; text-shadow: 0 2px 20px rgba(0,0,0,0.15); }
-        .wt-ent-bouquet { font-size: 3rem; margin-bottom: 2.5rem; display: block; opacity: 0.9; }
+        .wt-ent-title { font-family: 'Dancing Script', cursive; font-size: clamp(3rem, 7vw, 5rem); font-weight: 600; color: #8b6b8d; margin: 0 0 0.5rem; line-height: 1.1; }
+        .wt-ent-bouquet { font-size: 3rem; margin-bottom: 2.5rem; display: block; }
 
         /* Parents & Best Men / Matrons — 2 columns */
-        .wt-ent-parents-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 3rem; margin-bottom: 2.5rem; }
+        .wt-ent-parents-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 3rem; margin-bottom: 2rem; }
         .wt-ent-col { text-align: center; }
 
+        /* Principal + Secondary side by side */
+        .wt-ent-sponsors-side { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; margin-bottom: 2rem; text-align: center; }
+
         /* Group headings */
-        .wt-ent-group-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; color: rgba(255,255,255,0.92); margin: 0 0 0.75rem; }
-        .wt-ent-sub-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 600; color: rgba(255,255,255,0.85); margin: 0 0 0.5rem; }
+        .wt-ent-group-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 600; color: #8b5e3c; margin: 0 0 0.75rem; }
+        .wt-ent-sub-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 600; color: #8b6b8d; margin: 0 0 0.4rem; }
         .wt-ent-center { text-align: center; }
 
         /* Names */
-        .wt-ent-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: rgba(255,255,255,0.92); margin: 0.18rem 0; line-height: 1.5; }
+        .wt-ent-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: #5c3c2a; margin: 0.15rem 0; line-height: 1.5; }
 
         /* Principal Sponsors grid — left col male, right col female */
-        .wt-ent-sponsors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 2rem; margin-bottom: 0; }
+        .wt-ent-sponsors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem 1.5rem; margin-bottom: 0; }
 
         /* Blocks (Principal, Secondary) */
-        .wt-ent-block { margin-bottom: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.15); }
+        .wt-ent-block { margin-bottom: 2rem; padding-top: 2rem; border-top: 1px solid rgba(139,94,60,0.12); }
+        .wt-ent-block:first-child { border-top: none; padding-top: 0; }
 
-        @media (max-width: 600px) {
-            .wt-ent-panel { padding: 2.5rem 1.5rem 3rem; }
+        @media (max-width: 700px) {
+            .wt-ent-sponsors-side { grid-template-columns: 1fr; }
             .wt-ent-parents-row { grid-template-columns: 1fr; gap: 2rem; }
             .wt-ent-sponsors-grid { grid-template-columns: 1fr; }
         }
