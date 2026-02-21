@@ -491,6 +491,17 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                 </motion.div>
             </section>
 
+            {/* ── FOOTER ── */}
+            <footer className="wt-footer">
+                <div className="wt-footer-hearts">🌸 &nbsp; 🌿 &nbsp; 💍 &nbsp; 🌿 &nbsp; 🌸</div>
+                <p className="wt-footer-names">{d.partner1 || 'Partner One'} &amp; {d.partner2 || 'Partner Two'}</p>
+                <p className="wt-footer-copy">© InviteU.Online. All Rights Reserved 2026</p>
+                <p className="wt-footer-credit">
+                    Website Invitation Designed by{' '}
+                    <a href="https://inviteuonline.vercel.app" target="_blank" rel="noreferrer">InviteU.Online</a>
+                </p>
+            </footer>
+
             <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;1,400&family=Lato:wght@300;400;700&display=swap');
 
@@ -691,6 +702,14 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         .wt-rsvp-submit { width: 100%; margin-top: 0.5rem; padding: 1.1rem; background: linear-gradient(135deg, #8b6b8d, #7a5a7c); color: white; border: none; border-radius: 0.75rem; font-size: 1.05rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: opacity 0.25s, transform 0.2s; }
         .wt-rsvp-submit:hover { opacity: 0.88; transform: translateY(-2px); }
         @media (max-width: 600px) { .wt-rsvp-row { grid-template-columns: 1fr; } }
+        /* ─ FOOTER ─ */
+        .wt-footer { background: #2a1608; color: rgba(255,255,255,0.55); text-align: center; padding: 3.5rem 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+        .wt-footer-hearts { font-size: 1rem; letter-spacing: 6px; margin-bottom: 1rem; opacity: 0.6; }
+        .wt-footer-names { font-family: 'Dancing Script', cursive; font-size: 2rem; color: rgba(255,255,255,0.85); margin: 0 0 0.75rem; font-weight: 600; }
+        .wt-footer-copy { font-size: 0.75rem; letter-spacing: 1.5px; margin: 0 0 0.4rem; color: rgba(255,255,255,0.4); }
+        .wt-footer-credit { font-size: 0.75rem; margin: 0; color: rgba(255,255,255,0.35); }
+        .wt-footer-credit a { color: #c9a98a; text-decoration: none; transition: opacity 0.2s; }
+        .wt-footer-credit a:hover { opacity: 0.75; }
       `}</style>
         </div>
     );
