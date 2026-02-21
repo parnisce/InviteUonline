@@ -226,25 +226,21 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                                     {(d.entourage?.candleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
                                         <p key={i} className="wt-ent-name">{name}</p>
                                     ))}
+                                    <h4 className="wt-ent-sub-title" style={{ marginTop: '1.25rem' }}>Cord</h4>
+                                    {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                        <p key={i} className="wt-ent-name">{name}</p>
+                                    ))}
                                 </div>
                                 <div className="wt-ent-col">
                                     <h4 className="wt-ent-sub-title">Veil</h4>
                                     {(d.entourage?.veilSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
                                         <p key={i} className="wt-ent-name">{name}</p>
                                     ))}
+                                    <h4 className="wt-ent-sub-title" style={{ marginTop: '1.25rem' }}>Bible</h4>
+                                    {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
+                                        <p key={i} className="wt-ent-name">{name}</p>
+                                    ))}
                                 </div>
-                            </div>
-                            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                                <h4 className="wt-ent-sub-title">Cord</h4>
-                                {(d.entourage?.cordSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
-                            </div>
-                            <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                                <h4 className="wt-ent-sub-title">Bible</h4>
-                                {(d.entourage?.bibleSponsors || ['Mr. Juan Dela Cruz', 'Ms. Juana Dela Cruz']).map((name: string, i: number) => (
-                                    <p key={i} className="wt-ent-name">{name}</p>
-                                ))}
                             </div>
                         </div>
 
@@ -312,6 +308,186 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
                         </div>
                     </div>
 
+                </motion.div>
+            </section>
+
+            {/* ── WEDDING DETAILS ── */}
+            <section className="wt-details-section">
+                <motion.div className="wt-details-inner" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                    <p className="wt-section-eyebrow">We invite you to</p>
+                    <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Wedding Details</h2>
+
+                    <div className="wt-details-cards">
+                        {/* Ceremony */}
+                        <div className="wt-detail-card">
+                            <div className="wt-detail-icon">⛪</div>
+                            <h3 className="wt-detail-label">Ceremony</h3>
+                            <p className="wt-detail-venue">{d.ceremonyVenue || 'Antipolo Cathedral'}</p>
+                            <p className="wt-detail-addr">{d.ceremonyAddress || 'Antipolo City, Rizal'}</p>
+                            <p className="wt-detail-time">{d.ceremonyTime || '3:00 PM'}</p>
+                            {d.ceremonyMapUrl && <a href={d.ceremonyMapUrl} target="_blank" rel="noreferrer" className="wt-detail-map-btn">View Map</a>}
+                        </div>
+
+                        {/* Divider ornament */}
+                        <div className="wt-details-divider">
+                            <span className="wt-script-fancy" style={{ fontSize: '2.5rem', color: '#c9a98a' }}>✦</span>
+                        </div>
+
+                        {/* Reception */}
+                        <div className="wt-detail-card">
+                            <div className="wt-detail-icon">🥂</div>
+                            <h3 className="wt-detail-label">Reception</h3>
+                            <p className="wt-detail-venue">{d.receptionVenue || 'The Chandelier Events Place'}</p>
+                            <p className="wt-detail-addr">{d.receptionAddress || 'Antipolo City, Rizal'}</p>
+                            <p className="wt-detail-time">{d.receptionTime || '6:00 PM'}</p>
+                            {d.receptionMapUrl && <a href={d.receptionMapUrl} target="_blank" rel="noreferrer" className="wt-detail-map-btn">View Map</a>}
+                        </div>
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* ── ORDER OF EVENTS ── */}
+            <section className="wt-events-section">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                    <p className="wt-section-eyebrow">What to Expect</p>
+                    <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Order of Events</h2>
+
+                    <div className="wt-timeline">
+                        {(d.orderOfEvents || [
+                            { time: '3:00 PM', label: 'We Do', desc: 'Ceremony' },
+                            { time: '5:00 PM', label: 'We Drink', desc: 'Cocktail Hour' },
+                            { time: '6:00 PM', label: 'We Eat', desc: 'Reception Dinner' },
+                            { time: '8:30 PM', label: 'We Party', desc: 'Dancing & Celebration' },
+                        ]).map((ev: any, i: number) => (
+                            <motion.div
+                                key={i}
+                                className="wt-timeline-item"
+                                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.7, delay: i * 0.1 }}
+                            >
+                                <div className="wt-tl-time">{ev.time}</div>
+                                <div className="wt-tl-dot" />
+                                <div className="wt-tl-content">
+                                    <p className="wt-tl-label">{ev.label}</p>
+                                    {ev.desc && <p className="wt-tl-desc">{ev.desc}</p>}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* ── FINER DETAILS ── */}
+            <section className="wt-finer-section">
+                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                    <p className="wt-section-eyebrow">A Few Things to Know</p>
+                    <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '3rem' }}>Finer Details</h2>
+
+                    <div className="wt-finer-cards">
+
+                        {/* Attire Guide */}
+                        <div className="wt-finer-card">
+                            <div className="wt-finer-icon">👗</div>
+                            <h3 className="wt-finer-title">Attire Guide</h3>
+                            <p className="wt-finer-sub">We encourage you to dress according to our wedding motif</p>
+                            <div className="wt-finer-body">
+                                {d.attireGuide ? (
+                                    <p>{d.attireGuide}</p>
+                                ) : (
+                                    <>
+                                        <p><strong>Principal Sponsors</strong><br />Gentlemen: Black Suit with Old Rose Necktie<br />Ladies: Old Rose Long Gown</p>
+                                        <p style={{ marginTop: '0.75rem' }}><strong>Guests</strong><br />Gentlemen: Polo or Longsleeves<br />Ladies: Cocktail Dress or Long Gown</p>
+                                    </>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Gift Guide */}
+                        <div className="wt-finer-card">
+                            <div className="wt-finer-icon">🎁</div>
+                            <h3 className="wt-finer-title">Gift Guide</h3>
+                            <div className="wt-finer-body">
+                                <p>{d.giftGuide || 'Your presence at our wedding is the greatest gift. If you wish to give something more, a contribution to our honeymoon or future together would be greatly appreciated.'}</p>
+                            </div>
+                        </div>
+
+                        {/* Snap & Share */}
+                        <div className="wt-finer-card">
+                            <div className="wt-finer-icon">📸</div>
+                            <h3 className="wt-finer-title">Snap &amp; Share!</h3>
+                            <div className="wt-finer-body">
+                                <p>{d.snapShare || 'Welcome, family and friends! While our photographer will capture every detail, we\'d love for you to take photos too — the smiles, laughter, and all the little moments in between. QR codes will be provided at the venue to share your memories with us!'}</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </motion.div>
+            </section>
+
+            {/* ── RSVP FORM ── */}
+            <section className="wt-rsvp-section" id="wt-rsvp">
+                <motion.div className="wt-rsvp-inner" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1 }}>
+                    <p className="wt-section-eyebrow">Kindly Reply by {d.rsvpDeadline || 'March 1, 2025'}</p>
+                    <h2 className="wt-script-fancy" style={{ fontSize: 'clamp(2.8rem, 6vw, 4.5rem)', marginBottom: '0.5rem' }}>RSVP</h2>
+                    <p className="wt-rsvp-sub">{d.rsvpNote || 'Please let us know if you can make it to our special day.'}</p>
+
+                    <form className="wt-rsvp-form" onSubmit={(e) => e.preventDefault()}>
+                        <div className="wt-rsvp-row">
+                            <div className="wt-rsvp-field">
+                                <label className="wt-rsvp-label">Full Name *</label>
+                                <input className="wt-rsvp-input" type="text" placeholder="Your full name" required />
+                            </div>
+                            <div className="wt-rsvp-field">
+                                <label className="wt-rsvp-label">Salutation</label>
+                                <select className="wt-rsvp-input">
+                                    <option value="">Mr. / Ms. / Mrs.</option>
+                                    <option>Mr.</option>
+                                    <option>Ms.</option>
+                                    <option>Mrs.</option>
+                                    <option>Dr.</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="wt-rsvp-row">
+                            <div className="wt-rsvp-field">
+                                <label className="wt-rsvp-label">Email Address</label>
+                                <input className="wt-rsvp-input" type="email" placeholder="your@email.com" />
+                            </div>
+                            <div className="wt-rsvp-field">
+                                <label className="wt-rsvp-label">Contact Number</label>
+                                <input className="wt-rsvp-input" type="tel" placeholder="+63 9XX XXX XXXX" />
+                            </div>
+                        </div>
+
+                        <div className="wt-rsvp-row">
+                            <div className="wt-rsvp-field wt-rsvp-full">
+                                <label className="wt-rsvp-label">Will you be attending? *</label>
+                                <div className="wt-rsvp-attend-btns">
+                                    <button type="button" className="wt-attend-btn wt-attend-yes">✓ Joyfully Accepts</button>
+                                    <button type="button" className="wt-attend-btn wt-attend-no">✗ Regretfully Declines</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="wt-rsvp-row">
+                            <div className="wt-rsvp-field wt-rsvp-full">
+                                <label className="wt-rsvp-label">Number of Guests</label>
+                                <input className="wt-rsvp-input" type="number" min="1" max="10" placeholder="1" style={{ maxWidth: '160px' }} />
+                            </div>
+                        </div>
+
+                        <div className="wt-rsvp-row">
+                            <div className="wt-rsvp-field wt-rsvp-full">
+                                <label className="wt-rsvp-label">Message to the Couple (optional)</label>
+                                <textarea className="wt-rsvp-input wt-rsvp-textarea" placeholder="Write your heartfelt message here…" rows={4} />
+                            </div>
+                        </div>
+
+                        <button type="submit" className="wt-rsvp-submit">Send RSVP 💌</button>
+                    </form>
                 </motion.div>
             </section>
 
@@ -443,6 +619,78 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
 
         .wt-spin { animation: wt-spin 1s linear infinite; }
         @keyframes wt-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* ─ SHARED SECTION HELPERS ─ */
+        .wt-section-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; color: #c9a98a; margin: 0 0 0.6rem; }
+
+        /* ─ WEDDING DETAILS ─ */
+        .wt-details-section { padding: 6rem 2rem; background: #fffaf5; text-align: center; border-top: 1px solid rgba(139,94,60,0.08); }
+        .wt-details-inner { max-width: 860px; margin: 0 auto; }
+        .wt-details-cards { display: flex; align-items: flex-start; justify-content: center; gap: 0; margin-top: 1rem; }
+        .wt-detail-card { flex: 1; padding: 2rem 1.5rem; text-align: center; }
+        .wt-detail-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+        .wt-detail-label { font-family: 'Dancing Script', cursive; font-size: 1.9rem; color: #8b5e3c; margin: 0 0 0.75rem; font-weight: 600; }
+        .wt-detail-venue { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #3d1f0e; margin: 0 0 0.3rem; font-weight: 400; }
+        .wt-detail-addr { font-size: 0.9rem; color: #8b7355; margin: 0 0 0.4rem; }
+        .wt-detail-time { font-size: 0.82rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #c9a98a; margin: 0.5rem 0 1rem; }
+        .wt-detail-map-btn { display: inline-block; border: 1.5px solid #8b6b8d; color: #8b6b8d; padding: 0.45rem 1.8rem; border-radius: 2rem; font-size: 0.78rem; font-weight: 700; letter-spacing: 2px; text-decoration: none; text-transform: uppercase; transition: 0.3s; }
+        .wt-detail-map-btn:hover { background: #8b6b8d; color: white; }
+        .wt-details-divider { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0 1rem; opacity: 0.5; font-size: 2rem; }
+        @media (max-width: 600px) {
+            .wt-details-cards { flex-direction: column; align-items: center; }
+            .wt-details-divider { transform: rotate(90deg); margin: 0.5rem 0; }
+        }
+
+        /* ─ ORDER OF EVENTS ─ */
+        .wt-events-section { padding: 6rem 2rem; background: #faf5ee; text-align: center; border-top: 1px solid rgba(139,94,60,0.08); }
+        .wt-timeline { max-width: 600px; margin: 0 auto; position: relative; display: flex; flex-direction: column; gap: 0; }
+        .wt-timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, rgba(139,94,60,0.2) 10%, rgba(139,94,60,0.2) 90%, transparent); transform: translateX(-50%); }
+        .wt-timeline-item { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 0 1.5rem; padding: 1.5rem 0; }
+        .wt-tl-time { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #c9a98a; text-align: right; }
+        .wt-tl-dot { width: 14px; height: 14px; border-radius: 50%; background: #8b6b8d; border: 3px solid #faf5ee; box-shadow: 0 0 0 1.5px #8b6b8d; margin: 0 auto; position: relative; z-index: 2; }
+        .wt-tl-content { text-align: left; }
+        .wt-tl-label { font-family: 'Dancing Script', cursive; font-size: 1.5rem; color: #5a3d2b; font-weight: 600; margin: 0; line-height: 1.2; }
+        .wt-tl-desc { font-size: 0.82rem; color: #8b7355; margin: 0.1rem 0 0; letter-spacing: 1px; }
+        @media (max-width: 500px) {
+            .wt-timeline::before { left: 14px; transform: none; }
+            .wt-timeline-item { grid-template-columns: 28px 1fr; }
+            .wt-tl-time { display: none; }
+            .wt-tl-dot { margin: 0; }
+            .wt-tl-content { text-align: left; }
+        }
+
+        /* ─ FINER DETAILS ─ */
+        .wt-finer-section { padding: 6rem 2rem; background: #fffaf5; text-align: center; border-top: 1px solid rgba(139,94,60,0.08); }
+        .wt-finer-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+        .wt-finer-card { background: white; border-radius: 1.5rem; padding: 2.5rem 2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.06); border: 1px solid rgba(139,94,60,0.07); text-align: center; transition: transform 0.3s, box-shadow 0.3s; }
+        .wt-finer-card:hover { transform: translateY(-4px); box-shadow: 0 16px 50px rgba(0,0,0,0.1); }
+        .wt-finer-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .wt-finer-title { font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #8b5e3c; margin: 0 0 0.4rem; font-weight: 600; }
+        .wt-finer-sub { font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #8b6b8d; margin: 0 0 1.2rem; }
+        .wt-finer-body { font-size: 0.95rem; color: #6a4a3a; line-height: 1.85; text-align: left; }
+        @media (max-width: 860px) { .wt-finer-cards { grid-template-columns: 1fr; max-width: 480px; } }
+
+        /* ─ RSVP ─ */
+        .wt-rsvp-section { padding: 7rem 2rem 8rem; background: linear-gradient(160deg, #fdf6ee 0%, #f8f0e8 100%); text-align: center; border-top: 1px solid rgba(139,94,60,0.08); }
+        .wt-rsvp-inner { max-width: 720px; margin: 0 auto; }
+        .wt-rsvp-sub { font-size: 1rem; color: #8b7355; margin: 0.5rem 0 3rem; }
+        .wt-rsvp-form { text-align: left; display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2.5rem; }
+        .wt-rsvp-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .wt-rsvp-field { display: flex; flex-direction: column; gap: 0.4rem; }
+        .wt-rsvp-full { grid-column: 1 / -1; }
+        .wt-rsvp-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #8b7355; }
+        .wt-rsvp-input { width: 100%; padding: 0.85rem 1.1rem; border: 1.5px solid rgba(139,94,60,0.2); border-radius: 0.75rem; font-family: 'Lato', sans-serif; font-size: 0.98rem; color: #3d1f0e; background: white; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-sizing: border-box; }
+        .wt-rsvp-input:focus { border-color: #8b6b8d; box-shadow: 0 0 0 3px rgba(139,107,141,0.12); }
+        .wt-rsvp-textarea { resize: vertical; min-height: 110px; }
+        .wt-rsvp-attend-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .wt-attend-btn { flex: 1; min-width: 180px; padding: 0.85rem 1rem; border-radius: 0.75rem; font-size: 0.9rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; border: 2px solid; transition: 0.25s; }
+        .wt-attend-yes { border-color: #7aab7a; color: #4a7a4a; background: rgba(122,171,122,0.08); }
+        .wt-attend-yes:hover, .wt-attend-yes.active { background: #7aab7a; color: white; }
+        .wt-attend-no { border-color: #c9867a; color: #a0504a; background: rgba(201,134,122,0.08); }
+        .wt-attend-no:hover, .wt-attend-no.active { background: #c9867a; color: white; }
+        .wt-rsvp-submit { width: 100%; margin-top: 0.5rem; padding: 1.1rem; background: linear-gradient(135deg, #8b6b8d, #7a5a7c); color: white; border: none; border-radius: 0.75rem; font-size: 1.05rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: opacity 0.25s, transform 0.2s; }
+        .wt-rsvp-submit:hover { opacity: 0.88; transform: translateY(-2px); }
+        @media (max-width: 600px) { .wt-rsvp-row { grid-template-columns: 1fr; } }
       `}</style>
         </div>
     );
