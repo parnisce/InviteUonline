@@ -233,7 +233,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
         }
 
         /* ─ GALLERY SLIDESHOW ─ */
-        .wt-gallery-slider { position: relative; padding: 0 0 4rem; overflow: hidden; background: #fff; margin-top: -16rem; z-index: 20; }
+        .wt-gallery-slider { position: relative; padding: 4rem 0 4rem; overflow: hidden; background: #fff; margin-top: -16rem; z-index: 20; }
         .wt-slider-container { max-width: 900px; margin: 0 auto; position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 1rem; }
         .wt-slides-track { position: relative; width: 100%; height: clamp(400px, 60vh, 620px); border-radius: 1.5rem; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.22); }
 
@@ -257,7 +257,7 @@ const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
 
         /* ─ MESSAGE & ENTOURAGE ─ */
         .wt-script-fancy { font-family: 'Dancing Script', cursive; color: #8b6b8d; }
-        .wt-message-section { padding: 8rem 2rem; background: #fff; position: relative; z-index: 10; }
+        .wt-message-section { padding: 2rem 2rem; background: #fff; position: relative; z-index: 10; }
         .wt-message-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: center; }
         .wt-message-text { text-align: left; }
         .wt-message-p-container { color: #6a4a3a; line-height: 1.9; font-size: 1.1rem; display: flex; flex-direction: column; gap: 1.5rem; }
