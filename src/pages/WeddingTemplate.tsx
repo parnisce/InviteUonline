@@ -1,25 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-const ICONS: Record<string, string> = {
-    ceremony: '⛪', reception: '🎀', dinner: '🍽️',
-    cocktail: '🍹', photos: '📸', party: '🎉', after: '🍹', default: '💍',
-};
-const getIcon = (a: string) => {
-    const l = a.toLowerCase();
-    for (const k of Object.keys(ICONS)) if (l.includes(k)) return ICONS[k];
-    return ICONS.default;
-};
+
 
 interface Props { event: any; timeLeft: any; }
 
 const WeddingTemplate: React.FC<Props> = ({ event, timeLeft }) => {
     const d = event.event_details || {};
-    const theme = event.theme_color || '#8b5e3c';
     const eventDate = new Date(event.event_date);
     const gallery: string[] = d.gallery || [];
-    const itinerary = (d.itinerary || []).filter((i: any) => i.activity);
 
     const [activeSlide, setActiveSlide] = useState(0);
 
